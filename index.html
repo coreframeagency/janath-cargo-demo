@@ -1,0 +1,1232 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Janath Cargo</title>
+<meta name="theme-color" content="#0E5566">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="Janath Cargo">
+<meta name="format-detection" content="telephone=no">
+<meta name="description" content="Door to door cargo from Israel to Sri Lanka and the Philippines. Demo portal.">
+<meta property="og:title" content="Janath Cargo">
+<meta property="og:description" content="Door to door cargo from Israel. Demo portal.">
+<meta property="og:type" content="website">
+<link rel="manifest" href="/manifest.webmanifest">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" href="/icon-192.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700;800&family=Noto+Sans+Sinhala:wght@400;500;600;700&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/jsqr@1.4.0/dist/jsQR.js"></script>
+<style>
+:root{
+ --bg:#EDF0F0;--surface:#FFFFFF;--surface-2:#F4F6F6;--ink:#102A31;--muted:#566B70;--line:#D8DEDF;
+ --primary:#0E4F5E;--ptext:#0E4F5E;--soft:#D3E4E8;--lime:#D4EE5E;--lime-ink:#26300A;--hdr:#0E4F5E;
+ --z1b:#DCEBEF;--z1t:#0E4F5E;--z2b:#F8E9CC;--z2t:#7A4F08;--z3b:#EAF5C4;--z3t:#3F4D0A;--z4b:#D9EEE0;--z4t:#1C6440;
+ --red:#B0352C;--redb:#F6E1DE;--focus:#1B6F80;--ov:rgba(8,26,31,.55);--r:12px;
+ color-scheme:light;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+ --bg:#0B1B1F;--surface:#11252A;--surface-2:#162E34;--ink:#E3ECEE;--muted:#93A9AE;--line:#25414A;
+ --primary:#1E7488;--ptext:#8CCEDC;--soft:#1F4751;--hdr:#0D2126;
+ --z1b:#173F49;--z1t:#9FD6E3;--z2b:#3D2F12;--z2t:#F2C978;--z3b:#33401A;--z3t:#D4EE5E;--z4b:#173C2A;--z4t:#8ED9AE;
+ --red:#F08A80;--redb:#45201D;--focus:#D4EE5E;--ov:rgba(0,0,0,.6);color-scheme:dark;}}
+:root[data-theme="dark"]{
+ --bg:#0B1B1F;--surface:#11252A;--surface-2:#162E34;--ink:#E3ECEE;--muted:#93A9AE;--line:#25414A;
+ --primary:#1E7488;--ptext:#8CCEDC;--soft:#1F4751;--hdr:#0D2126;
+ --z1b:#173F49;--z1t:#9FD6E3;--z2b:#3D2F12;--z2t:#F2C978;--z3b:#33401A;--z3t:#D4EE5E;--z4b:#173C2A;--z4t:#8ED9AE;
+ --red:#F08A80;--redb:#45201D;--focus:#D4EE5E;--ov:rgba(0,0,0,.6);color-scheme:dark;}
+:root{box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+html{scroll-padding-top:env(safe-area-inset-top,0px);-webkit-text-size-adjust:100%;text-size-adjust:100%}
+*,*::before,*::after{box-sizing:border-box}
+body{margin:0;font-family:'Archivo','Noto Sans Sinhala',system-ui,-apple-system,'Segoe UI',Roboto,sans-serif;background:var(--bg);color:var(--ink);font-size:17px;line-height:1.45;-webkit-font-smoothing:antialiased;font-variant-numeric:tabular-nums}
+button{font:inherit;color:inherit}
+button,a,.chip,.row{touch-action:manipulation;-webkit-tap-highlight-color:transparent}
+a{color:var(--ptext)}
+:focus-visible{outline:3px solid var(--focus);outline-offset:2px}
+h1{font-size:26px;line-height:1.15;margin:0;font-weight:700;letter-spacing:-.01em}
+h2{font-size:17px;margin:0;font-weight:700;display:flex;align-items:center;gap:10px}
+h3{font-size:16px;margin:0 0 10px;font-weight:700;display:flex;align-items:center;gap:10px}
+.muted{color:var(--muted)}.small{font-size:15px}
+.ic{flex:none}
+.card-h .chipic,h3 .chipic{display:none}
+
+/* header */
+.top{position:sticky;top:env(safe-area-inset-top,0px);z-index:20;background:var(--hdr);color:#fff}
+.top-in{max-width:1440px;margin:0 auto;display:flex;align-items:center;gap:18px;padding:0 24px;min-height:66px}
+.logo{display:flex;align-items:center;gap:10px;text-decoration:none;color:#fff;font-weight:800;font-size:19px;white-space:nowrap}
+.rbadge{font-size:13px;font-weight:700;padding:5px 9px;border-radius:6px;background:rgba(255,255,255,.1);color:#E8F3F5;white-space:nowrap;border:1px solid rgba(255,255,255,.16)}
+.rbadge .rb-s{display:none}
+.nav{display:flex;align-self:stretch;flex-wrap:nowrap;overflow:auto}
+.nav a{display:flex;align-items:center;gap:8px;padding:0 11px;color:rgba(255,255,255,.72);text-decoration:none;font-weight:600;white-space:nowrap;font-size:16px;box-shadow:inset 0 -3px 0 transparent}
+.nav a:hover{color:#fff}
+.nav a.on{color:#fff;box-shadow:inset 0 -3px 0 var(--lime)}
+.tools{margin-left:auto;display:flex;gap:8px;align-items:center}
+.iconbtn{width:44px;height:44px;border-radius:10px;border:1px solid var(--line);background:var(--surface);display:grid;place-items:center;cursor:pointer;flex:none}
+.langbtn{height:44px;padding:0 14px;border-radius:10px;border:1px solid var(--line);background:var(--surface-2);font-weight:700;cursor:pointer;white-space:nowrap}
+.who{display:flex;align-items:center;gap:8px;height:44px;padding:0 12px 0 5px;border-radius:10px;border:1px solid var(--line);background:var(--surface);cursor:pointer;font-weight:700}
+.top .iconbtn,.top .langbtn,.top .who{background:rgba(255,255,255,.08);border-color:rgba(255,255,255,.2);color:#fff}
+.top .who .av{background:var(--lime);color:var(--lime-ink)}
+.av{width:42px;height:42px;border-radius:50%;background:var(--soft);color:var(--ptext);display:grid;place-items:center;font-weight:700;font-size:14px;flex:none}
+.av.sm{width:34px;height:34px;font-size:13px}
+main{max-width:1280px;margin:0 auto;padding:24px 24px 120px}
+.bnav{display:none}
+.menubtn{display:none}
+@media (max-width:1300px){.nav{display:none}.menubtn{display:grid}}
+@media (max-width:900px){
+ .t-hide{display:none}
+ .top-in{padding:0 14px;gap:10px;min-height:60px}
+ .rbadge .rb-l{display:none}.rbadge .rb-s{display:inline}
+ main{padding:16px 14px calc(110px + env(safe-area-inset-bottom,0px))}
+ .bnav{display:flex;position:fixed;left:0;right:0;bottom:0;z-index:30;background:var(--surface);border-top:1px solid var(--line);padding:0 4px env(safe-area-inset-bottom,0px)}
+ .bnav a{flex:1;position:relative;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;min-height:62px;text-decoration:none;color:var(--muted);font-size:12.5px;font-weight:700;text-align:center;line-height:1.15}
+ .bnav a.on{color:var(--ink)}
+ .bnav a.on::before{content:'';position:absolute;top:0;left:22%;right:22%;height:3px;background:var(--primary);border-radius:0 0 3px 3px}
+ .bnav a.on .ic{color:var(--ptext)}
+ h1{font-size:23px}
+}
+
+/* layout */
+.grid{display:grid;gap:14px;margin-bottom:14px}
+.g4{grid-template-columns:repeat(4,minmax(0,1fr))}
+.g3{grid-template-columns:repeat(3,minmax(0,1fr))}
+.g2{grid-template-columns:repeat(2,minmax(0,1fr))}
+.g21{grid-template-columns:minmax(0,2fr) minmax(0,1fr)}
+@media (max-width:1050px){.g4{grid-template-columns:repeat(2,minmax(0,1fr))}.g3{grid-template-columns:repeat(2,minmax(0,1fr))}.g21{grid-template-columns:1fr}}
+@media (max-width:760px){.g3,.g2{grid-template-columns:1fr}}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:18px;min-width:0}
+section.card{margin-bottom:14px}
+.grid>section.card{margin-bottom:0}
+.card-h{display:flex;align-items:center;justify-content:space-between;gap:10px;margin:-18px -18px 12px;padding:12px 18px;border-bottom:1px solid var(--line);flex-wrap:wrap;min-height:54px}
+.hello{display:flex;justify-content:space-between;align-items:flex-end;gap:14px;flex-wrap:wrap;margin-bottom:18px}
+.hello p{margin:4px 0 0}
+.hello-act{display:flex;gap:10px;flex-wrap:wrap}
+.chipic{width:40px;height:40px;border-radius:10px;background:var(--surface-2);border:1px solid var(--line);display:grid;place-items:center;color:var(--ptext);flex:none;font-weight:800}
+
+/* stat strip */
+.strip{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));padding:0;overflow:hidden}
+.cell{display:flex;flex-direction:column;gap:6px;padding:18px 20px;background:none;border:0;border-left:1px solid var(--line);text-align:left;cursor:pointer}
+.cell:first-child{border-left:0}
+.cell:hover{background:var(--surface-2)}
+.cell small{color:var(--muted);font-size:15px;font-weight:600}
+.cell b{font-size:38px;font-weight:800;line-height:1;letter-spacing:-.02em}
+.cell.hot b{color:var(--ptext)}
+@media (max-width:760px){.strip{grid-template-columns:1fr 1fr}.cell:nth-child(3){border-left:0}.cell:nth-child(n+3){border-top:1px solid var(--line)}.cell b{font-size:32px}}
+
+/* buttons */
+.btn{min-height:50px;padding:0 20px;border-radius:10px;font-weight:700;font-size:16.5px;display:inline-flex;align-items:center;justify-content:center;gap:10px;cursor:pointer;background:var(--surface);color:var(--ink);text-decoration:none;border:1px solid var(--line);white-space:nowrap}
+.btn:hover{background:var(--surface-2)}
+.btn.pri{background:var(--primary);color:#fff;border-color:var(--primary)}
+.btn.pri:hover{filter:brightness(1.08)}
+.btn.lime{background:var(--lime);color:var(--lime-ink);border-color:var(--lime)}
+.btn.ghost{background:transparent}
+.btn.bad{background:var(--redb);color:var(--red);border-color:transparent}
+.btn.big{min-height:58px;font-size:17.5px;width:100%;white-space:normal;text-align:center}
+.btn.sm{min-height:42px;padding:0 14px;font-size:15px}
+.btn:active{transform:translateY(1px)}
+.btn[disabled]{opacity:.55;cursor:default}
+.lnk{background:none;border:0;color:var(--ptext);font-weight:700;cursor:pointer;display:inline-flex;align-items:center;gap:6px;padding:8px 0;font-size:15.5px}
+.acts{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:10px;margin-bottom:14px}
+
+/* stats used on payments page */
+.stat{display:flex;flex-direction:column;gap:10px;text-align:left}
+.st-l{display:flex;align-items:center;gap:10px;font-weight:600;color:var(--muted);font-size:15px}
+.st-l .chipic{width:32px;height:32px;font-size:14px}
+.st-n{font-size:34px;font-weight:800;letter-spacing:-.02em;line-height:1}
+
+/* pills */
+.pill{display:inline-flex;align-items:center;gap:5px;padding:4px 9px;border-radius:6px;font-size:13.5px;font-weight:700;white-space:nowrap;line-height:1.3}
+.pill.z1{background:var(--z1b);color:var(--z1t)}.pill.z2{background:var(--z2b);color:var(--z2t)}.pill.z3{background:var(--z3b);color:var(--z3t)}.pill.z4{background:var(--z4b);color:var(--z4t)}
+.pill.ok{background:var(--z4b);color:var(--z4t)}.pill.warn{background:var(--z2b);color:var(--z2t)}.pill.bad{background:var(--redb);color:var(--red)}
+.pill.plain{background:var(--surface-2);color:var(--ink);border:1px solid var(--line)}
+.tag{display:inline-block;padding:0 6px;border-radius:5px;background:var(--surface-2);border:1px solid var(--line);font-weight:700;font-size:13px;color:var(--ink);margin-right:6px;letter-spacing:.02em}
+
+/* pipeline */
+.pipe{display:grid;grid-template-columns:repeat(8,minmax(0,1fr));row-gap:14px;align-items:start}
+.band{grid-row:1;grid-column:var(--c);font-weight:700;font-size:13px;padding:6px 10px;margin:0 3px;border-top:3px solid;text-transform:uppercase;letter-spacing:.05em}
+.band.b-il{color:var(--z1t);border-color:var(--primary)}.band.b-sea{color:var(--z2t);border-color:#D9A13B}.band.b-sl{color:var(--z3t);border-color:#9BB82E}
+.pstop{grid-row:2;grid-column:var(--c);display:flex;flex-direction:column;align-items:center;gap:8px;background:none;border:0;cursor:pointer;position:relative;padding:4px 2px;border-radius:10px;text-align:center}
+.pstop:hover{background:var(--surface-2)}
+.pstop::before{content:'';position:absolute;top:31px;right:50%;width:100%;height:2px;background:var(--line)}
+.pstop:first-of-type::before{display:none}
+.pdot{width:56px;height:56px;border-radius:50%;display:grid;place-items:center;background:var(--surface);border:2px solid var(--line);position:relative;z-index:1;color:var(--muted)}
+.pdot b{position:absolute;top:-6px;right:-10px;min-width:28px;height:26px;padding:0 7px;border-radius:7px;background:var(--primary);color:#fff;display:grid;place-items:center;font-size:14px}
+.pstop.has .pdot{border-color:var(--primary);color:var(--ptext)}
+.pstop.zero .pdot b{background:var(--surface-2);color:var(--muted);border:1px solid var(--line)}
+.pstop.hot .pdot{background:var(--lime);border-color:#B5D23E;color:var(--lime-ink)}
+.pl{font-weight:600;font-size:14px;line-height:1.25;max-width:110px}
+@media (max-width:760px){
+ .pipe{grid-template-columns:1fr 1fr;gap:8px}
+ .band{display:none}
+ .pstop{grid-column:auto;grid-row:auto;flex-direction:row;justify-content:flex-start;text-align:left;border:1px solid var(--line);padding:10px;gap:12px}
+ .pstop::before{display:none}
+ .pdot{width:42px;height:42px}
+ .pdot b{top:-6px;right:-8px;min-width:24px;height:22px;font-size:12.5px}
+}
+
+/* journey track */
+.track{display:flex;align-items:flex-start}
+.stop{flex:1;display:flex;flex-direction:column;align-items:center;position:relative;text-align:center;min-width:0}
+.stop::before{content:'';position:absolute;top:21px;right:50%;width:100%;height:3px;background:var(--line)}
+.stop:first-child::before{display:none}
+.stop.done::before,.stop.cur::before{background:var(--primary)}
+.dot{width:44px;height:44px;border-radius:50%;display:grid;place-items:center;background:var(--surface);color:var(--muted);position:relative;z-index:1;border:2px solid var(--line)}
+.stop.done .dot{background:var(--primary);border-color:var(--primary);color:#fff}
+.stop.cur .dot{background:var(--lime);border-color:#B5D23E;color:var(--lime-ink);box-shadow:0 0 0 5px rgba(212,238,94,.35)}
+.sl{font-size:13px;font-weight:600;color:var(--muted);margin-top:8px;padding:0 2px;line-height:1.2}
+.stop.cur .sl,.stop.done .sl{color:var(--ink)}
+.stop.cur .sl{font-weight:800}
+.track.sm .stop::before{top:14px;height:2px}
+.track.sm .dot{width:30px;height:30px;border-width:1.5px}
+.track.sm .stop.cur .dot{box-shadow:0 0 0 4px rgba(212,238,94,.35)}
+.track.sm .sl{display:none}
+@media (max-width:640px){.track .sl{display:none}.track:not(.sm) .dot{width:34px;height:34px}.track:not(.sm) .stop::before{top:16px}}
+.say{font-size:21px;font-weight:700;margin:20px 0 0;line-height:1.3}
+.eta{display:flex;align-items:center;gap:14px;margin-top:14px;padding:12px 14px;border-radius:10px;background:var(--z2b);color:var(--z2t);font-weight:600}
+.eta b{font-size:22px;display:block;color:var(--ink)}
+
+/* rows / tables */
+.rows{display:flex;flex-direction:column}
+.row{display:grid;grid-template-columns:auto minmax(0,1fr) auto auto;gap:14px;align-items:center;padding:12px;border:0;border-top:1px solid var(--line);background:none;text-align:left;cursor:pointer;width:100%;border-radius:0}
+.row.bx{grid-template-columns:42px minmax(0,1.3fr) minmax(0,1fr) 240px 20px}
+.rows .row:first-child,.thead+.row{border-top:0}
+.row:hover{background:var(--surface-2)}
+.thead{display:grid;gap:14px;padding:10px 12px;font-size:12.5px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.05em;border-bottom:1px solid var(--line)}
+.thead.bx{grid-template-columns:42px minmax(0,1.3fr) minmax(0,1fr) 240px 20px}
+.thead span:nth-child(4){text-align:right}
+.r-main{min-width:0;display:flex;flex-direction:column;gap:2px}
+.r-main b{font-size:16.5px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-weight:700}
+.r-main small{color:var(--muted);font-size:14px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.r-city{color:var(--muted);font-weight:600;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.m-only{display:none}
+.r-pills{display:flex;gap:6px;flex-wrap:wrap;justify-content:flex-end}
+.r-end{font-weight:800;text-align:right;white-space:nowrap}
+@media (max-width:640px){.row,.row.bx{grid-template-columns:auto minmax(0,1fr) auto;padding:12px 6px}.row>.ic:last-child,.r-city,.thead{display:none}.m-only{display:inline}.r-pills{flex-direction:column;align-items:flex-end}}
+.empty{text-align:center;padding:32px 16px;color:var(--muted)}
+.empty p{margin:10px 0 16px;font-weight:600}
+
+.kv{display:flex;justify-content:space-between;gap:16px;padding:9px 0;border-top:1px solid var(--line)}
+.kv:first-of-type{border-top:0}
+.kv span{color:var(--muted)}
+.kv b{text-align:right;font-weight:600;overflow-wrap:anywhere}
+
+/* forms */
+.field{display:flex;flex-direction:column;gap:6px;margin-bottom:14px}
+.field>label,.flabel{font-weight:700;font-size:15px}
+input,select,textarea{font:inherit;font-size:17px;min-height:52px;padding:11px 13px;border-radius:10px;border:1.5px solid var(--line);background:var(--surface);color:var(--ink);width:100%}
+textarea{min-height:88px;resize:vertical}
+input:focus,select:focus,textarea:focus{border-color:var(--focus);outline:none}
+.in-big{font-size:32px;font-weight:800;text-align:center;min-height:72px}
+.row-in{display:flex;gap:10px}
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chips.scroll{flex-wrap:nowrap;overflow-x:auto;margin:0 -2px 14px}
+.chip{min-height:44px;padding:0 16px;border-radius:8px;border:1.5px solid var(--line);background:var(--surface);font-weight:700;cursor:pointer;white-space:nowrap;display:inline-flex;align-items:center;gap:8px}
+.chip.on{background:var(--primary);color:#fff;border-color:var(--primary)}
+.chip .n{font-size:13px;opacity:.75}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+@media (max-width:520px){.two{grid-template-columns:1fr}}
+.note{padding:11px 13px;border-radius:10px;background:var(--surface-2);font-size:15px;color:var(--muted);margin:0 0 14px}
+.warnbox{padding:13px 15px;border-radius:10px;background:var(--z2b);color:var(--z2t);font-weight:700;margin-bottom:14px}
+.pricebox{display:flex;justify-content:space-between;align-items:center;padding:13px 15px;border-radius:10px;background:var(--z3b);color:var(--z3t);font-weight:700;margin-bottom:14px}
+.pricebox b{font-size:23px;color:var(--ink)}
+.switch{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:12px 0;font-weight:700;cursor:pointer}
+.switch input{width:26px;height:26px;min-height:0;accent-color:var(--primary)}
+.check{display:flex;gap:12px;align-items:center;padding:12px 0;border-top:1px solid var(--line);font-weight:600;cursor:pointer}
+.check input{width:24px;height:24px;min-height:0;accent-color:var(--primary);flex:none}
+
+/* modal */
+.ov{position:fixed;inset:0;background:var(--ov);display:flex;align-items:flex-end;justify-content:center;z-index:50}
+.modal{background:var(--surface);width:100%;max-width:560px;max-height:92vh;overflow:auto;border-radius:16px 16px 0 0;padding:18px 18px calc(18px + env(safe-area-inset-bottom,0px))}
+.m-h{display:flex;justify-content:space-between;align-items:center;gap:12px;margin:-18px -18px 16px;padding:14px 18px;border-bottom:1px solid var(--line)}
+.m-h h2{font-size:19px}
+.m-f{display:flex;gap:10px;margin-top:6px}
+.m-f .btn{flex:1}
+@media (min-width:700px){.ov{align-items:center}.modal{border-radius:14px;padding:22px}.m-h{margin:-22px -22px 18px;padding:16px 22px}}
+
+#toast{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(92px + env(safe-area-inset-bottom,0px));z-index:70;display:flex;flex-direction:column;gap:8px;align-items:center;pointer-events:none;width:max-content;max-width:92vw}
+.toast{background:#12262B;color:#fff;padding:12px 16px;border-radius:8px;display:flex;align-items:center;gap:10px;font-weight:600;box-shadow:0 8px 24px rgba(0,0,0,.25)}
+.toast .ic{color:#7BE495}
+@media (min-width:901px){#toast{bottom:28px}}
+
+/* login */
+.login{min-height:100vh;min-height:100dvh;display:grid;place-items:center;padding:24px 16px;background-color:var(--hdr);background-image:linear-gradient(rgba(255,255,255,.05) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.05) 1px,transparent 1px);background-size:44px 44px}
+.lg-card{width:100%;max-width:470px;background:var(--surface);border-radius:16px;padding:24px 20px}
+.lg-brand{display:flex;align-items:center;gap:10px;font-weight:800;font-size:21px}
+.lg-brand .langbtn{margin-left:auto}
+.lg-tag{color:var(--muted);margin:6px 0 20px}
+.lg-h{font-size:22px;margin:4px 0 14px}
+.lg-roles,.lg-list{display:flex;flex-direction:column;gap:10px}
+.lg-role{display:flex;align-items:center;gap:14px;padding:14px;border-radius:12px;border:1.5px solid var(--line);background:var(--surface);cursor:pointer;font-size:18px;font-weight:700;text-align:left}
+.lg-role:hover,.lg-route:hover,.lg-person:hover{border-color:var(--primary)}
+.lg-role>span:nth-child(2){flex:1}
+.lg-ic{width:50px;height:50px;border-radius:10px;background:var(--primary);color:var(--lime);display:grid;place-items:center}
+.lg-route{display:flex;flex-direction:column;gap:10px;padding:18px;border-radius:12px;border:1.5px solid var(--line);background:var(--surface);cursor:pointer;text-align:left}
+.rt{display:flex;align-items:center;gap:12px;font-size:20px;font-weight:800}
+.rt i{flex:1;height:2px;background:var(--soft);position:relative;min-width:56px;display:flex;align-items:center;justify-content:center;font-style:normal}
+.rt i::before,.rt i::after{content:'';position:absolute;top:-3px;width:8px;height:8px;border-radius:50%;background:var(--primary)}
+.rt i::before{left:0}.rt i::after{right:0}
+.rt i span{display:grid;place-items:center;width:34px;height:34px;border-radius:50%;background:var(--surface);border:2px solid var(--soft);color:var(--ptext)}
+.lg-route:hover .rt i span{border-color:var(--primary)}
+.lg-route-on span{display:inline-flex;align-items:center;gap:8px}
+.lg-route small{color:var(--muted);font-size:15px}
+.lg-person{display:flex;align-items:center;gap:14px;padding:11px 13px;border-radius:12px;border:1.5px solid var(--line);background:var(--surface);cursor:pointer;text-align:left}
+.lg-person span{display:flex;flex-direction:column}
+.lg-person small{color:var(--muted);font-size:14.5px}
+.lg-list{max-height:52vh;overflow:auto}
+.lg-route-on{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:10px 12px;border-radius:10px;background:var(--surface-2);font-weight:700;margin-bottom:16px;font-size:15px}
+.pin-dots{display:flex;justify-content:center;gap:16px;margin:10px 0 8px}
+.pin-dots i{width:18px;height:18px;border-radius:50%;border:2px solid var(--primary)}
+.pin-dots i.f{background:var(--primary)}
+.pin-err{color:var(--red);text-align:center;font-weight:700;min-height:24px;margin:0 0 6px}
+.pinpad{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;max-width:310px;margin:0 auto}
+.pinpad button{height:68px;border-radius:12px;border:1.5px solid var(--line);background:var(--surface-2);font-size:26px;font-weight:700;cursor:pointer;display:grid;place-items:center}
+.pinpad button.ghost{background:transparent;border-color:transparent}
+.shake{animation:shake .35s}
+@keyframes shake{25%{transform:translateX(-8px)}75%{transform:translateX(8px)}}
+.hint{text-align:center;color:var(--muted);font-size:15px;margin-top:14px}
+
+/* misc */
+.money{display:grid;gap:10px}
+.money>div{padding:12px 14px;border-radius:10px;background:var(--surface-2);display:flex;justify-content:space-between;align-items:center;gap:10px}
+.money small{color:var(--muted);font-weight:600;font-size:15px}
+.money b{font-size:21px}
+.money .due{background:var(--z2b)}
+.money .due small{color:var(--z2t)}
+.bars{display:flex;align-items:flex-end;gap:10px;height:190px;padding-top:10px}
+.bar{flex:1;display:flex;flex-direction:column;align-items:center;gap:8px;height:100%;justify-content:flex-end}
+.bar i{display:block;width:100%;border-radius:6px 6px 0 0;background:var(--soft)}
+.bar.now i{background:var(--primary)}
+.bar span{font-size:13px;color:var(--muted);font-weight:600}
+.bar em{font-style:normal;font-weight:700;font-size:14px}
+.hist{list-style:none;margin:0;padding:0}
+.hist li{display:grid;grid-template-columns:12px 1fr;gap:12px;padding:0 0 14px;position:relative}
+.hist li::before{content:'';width:10px;height:10px;border-radius:50%;background:var(--primary);margin-top:7px}
+.hist li::after{content:'';position:absolute;left:4px;top:20px;bottom:0;width:2px;background:var(--line)}
+.hist li:last-child::after{display:none}
+.hist b{display:block;font-weight:600}
+.hist small{color:var(--muted)}
+.jobs{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:12px}
+.job{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:14px;display:flex;flex-direction:column;gap:11px}
+.job-top{display:flex;gap:12px;align-items:center;cursor:pointer}
+.job-top div{min-width:0;flex:1}
+.job-top b{display:block;font-size:17px}
+.job-top small{color:var(--muted)}
+.job-addr{display:flex;gap:10px;align-items:flex-start;font-weight:500}
+.job-btns{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.job-btns .btn.pri,.job-btns .btn.lime{grid-column:1/-1}
+.sec-h{display:flex;align-items:center;gap:10px;margin:24px 0 10px}
+.sec-h h2{font-size:18px}
+.count{background:var(--surface);border:1px solid var(--line);border-radius:6px;padding:1px 8px;font-weight:700;font-size:14px}
+.tiles{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:10px}
+.tile{display:flex;flex-direction:column;gap:12px;padding:18px;border-radius:var(--r);background:var(--surface);border:1px solid var(--line);cursor:pointer;text-align:left;font-weight:700;font-size:17px}
+.tile:hover{border-color:var(--primary)}
+.scan-big{display:flex;align-items:center;justify-content:center;gap:14px;min-height:76px;font-size:20px;border-radius:12px;width:100%}
+.cam{position:relative;aspect-ratio:4/3;max-height:60vh;background:#0B1E23;border-radius:12px;overflow:hidden;margin-bottom:14px;display:grid;place-items:center}
+.cam video{width:100%;height:100%;object-fit:cover;position:absolute;inset:0}
+.cam-frame{position:absolute;inset:18%;border:3px solid var(--lime);border-radius:12px;pointer-events:none}
+.cam-msg{position:relative;z-index:2;display:flex;flex-direction:column;align-items:center;gap:10px;color:#cfe3e7;text-align:center;padding:20px;font-weight:600}
+.bubble{background:var(--surface);border:1px solid var(--line);border-radius:12px 12px 12px 3px;padding:12px 14px;max-width:620px}
+.bubble small{color:var(--muted);display:flex;gap:10px;justify-content:space-between;margin-top:6px;font-size:13px}
+.bubbles{display:flex;flex-direction:column;gap:10px}
+.wa{display:flex;align-items:center;gap:8px;font-weight:700;color:var(--z4t);font-size:13.5px;margin-bottom:6px}
+.label{width:320px;max-width:100%;margin:0 auto 18px;border:2px dashed var(--line);border-radius:10px;padding:18px;background:#fff;color:#102A31;text-align:center}
+.lb-top{display:flex;align-items:center;justify-content:center;gap:8px;font-size:18px;font-weight:800}
+.lb-qr{display:grid;place-items:center;margin:14px auto 8px;min-height:180px}
+.lb-qr img,.lb-qr canvas{margin:0 auto}
+.lb-id{font-size:30px;font-weight:800;letter-spacing:.03em}
+.lb-to{display:flex;flex-direction:column;margin-top:10px;font-size:15px}
+.lb-to b{font-size:18px}
+.lb-kg{margin-top:10px;font-weight:800;font-size:20px;border-top:2px solid #102A31;padding-top:8px}
+.bx-head{display:flex;justify-content:space-between;align-items:flex-end;gap:12px;flex-wrap:wrap;margin:4px 0 14px}
+.bx-id{font-weight:700;color:var(--ptext);font-size:15px;margin-bottom:4px;letter-spacing:.02em}
+.pills{display:flex;gap:6px;flex-wrap:wrap}
+.items{display:flex;flex-wrap:wrap;gap:6px}
+.cbox{cursor:pointer}
+.cbox-top{display:flex;justify-content:space-between;gap:10px;align-items:flex-start;margin-bottom:16px}
+.cbox-top b{font-size:17px;display:block}
+.cbox .say{font-size:18px;margin-top:14px}
+.done-ok{text-align:center;padding:20px 6px}
+.done-ok .chipic{width:68px;height:68px;border-radius:50%;margin:0 auto 14px;background:var(--z4b);color:var(--z4t);border:0}
+
+/* swipe rows */
+.nav,.chips.scroll{scrollbar-width:none;-ms-overflow-style:none;-webkit-overflow-scrolling:touch;overscroll-behavior-x:contain}
+.chips.scroll{cursor:grab}
+.nav::-webkit-scrollbar,.chips.scroll::-webkit-scrollbar{display:none}
+.chips.scroll.drag{cursor:grabbing;user-select:none}
+.chips.scroll{--fl:0px;--fr:44px;-webkit-mask-image:linear-gradient(90deg,transparent 0,#000 var(--fl),#000 calc(100% - var(--fr)),transparent 100%);mask-image:linear-gradient(90deg,transparent 0,#000 var(--fl),#000 calc(100% - var(--fr)),transparent 100%)}
+.chips.scroll.at-end{--fr:0px}.chips.scroll.mid{--fl:32px}
+
+/* slide-out menu */
+#drawer .dr-ov{position:fixed;inset:0;background:var(--ov);opacity:0;pointer-events:none;transition:opacity .2s;z-index:40}
+#drawer.open .dr-ov{opacity:1;pointer-events:auto}
+.drawer{position:fixed;top:0;right:0;bottom:0;width:min(340px,88vw);background:var(--surface);border-left:1px solid var(--line);z-index:41;transform:translateX(105%);transition:transform .22s ease;display:flex;flex-direction:column;gap:14px;padding:calc(16px + env(safe-area-inset-top,0px)) 14px calc(16px + env(safe-area-inset-bottom,0px));overflow-y:auto;-webkit-overflow-scrolling:touch}
+#drawer.open .drawer{transform:none}
+@media (prefers-reduced-motion:reduce){.drawer,#drawer .dr-ov{transition:none}}
+.dr-h{display:flex;align-items:center;gap:12px}
+.dr-h div{flex:1;min-width:0}
+.dr-h b{display:block;font-size:17px}
+.dr-h small{color:var(--muted);font-size:14px}
+.dr-nav{display:flex;flex-direction:column;border-top:1px solid var(--line);padding-top:8px}
+.dr-nav a{display:flex;align-items:center;gap:14px;min-height:54px;padding:0 12px;border-radius:8px;text-decoration:none;color:var(--ink);font-weight:600;font-size:17px;border-left:3px solid transparent}
+.dr-nav a span{flex:1}
+.dr-nav a .ic{color:var(--muted)}
+.dr-nav a.on{background:var(--surface-2);border-left-color:var(--primary);font-weight:800}
+.dr-nav a.on .ic{color:var(--ptext)}
+.seg{display:grid;grid-template-columns:1fr 1fr;gap:4px;background:var(--surface-2);padding:4px;border-radius:10px;border:1px solid var(--line)}
+.seg button{min-height:44px;border:0;border-radius:7px;background:transparent;font-weight:700;cursor:pointer}
+.seg button.on{background:var(--primary);color:#fff}
+.dr-row{display:flex;align-items:center;gap:12px;width:100%;min-height:52px;padding:0 12px;border-radius:10px;border:1px solid var(--line);background:var(--surface);font-weight:600;cursor:pointer;text-align:left}
+.drawer .btn.bad{margin-top:auto}
+@media print{body *{visibility:hidden}#printArea,#printArea *{visibility:visible}#printArea{position:fixed;left:0;top:0;border:0}}
+</style>
+</head>
+<body>
+<div id="app"></div>
+<div id="modal"></div>
+<div id="drawer"></div>
+<div id="toast" aria-live="polite"></div>
+<script>
+/* ---------------- words (English / Sinhala) ---------------- */
+const L={
+menu:['Menu','මෙනුව'],language:['Language','භාෂාව'],darkMode:['Dark mode','අඳුරු පෙනුම'],lightMode:['Light mode','ආලෝක පෙනුම'],
+tagline0:['Door to door cargo from Israel','ඊශ්‍රායලයේ සිට නිවසින් නිවසට කාගෝ'],pickRoute:['Which route?','කුමන මාර්ගයද?'],change:['Change','වෙනස් කරන්න'],switchRoute:['Switch route','මාර්ගය වෙනස් කරන්න'],
+gm:['Good morning, {n}','සුබ උදෑසනක්, {n}'],ga:['Good afternoon, {n}','සුබ දහවලක්, {n}'],ge:['Good evening, {n}','සුබ සන්ධ්‍යාවක්, {n}'],
+th_customer:['Customer','පාරිභෝගිකයා'],th_to:['Going to','යන තැන'],th_status:['Status','තත්ත්වය'],
+tagline:['Door to door, Israel to Sri Lanka','නිවසේ සිට නිවසට, ඊශ්‍රායලයේ සිට ලංකාවට'],
+whoAreYou:['Who are you?','ඔබ කවුද?'],
+owner:['Owner','හිමිකරු'],staff:['Staff','සේවකයෙක්'],customer:['Customer','පාරිභෝගිකයෙක්'],
+tapName:['Tap your name','ඔබේ නම ඔබන්න'],enterPin:['Enter your PIN','ඔබේ PIN අංකය ඔබන්න'],
+wrongPin:['Wrong PIN. Try again.','PIN අංකය වැරදියි. නැවත උත්සාහ කරන්න.'],demoPin:['Demo PIN: {p}','Demo PIN: {p}'],
+logout:['Log out','ඉවත් වන්න'],back:['Back','ආපසු'],close:['Close','වසන්න'],
+overview:['Overview','සාරාංශය'],calls:['Calls','ඇමතුම්'],customers:['Customers','පාරිභෝගිකයින්'],boxes:['Boxes','පෙට්ටි'],
+containers:['Containers','කන්ටේනර්'],payments:['Payments','ගෙවීම්'],staffNav:['Staff','සේවකයින්'],messages:['Messages','පණිවිඩ'],
+settings:['Settings','සැකසුම්'],more:['More','තවත්'],scan:['Scan','ස්කෑන්'],myJobs:['My jobs','මගේ වැඩ'],
+myBoxes:['My boxes','මගේ පෙට්ටි'],sendBox:['Send a box','පෙට්ටියක් යවන්න'],
+hello:['Hi {n}','ආයුබෝවන් {n}'],newCall:['Log a call','ඇමතුමක් සටහන් කරන්න'],newBooking:['New booking','නව වෙන්කිරීමක්'],
+activeBoxes:['Boxes on the way','ගමනේ ඇති පෙට්ටි'],toPickUp:['To pick up','රැගෙන යාමට ඇති'],waitingSL:['Waiting in Sri Lanka','ලංකාවේ රැඳී ඇති'],
+deliveredMonth:['Delivered (30 days)','භාරදුන් (දින 30)'],pipeline:['Where every box is now','සෑම පෙට්ටියක්ම දැන් කොහෙද'],
+israel:['Israel','ඊශ්‍රායලය'],atSea:['At sea','මුහුදේ'],sriLanka:['Sri Lanka','ශ්‍රී ලංකාව'],
+s_booked:['Booked','වෙන්කළා'],s_picked:['Picked up','රැගෙන ගියා'],s_il_wh:['Israel warehouse','ඊශ්‍රායල ගබඩාව'],s_shipped:['On the ship','නැවේ'],
+s_customs:['Customs','රේගුව'],s_sl_wh:['In Sri Lanka','ලංකාවට ආවා'],s_out:['Out for delivery','බෙදාහැරීමට පිටත්'],s_delivered:['Delivered','භාරදුන්නා'],
+ready:['Ready to collect','ලබාගැනීමට සූදානම්'],
+h_onway:['Driver on the way','රියදුරු එමින් සිටී'],h_pay:['Payment received','ගෙවීම ලැබුණා'],h_addr:['Delivery confirmed','බෙදාහැරීම තහවුරුයි'],
+h_load:['Put in container','කන්ටේනරයට දැම්මා'],h_eta:['Arrival date changed','පැමිණෙන දිනය වෙනස් විය'],
+x_booked:['Pickup on {d}','{d} දින රැගෙන යාමට එනවා'],x_picked:['Picked up. Going to our warehouse.','රැගෙන ගියා. අපේ ගබඩාවට යමින්.'],
+x_il_wh:['At our Israel warehouse. Waiting for the next ship.','අපේ ඊශ්‍රායල ගබඩාවේ. ඊළඟ නැව එනතුරු.'],
+x_shipped:['On the ship. Arrives around {d}.','නැවේ. {d} පමණ ලංකාවට එයි.'],x_customs:['At customs in Sri Lanka.','ලංකා රේගුවේ.'],
+x_sl_wh:['Arrived in Sri Lanka. Choose how to get it.','ලංකාවට ආවා. ලබාගන්නා ආකාරය තෝරන්න.'],x_sl_wh_ok:['Arrived in Sri Lanka. Getting it ready.','ලංකාවට ආවා. සූදානම් කරමින්.'],
+x_out:['On the way to you today.','අද ඔබ වෙත ගෙන එමින්.'],x_ready:['Ready to collect at {p}.','{p} හි ලබාගැනීමට සූදානම්.'],x_delivered:['Delivered on {d}.','{d} දින භාරදුන්නා.'],
+driverOnWay:['Driver is on the way to you.','රියදුරු ඔබ වෙත එමින් සිටී.'],
+eta:['Arrives around','පැමිණෙන්නේ ආසන්න වශයෙන්'],
+actOnWay:["I'm on my way","මම එනවා"],actPicked:['Picked up','රැගෙන ගියා'],actWh:['Check in at warehouse','ගබඩාවට භාරගන්න'],
+actContainer:['Put in container','කන්ටේනරයට දමන්න'],actArrived:['Arrived in Sri Lanka','ලංකාවට ආවා'],actOut:['Send out for delivery','බෙදාහැරීමට යවන්න'],
+actReady:['Ready at pickup point','ලබාගැනීමේ ස්ථානයේ සූදානම්'],actDelivered:['Delivered','භාරදුන්නා'],
+confirmAddress:['Confirm delivery','බෙදාහැරීම තහවුරු කරන්න'],changeDelivery:['Change delivery','බෙදාහැරීම වෙනස් කරන්න'],
+collect:['Collect payment','මුදල් ලබාගන්න'],payNow:['Pay now','දැන් ගෙවන්න'],printLabel:['Print label','ලේබලය මුද්‍රණය'],label:['Box label','පෙට්ටි ලේබලය'],
+print:['Print','මුද්‍රණය'],save:['Save','සුරකින්න'],cancel:['Cancel','අවලංගු කරන්න'],add:['Add','එකතු කරන්න'],edit:['Edit','වෙනස් කරන්න'],
+name:['Name','නම'],phone:['Phone','දුරකථනය'],address:['Address','ලිපිනය'],city:['Town','නගරය'],note:['Note','සටහන'],
+weight:['Weight (kg)','බර (kg)'],estWeight:['About how many kg?','ආසන්න බර කිලෝ කීයද?'],realWeight:['Real weight (kg)','නියම බර (kg)'],
+items:['What is inside?','ඇතුළේ මොනවද?'],otherItems:['Other things','වෙනත් දේවල්'],
+sender:['Sender in Israel','ඊශ්‍රායලයේ යවන්නා'],receiver:['Receiver in Sri Lanka','ලංකාවේ ලබන්නා'],theBox:['The box','පෙට්ටිය'],payment:['Payment','ගෙවීම'],
+pickupAddr:['Pickup address (Israel)','රැගෙන යන ලිපිනය (ඊශ්‍රායලය)'],slAddr:['Address in Sri Lanka','ලංකාවේ ලිපිනය'],
+pickupDate:['Pickup date','රැගෙන යන දිනය'],driver:['Driver','රියදුරු'],container:['Container','කන්ටේනරය'],
+price:['Price','මිල'],paid:['Paid','ගෙවා ඇත'],unpaid:['Not paid','නොගෙවූ'],partPaid:['Part paid','කොටසක් ගෙවා ඇත'],balance:['Still to pay','තව ගෙවිය යුතු'],
+history:['History','ඉතිහාසය'],delivery:['Delivery','බෙදාහැරීම'],homeDelivery:['Home delivery','නිවසටම'],pickupPoint:['Pickup point','ලබාගැනීමේ ස්ථානය'],
+confirmed:['Confirmed','තහවුරුයි'],notConfirmed:['Not confirmed yet','තවම තහවුරු නැත'],
+customerSel:['Customer','පාරිභෝගිකයා'],newCustomer:['+ New customer','+ නව පාරිභෝගිකයෙක්'],
+it_clothes:['Clothes','ඇඳුම්'],it_food:['Food','ආහාර'],it_elec:['Electronics','ඉලෙක්ට්‍රොනික'],it_toys:['Toys','සෙල්ලම් බඩු'],it_cos:['Cosmetics','රූපලාවන්‍ය'],it_home:['Household','ගෘහ භාණ්ඩ'],
+toCity:['to {c}','{c} වෙත'],toWho:['To {n}, {c}','{n} වෙත, {c}'],
+noBoxesHere:['No boxes here','මෙහි පෙට්ටි නැත'],search:['Search name, phone or box number','නම, දුරකථනය හෝ පෙට්ටි අංකය සොයන්න'],
+f_active:['On the way','ගමනේ'],f_unpaid:['Not paid','නොගෙවූ'],
+out_request:['Pickup request','රැගෙන යාමේ ඉල්ලීම'],out_callback:['Call back','නැවත අමතන්න'],out_interested:['Interested','කැමතියි'],out_booked:['Booked','වෙන්කළා'],out_notNow:['Not now','දැන් නැහැ'],
+result:['What happened?','ප්‍රතිඵලය කුමක්ද?'],makeBooking:['Make booking','වෙන්කිරීම කරන්න'],markDone:['Done','අවසන්'],
+f_open:['To do','කළ යුතු'],all:['All','සියල්ල'],
+newContainer:['New container','නව කන්ටේනරයක්'],k_loading:['Loading','පටවමින්'],k_shipped:['On the ship','නැවේ'],k_customs:['Customs','රේගුව'],k_arrived:['Arrived','ලැබුණා'],
+addBoxes:['Add boxes','පෙට්ටි එකතු කරන්න'],shipIt:['Ship container','කන්ටේනරය යවන්න'],setEta:['Arrival date in Sri Lanka','ලංකාවට පැමිණෙන දිනය'],
+changeEta:['Change arrival date','පැමිණෙන දිනය වෙනස් කරන්න'],atCustoms:['At customs','රේගුවේ'],kArrive:['Arrived in Sri Lanka','ලංකාවට ආවා'],
+boxCount:['{n} boxes','පෙට්ටි {n}'],noLoose:['No boxes waiting. Check in boxes first.','රැඳී ඇති පෙට්ටි නැත. පළමුව ගබඩාවට භාරගන්න.'],
+startNew:['Start a new container','නව කන්ටේනරයක් අරඹන්න'],
+waSent:['WhatsApp sent to {n}','{n} ට WhatsApp යැව්වා'],waSentN:['WhatsApp sent to {n} customers','පාරිභෝගිකයින් {n} දෙනෙකුට WhatsApp යැව්වා'],
+money:['Money','මුදල්'],receivedILS:['Received in Israel','ඊශ්‍රායලයේ ලැබුණු'],receivedLKR:['Received in Sri Lanka','ලංකාවේ ලැබුණු'],stillDue:['Still to collect','තව ලැබිය යුතු'],
+seeAll:['See all','සියල්ල'],followUps:['Calls to follow up','පසු විපරම් කළ යුතු ඇමතුම්'],latest:['Latest boxes','අලුත්ම පෙට්ටි'],perMonth:['Boxes per month','මසකට පෙට්ටි'],
+toCollect:['To collect','ලබාගත යුතු'],latestPays:['Latest payments','අලුත්ම ගෙවීම්'],
+amount:['Amount','මුදල'],currency:['Currency','මුදල් වර්ගය'],method:['How?','කෙසේද?'],cash:['Cash','මුදලින්'],card:['Card','කාඩ්'],bank:['Bank','බැංකුව'],online:['Online','ඔන්ලයින්'],
+payFirst:['Collect {a} before this step.','මෙයට පෙර {a} ලබාගන්න.'],skip:['Skip for now','දැනට මඟහරින්න'],
+addStaff:['Add staff','සේවකයෙකු එක් කරන්න'],role:['Job','රාජකාරිය'],roles:['Jobs and what they can do','රාජකාරි සහ කළ හැකි දේ'],addRole:['Add job','රාජකාරියක් එක් කරන්න'],
+pin:['PIN (4 numbers)','PIN (අංක 4)'],active:['Can log in','ඇතුල් විය හැක'],off:['Off','අක්‍රියයි'],
+p_calls:['Take calls and make bookings','ඇමතුම් සහ වෙන්කිරීම්'],p_pickup:['Pick up boxes in Israel','ඊශ්‍රායලයේ පෙට්ටි රැගෙන යාම'],p_wh_il:['Israel warehouse and loading','ඊශ්‍රායල ගබඩාව සහ පැටවීම'],
+p_wh_sl:['Warehouse in Sri Lanka','ලංකා ගබඩාව'],p_deliver:['Deliver boxes in Sri Lanka','ලංකාවේ පෙට්ටි බෙදාහැරීම'],p_cash:['Collect payments','මුදල් ලබාගැනීම'],
+rate:['Price per kg (₪)','කිලෝවකට මිල (₪)'],lkrRate:['Rupees for 1 ₪','₪ 1 කට රුපියල්'],payRule:['When does the customer pay?','පාරිභෝගිකයා ගෙවන්නේ කවදාද?'],
+pr_any:['Decide each time','සෑම වරම තීරණය කරන්න'],pr_before:['Before pickup','රැගෙන යාමට පෙර'],pr_at:['At pickup','රැගෙන යන විට'],pr_delivery:['On delivery in Sri Lanka','ලංකාවේ භාරදෙන විට'],pr_split:['Half at pickup, half on delivery','භාගයක් රැගෙන යන විට, භාගයක් භාරදෙන විට'],
+points:['Pickup points in Sri Lanka (one per line)','ලංකාවේ ලබාගැනීමේ ස්ථාන (පේළියකට එකක්)'],reset:['Reset demo data','demo දත්ත යළි සකසන්න'],saved:['Saved','සුරැකුණා'],
+resetQ:['Reset everything to the sample data?','සියල්ල නියැදි දත්ත වලට යළි සකසන්නද?'],
+jobsPickup:['Pickups','රැගෙන යාම්'],jobsCheckIn:['Check in at warehouse','ගබඩාවට භාරගැනීමට'],jobsLoad:['Put in container','කන්ටේනරයට දැමීමට'],
+jobsIncoming:['Containers coming','පැමිණෙන කන්ටේනර්'],jobsSL:['At the warehouse in Sri Lanka','ලංකා ගබඩාවේ'],jobsDeliver:['My deliveries','මගේ බෙදාහැරීම්'],
+jobsCalls:['Calls to follow up','පසු විපරම් කළ යුතු ඇමතුම්'],noJobs:['Nothing to do here right now','දැනට මෙහි වැඩ නැත'],
+today:['Today','අද'],tomorrow:['Tomorrow','හෙට'],call:['Call','අමතන්න'],map:['Map','සිතියම'],open:['Open','විවෘත කරන්න'],
+scanHint:['Point the camera at the label','කැමරාව ලේබලයට අල්ලන්න'],startCamera:['Start camera','කැමරාව අරඹන්න'],stopCamera:['Stop camera','කැමරාව නවත්වන්න'],
+typeId:['Or type the box number','නැත්නම් පෙට්ටි අංකය ටයිප් කරන්න'],find:['Find','සොයන්න'],notFound:['No box with that number','එම අංකයෙන් පෙට්ටියක් නැත'],
+camFail:['Camera not available here. Type the number below.','මෙහි කැමරාව නැත. පහත අංකය ටයිප් කරන්න.'],tryDemo:['Or tap one (demo)','නැත්නම් එකක් ඔබන්න (demo)'],
+requestPickup:['Request pickup','රැගෙන යාමට ඉල්ලන්න'],whenPickup:['Best day for pickup','රැගෙන යාමට හොඳම දිනය'],
+requestSent:['Request sent. We will call you soon.','ඉල්ලීම යැව්වා. අපි ඉක්මනින් ඔබට අමතන්නම්.'],callUs:['Call us','අපට අමතන්න'],
+delivered:['Delivered','භාරදුන්'],noMine:['No boxes yet','තවම පෙට්ටි නැත'],chooseDelivery:['Choose delivery','බෙදාහැරීම තෝරන්න'],
+payTitle:['Pay','ගෙවන්න'],cardNo:['Card number','කාඩ් අංකය'],expiry:['MM/YY','MM/YY'],cvc:['CVC','CVC'],paying:['Paying...','ගෙවමින්...'],
+payDemo:['Demo payment. No real money moves.','Demo ගෙවීමකි. සැබෑ මුදල් නොයයි.'],payDone:['Payment received. Thank you!','ගෙවීම ලැබුණා. ස්තූතියි!'],
+whoReceived:['Who took the box?','පෙට්ටිය ලබාගත්තේ කවුද?'],handover:['Hand over','භාරදෙන්න'],pickDriver:['Which driver?','කුමන රියදුරුද?'],
+addCustomer:['Add customer','පාරිභෝගිකයෙකු එක් කරන්න'],custPin:['Customer login PIN: {p}','පාරිභෝගික PIN: {p}'],
+inContainer:['In {k}','{k} තුළ'],noCont:['Not in a container yet','තවම කන්ටේනරයක නැත'],
+fillAll:['Please fill name, phone and address','කරුණාකර නම, දුරකථනය සහ ලිපිනය පුරවන්න'],
+needWeight:['Enter the weight','බර ඇතුළත් කරන්න'],
+n_booked:['Pickup booked for {d}. Your box number is {id}.','{d} දින රැගෙන යාමට වෙන්කළා. ඔබේ පෙට්ටි අංකය {id}.'],
+n_onway:['Our driver is on the way to pick up box {id}.','පෙට්ටිය {id} රැගෙන යාමට අපේ රියදුරු එමින් සිටී.'],
+n_picked:['Box {id} picked up. Weight {kg} kg. Price {price}.','පෙට්ටිය {id} රැගෙන ගියා. බර {kg} kg. මිල {price}.'],
+n_il_wh:['Box {id} is at our Israel warehouse.','පෙට්ටිය {id} අපේ ඊශ්‍රායල ගබඩාවේ.'],
+n_shipped:['Box {id} is on the ship. It arrives around {eta}.','පෙට්ටිය {id} නැවේ. {eta} පමණ ලංකාවට එයි.'],
+n_customs:['Box {id} is at customs in Sri Lanka.','පෙට්ටිය {id} ලංකා රේගුවේ.'],
+n_sl_wh:['Box {id} has arrived in Sri Lanka! Collect it at {point}, or reply and we deliver to your home.','පෙට්ටිය {id} ලංකාවට ආවා! {point} වෙතින් ලබාගන්න, නැත්නම් පිළිතුරු දෙන්න, අපි නිවසටම ගෙනෙන්නම්.'],
+n_out:['Box {id} is out for delivery today.','පෙට්ටිය {id} අද ඔබ වෙත ගෙන එමින්.'],
+n_ready:['Box {id} is ready to collect at {point}.','පෙට්ටිය {id} {point} හි ලබාගැනීමට සූදානම්.'],
+n_delivered:['Box {id} delivered. Thank you for choosing Janath Cargo!','පෙට්ටිය {id} භාරදුන්නා. Janath Cargo තෝරාගත්තාට ස්තූතියි!'],
+n_eta:['New arrival date for box {id}: {eta}.','පෙට්ටිය {id} පැමිණෙන නව දිනය: {eta}.'],
+n_paid:['Payment received for box {id}: {amt}. Thank you!','පෙට්ටිය {id} සඳහා ගෙවීම ලැබුණා: {amt}. ස්තූතියි!'],
+};
+function LANG(){return S.route==='ph'?'en':S.lang}
+function T(k){const v=L[k];if(!v)return k;if(LANG()==='si')return v[1]||v[0];let s=v[0];
+ if(S.route==='ph'){if(k==='sriLanka')return 'Philippines';s=s.replace(/Sri Lanka/g,'the Philippines').replace(/Rupees/g,'Pesos')}return s}
+function greet(p){const h=new Date().getHours();return tf(h<12?'gm':h<17?'ga':'ge',p)}
+function tf(k,p){let s=T(k);for(const x in p)s=s.split('{'+x+'}').join(p[x]);return s}
+
+/* ---------------- icons ---------------- */
+const IC={home:'M3 10.5 12 3l9 7.5V20a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1z',phone:'M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1.9.4 1.8.7 2.7a2 2 0 0 1-.5 2.1L8 9.8a16 16 0 0 0 6 6l1.3-1.3a2 2 0 0 1 2.1-.4c.9.3 1.8.6 2.7.7a2 2 0 0 1 1.7 2z',users:'M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2M9 11a4 4 0 1 0 0-8 4 4 0 0 0 0 8zM22 21v-2a4 4 0 0 0-3-3.9M16 3.1a4 4 0 0 1 0 7.8',box:'M21 8 12 3 3 8v8l9 5 9-5zM3 8l9 5 9-5M12 13v8',container:'M2 6h20v13H2zM6.5 6v13M11 6v13M15.5 6v13M20 6v13',wallet:'M20 12V8H6a2 2 0 0 1 0-4h12v4M4 6v12a2 2 0 0 0 2 2h14v-4M18 12a2 2 0 0 0 0 4h4v-4z',user:'M12 12a4 4 0 1 0 0-8 4 4 0 0 0 0 8zM4 21a8 8 0 0 1 16 0',msg:'M21 12a8.5 8.5 0 0 1-12.4 7.5L3 21l1.6-5.3A8.5 8.5 0 1 1 21 12z',gear:'M12 15a3 3 0 1 0 0-6 3 3 0 0 0 0 6zM19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z',scan:'M3 7V5a2 2 0 0 1 2-2h2M17 3h2a2 2 0 0 1 2 2v2M21 17v2a2 2 0 0 1-2 2h-2M7 21H5a2 2 0 0 1-2-2v-2M7 12h10',qr:'M3 3h7v7H3zM14 3h7v7h-7zM3 14h7v7H3zM14 14h3v3h-3zM20 14v.01M14 20h.01M17 20h4M20 17v3',calendar:'M3 5h18v16H3zM3 10h18M8 3v4M16 3v4',truck:'M1 4h14v12H1zM15 9h4l3 3v4h-7M5.5 19a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3zM18.5 19a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3z',warehouse:'M3 21V9l9-6 9 6v12M7 21v-8h10v8M7 17h10',ship:'M2 20c2 1 4 1 6 0s4-1 6 0 4 1 6 0M4 17l-1-5h18l-2 5M6 12V7h12v5M12 4v3',shield:'M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10zM9 12l2 2 4-4',pin:'M12 22s7-7.5 7-12a7 7 0 1 0-14 0c0 4.5 7 12 7 12zM12 12.5a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5z',check:'M20 6 9 17l-5-5',checkc:'M22 11.1V12a10 10 0 1 1-5.9-9.1M22 4 12 14l-3-3',plus:'M12 5v14M5 12h14',x:'M18 6 6 18M6 6l12 12',search:'M11 19a8 8 0 1 0 0-16 8 8 0 0 0 0 16zM21 21l-4.3-4.3',moon:'M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z',sun:'M12 17a5 5 0 1 0 0-10 5 5 0 0 0 0 10zM12 1v2M12 21v2M4.2 4.2l1.4 1.4M18.4 18.4l1.4 1.4M1 12h2M21 12h2M4.2 19.8l1.4-1.4M18.4 5.6l1.4-1.4',logout:'M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4M16 17l5-5-5-5M21 12H9',back:'M15 18l-6-6 6-6',right:'M9 18l6-6-6-6',more:'M4 6h16M4 12h16M4 18h16',print:'M6 9V2h12v7M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2M6 14h12v8H6z',map:'M1 6v16l7-4 8 4 7-4V2l-7 4-8-4zM8 2v16M16 6v16',clock:'M12 22a10 10 0 1 0 0-20 10 10 0 0 0 0 20zM12 6v6l4 2',edit:'M12 20h9M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4z',camera:'M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2zM12 17a4 4 0 1 0 0-8 4 4 0 0 0 0 8z',key:'M21 2l-2 2m-7.6 7.6a5.5 5.5 0 1 1-7.8 7.8 5.5 5.5 0 0 1 7.8-7.8zm0 0L15.5 7.5m0 0l3 3L22 7l-3-3m-3.5 3.5L19 4',card:'M2 5h20v14H2zM2 10h20'};
+function ic(n,s=22){return `<svg class="ic" width="${s}" height="${s}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="${IC[n]||''}"/></svg>`}
+function logoMark(s=34){return `<svg width="${s}" height="${s}" viewBox="0 0 34 34" aria-hidden="true"><rect width="34" height="34" rx="8" fill="#0A3A45"/><rect x=".5" y=".5" width="33" height="33" rx="7.5" fill="none" stroke="rgba(255,255,255,.18)"/><path d="M9 13 17 9l8 4v9l-8 4-8-4zM9 13l8 4 8-4M17 17v9" fill="none" stroke="#D6F06A" stroke-width="2.4" stroke-linejoin="round"/></svg>`}
+
+/* ---------------- state + storage ---------------- */
+const D=864e5, DB_KEY='jc_demo_v4_', PREF='jc_prefs_v4';
+const STG=['booked','picked','il_wh','shipped','customs','sl_wh','out','delivered'];
+const STG_IC={booked:'calendar',picked:'truck',il_wh:'warehouse',shipped:'ship',customs:'shield',sl_wh:'pin',out:'truck',delivered:'checkc'};
+const ITEMS=['it_clothes','it_food','it_elec','it_toys','it_cos','it_home'];
+const PERMS=['calls','pickup','wh_il','wh_sl','deliver','cash'];
+let S={route:null,lang:'en',theme:null,user:null,page:'home',param:null,filter:'all',cfilter:'open',q:'',login:null,pin:'',pinErr:false,stack:[],after:null};
+try{const p=JSON.parse(localStorage.getItem(PREF)||'{}');['lang','theme','user','route'].forEach(k=>{if(p[k]!==undefined)S[k]=p[k]})}catch(e){}
+function savePrefs(){try{localStorage.setItem(PREF,JSON.stringify({lang:S.lang,theme:S.theme,user:S.user,route:S.route}))}catch(e){}}
+let DB;
+function load(){try{const s=localStorage.getItem(DB_KEY+S.route);if(s){DB=JSON.parse(s);return}}catch(e){}DB=seed(S.route);save()}
+function save(){if(!DB||!S.route)return;try{localStorage.setItem(DB_KEY+S.route,JSON.stringify(DB))}catch(e){}}
+
+/* ---------------- helpers ---------------- */
+const $=id=>document.getElementById(id);
+const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+function isoLocal(d){return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0')}
+const dayISO=o=>isoLocal(new Date(Date.now()+o*D));
+const loc=()=>LANG()==='si'?'si-LK':'en-GB';
+function fd(v){if(!v)return '—';const d=typeof v==='number'?new Date(v):new Date(v+'T00:00:00');if(isNaN(d))return '—';try{return d.toLocaleDateString(loc(),{day:'numeric',month:'short'})}catch(e){return d.toDateString().slice(4,10)}}
+function fdt(ts){const d=new Date(ts);try{return d.toLocaleDateString(loc(),{day:'numeric',month:'short'})+', '+d.toLocaleTimeString(loc(),{hour:'2-digit',minute:'2-digit'})}catch(e){return d.toLocaleString()}}
+function dayWord(iso){if(iso===dayISO(0))return T('today');if(iso===dayISO(1))return T('tomorrow');return fd(iso)}
+const ils=n=>'₪'+Math.round(n||0).toLocaleString('en-US');
+const lkr=n=>RT().sym+(RT().sym.length>1?' ':'')+Math.round(n||0).toLocaleString('en-US');
+const initials=n=>String(n||'?').split(' ').filter(Boolean).slice(0,2).map(x=>x[0]).join('').toUpperCase();
+const telHref=p=>'tel:'+String(p||'').replace(/[^\d+]/g,'');
+const mapHref=a=>'https://www.google.com/maps/search/?api=1&query='+encodeURIComponent(a||'');
+const C=id=>DB.customers.find(c=>c.id===id)||{name:'?',phone:'',addr:'',rcv:{}};
+const B=id=>DB.boxes.find(b=>b.id===id);
+const K=id=>DB.containers.find(k=>k.id===id);
+const ST=id=>DB.staff.find(s=>s.id===id);
+const R=id=>DB.roles.find(r=>r.id===id);
+const roleName=r=>r?(S.lang==='si'&&r.si?r.si:r.name):'—';
+const sIdx=s=>STG.indexOf(s);
+function zone(s){const i=sIdx(s);return i<=2?1:i===3?2:i<=6?3:4}
+function can(p){if(!S.user)return false;if(S.user.t==='admin')return true;if(S.user.t!=='staff')return false;const s=ST(S.user.id);const r=s&&R(s.role);return !!(r&&r.perms.includes(p))}
+function myName(){const u=S.user;if(!u)return '';if(u.t==='admin')return DB.admin.name;if(u.t==='staff')return (ST(u.id)||{}).name||'';return C(u.id).name}
+function paidOf(b){return (b.pays||[]).reduce((a,p)=>a+(p.cur==='LKR'?p.amt/DB.settings.lkrRate:p.amt),0)}
+function bal(b){return Math.max(0,Math.round((b.price||0)-paidOf(b)))}
+function payState(b){if(!b.price)return 'none';const p=paidOf(b);if(p>=b.price-0.5)return 'paid';if(p>0)return 'part';return 'unpaid'}
+function stLabel(b){return b.status==='out'&&b.mode==='point'?T('ready'):T('s_'+b.status)}
+function stagePill(b){return `<span class="pill z${zone(b.status)}">${stLabel(b)}</span>`}
+function payPill(b){const p=payState(b);if(p==='paid')return `<span class="pill ok">${ic('check',14)}${T('paid')}</span>`;if(p==='part')return `<span class="pill warn">${T('partPaid')}</span>`;if(p==='unpaid')return `<span class="pill bad">${T('unpaid')}</span>`;return ''}
+function itemName(k){return L[k]?T(k):k}
+function kv(l,v){return `<div class="kv"><span>${l}</span><b>${v}</b></div>`}
+function telLink(p){return p?`<a href="${telHref(p)}">${esc(p)}</a>`:'—'}
+function sentence(b){
+ const s=b.status;
+ if(s==='booked')return b.onWay?T('driverOnWay'):tf('x_booked',{d:dayWord(b.pickupDate)});
+ if(s==='shipped')return tf('x_shipped',{d:fd(b.eta)});
+ if(s==='sl_wh')return b.addrOk?T('x_sl_wh_ok'):T('x_sl_wh');
+ if(s==='out')return b.mode==='point'?tf('x_ready',{p:b.point}):T('x_out');
+ if(s==='delivered')return tf('x_delivered',{d:fd(b.deliveredAt)});
+ return T('x_'+s);
+}
+
+/* ---------------- routes + sample data ---------------- */
+const ROUTES={
+ sl:{dest:'Sri Lanka',short:'IL → LK',sym:'Rs',cur:'Rupee',pre:'+94 ',si:true,sub:['Shekels and rupees. English and සිංහල.','ෂෙකල් සහ රුපියල්. English සහ සිංහල.']},
+ ph:{dest:'Philippines',short:'IL → PH',sym:'₱',cur:'Peso',pre:'+63 ',si:false,sub:['Shekels and pesos. English.','ෂෙකල් සහ පෙසෝ. English.']}};
+const RT=()=>ROUTES[S.route||'sl'];
+const SEEDS={
+ sl:{pre:'LK-',seq:1041,k:22,rate:18,local:82,kg:1,si:true,points:['Main office, Negombo','Kurunegala branch','Matara branch'],monthly:[48,55,51,63,70],base:22,
+  staff:[['Kasun Perera','+972 52 418 2201'],['Lahiru Fernando','+972 54 663 1092'],['Pradeep Kumara','+94 77 412 8890'],['Sunil Jayawardena','+94 71 552 0147'],['Nadeesha Silva','+972 53 220 7781']],
+  cust:[['Nimal Rathnayake','+972 52 301 4410','14 Herzl St, Tel Aviv','Kamala Rathnayake','+94 71 234 5567','22/1 Temple Rd, Kurunegala','Kurunegala'],
+   ['Dilani Wickramasinghe','+972 54 887 1203','8 Rothschild Blvd, Rishon LeZion','Sunethra Wickramasinghe','+94 77 889 1021','45 Beach Rd, Chilaw','Chilaw'],
+   ['Saman Jayasinghe','+972 58 412 7765','3 Rabbi Akiva St, Bnei Brak','Priyanthi Jayasinghe','+94 70 456 2231','12 Station Rd, Matara','Matara'],
+   ['Chathurika Herath','+972 50 233 9081','27 HaNassi Blvd, Haifa','Sarath Herath','+94 71 998 4410','5 Hill St, Kandy','Kandy'],
+   ['Ruwan Bandara','+972 52 774 6612','19 Jabotinsky St, Petah Tikva','Anoma Bandara','+94 76 312 7789','88 Kandy Rd, Gampaha','Gampaha'],
+   ['Malini Senanayake','+972 54 120 3398','6 Herzl St, Netanya','Upul Senanayake','+94 77 220 6654','14 Lighthouse St, Galle','Galle'],
+   ['Asanka Gunawardena','+972 53 665 0127','40 Bialik St, Ramat Gan','Nirosha Gunawardena','+94 71 667 3302','9 Main St, Kegalle','Kegalle'],
+   ['Tharanga Dissanayake','+972 58 901 4456','11 Sokolov St, Holon','Chaminda Dissanayake','+94 75 410 8823','31 Lewis Pl, Negombo','Negombo']],
+  calls:[[7,'','','Wants a pickup next week, about 20 kg.','request',0.1,false],[null,'Tharindu Weerasinghe','+972 58 774 3301','Asked price for 30 kg. Call back Sunday.','callback',0.4,false],
+   [null,'Ishara Pathirana','+972 50 119 2287','Sending a TV. Asked about customs.','interested',1.2,false],[6,'','','Booked pickup.','booked',0.5,true],[null,'Ajith Kumara','+972 52 990 1876','Will send after Avurudu.','notNow',2,true]]},
+ ph:{pre:'PH-',seq:2041,k:8,rate:16,local:15.5,kg:1.7,si:false,points:['Main office, Quezon City','Cebu City branch','Davao City branch'],monthly:[61,58,72,80,77],base:29,
+  staff:[['Jerome Aquino','+972 52 731 0448'],['Carlo Ramos','+972 54 219 6630'],['Rhea Navarro','+63 917 330 2214'],['Dennis Flores','+63 918 772 0951'],['Joy Castillo','+972 53 448 1206']],
+  cust:[['Maria Santos','+972 52 640 1187','22 Jaffa St, Jerusalem','Lourdes Santos','+63 917 482 1130','45 Mabini St, Brgy. San Roque','Quezon City'],
+   ['Jose Reyes','+972 54 318 7702',"9 Ahuza St, Ra'anana",'Teresita Reyes','+63 918 220 5541','12 Osmeña Blvd','Cebu City'],
+   ['Ana Cruz','+972 58 902 3365','5 Sokolov St, Herzliya','Benjamin Cruz','+63 919 664 0087','88 Quimpo Blvd','Davao City'],
+   ['Ramon Bautista','+972 50 771 2049','17 Weizmann St, Kfar Saba','Elena Bautista','+63 917 305 7712','3 Iznart St','Iloilo City'],
+   ['Liza Garcia','+972 52 115 8840','31 Dizengoff St, Tel Aviv','Rodel Garcia','+63 920 118 4436','27 Consunji St','San Fernando, Pampanga'],
+   ['Mark Villanueva','+972 54 609 2231','12 Moriah Blvd, Haifa','Cynthia Villanueva','+63 917 990 3318','6 Rizal Ave','Batangas City'],
+   ['Grace Mendoza','+972 53 227 5590','4 Herzl St, Ashdod','Nestor Mendoza','+63 918 441 2209','14 Session Rd','Baguio'],
+   ['Rowena Dela Cruz','+972 58 336 9014','8 Rager Blvd, Beersheba','Alfredo Dela Cruz','+63 919 557 6620','40 Velez St','Cagayan de Oro']],
+  calls:[[7,'','','Balikbayan box before Christmas, about 50 kg.','request',0.1,false],[null,'Michelle Torres','+972 52 610 2245','Asked price for two boxes. Call back after 6pm.','callback',0.3,false],
+   [null,'Arnel Pascual','+972 54 338 9910','Sending a laptop and canned goods. Asked about customs.','interested',1.1,false],[6,'','','Booked pickup.','booked',0.5,true],[null,'Rosario Lim','+972 50 482 7713','Will send in December.','notNow',2,true]]}};
+function seed(rt){
+ rt=rt||S.route||'sl';const X=SEEDS[rt],now=Date.now(),day=o=>isoLocal(new Date(now+o*D)),TT=o=>now+o*D;
+ const dest=ROUTES[rt].dest;
+ const db={route:rt,pre:X.pre,seq:X.seq+14,kseq:X.k+3,admin:{name:'Janath',pin:'1234'},
+ settings:{rate:X.rate,lkrRate:X.local,payRule:'any',points:X.points.slice(),monthly:X.monthly.slice(),monthBase:X.base},
+ roles:[{id:'r1',name:'Driver – Israel',si:X.si?'රියදුරු – ඊශ්‍රායලය':'',perms:['pickup','cash']},
+  {id:'r2',name:'Warehouse – Israel',si:X.si?'ගබඩාව – ඊශ්‍රායලය':'',perms:['wh_il','cash']},
+  {id:'r3',name:'Warehouse – '+dest,si:X.si?'ගබඩාව – ලංකාව':'',perms:['wh_sl','cash']},
+  {id:'r4',name:'Driver – '+dest,si:X.si?'රියදුරු – ලංකාව':'',perms:['deliver','cash']},
+  {id:'r5',name:'Office',si:X.si?'කාර්යාලය':'',perms:['calls','cash']}],
+ staff:X.staff.map((s,i)=>({id:'s'+(i+1),name:s[0],phone:s[1],role:'r'+(i+1),pin:String(i+1).repeat(4),active:true})),
+ customers:X.cust.map((c,i)=>({id:'c'+(i+1),name:c[0],phone:c[1],addr:c[2],pin:'0000',rcv:{name:c[3],phone:c[4],addr:c[5],city:c[6]}})),
+ boxes:[],containers:[],calls:[],msgs:[]};
+ const sn=db.staff.map(s=>s.name);
+ const by={booked:sn[4],picked:sn[0],il_wh:sn[1],shipped:sn[1],customs:sn[2],sl_wh:sn[2],out:sn[2],delivered:sn[3]};
+ const gap=[0,2,3,6,20,23,25,26],kid=i=>'CN-'+String(X.k+i).padStart(2,'0');
+ const mk=(i,ci,status,o={})=>{
+  const c=db.customers[ci],idx=STG.indexOf(status),cr=o.created;
+  const est=Math.round(o.kg*X.kg),weight=idx>=1?est+1:null;
+  const b={id:X.pre+(X.seq+i),cust:c.id,from:c.addr,to:{...c.rcv},items:o.items||['it_clothes','it_food'],other:'',est,weight,price:Math.round((weight||est)*X.rate),pays:[],status,hist:[],
+   pickupDate:day(o.pick!==undefined?o.pick:cr+2),drvIL:'s1',drvSL:o.drvSL?'s4':null,cont:o.cont!==undefined?kid(o.cont):null,eta:idx>=3?(o.eta!==undefined?day(o.eta):day(cr+20)):null,
+   mode:o.mode||'home',point:o.mode==='point'?db.settings.points[0]:null,addrOk:!!o.addrOk,onWay:false,created:TT(cr),deliveredAt:null};
+  for(let j=0;j<=idx;j++)b.hist.push({st:STG[j],at:TT(Math.min(cr+gap[j],-0.05)),by:by[STG[j]]});
+  if(o.lastAt!==undefined)b.hist[b.hist.length-1].at=TT(o.lastAt);
+  if(status==='delivered')b.deliveredAt=b.hist[b.hist.length-1].at;
+  if(o.paid){const amt=o.paid==='full'?b.price:Math.round(b.price*o.paid);const at=TT(Math.min(cr+2,-0.05));b.pays.push({amt,cur:'ILS',method:'cash',at,by:sn[0]});b.hist.push({st:'pay',at,by:sn[0],note:ils(amt)})}
+  b.hist.sort((a,z)=>a.at-z.at);db.boxes.push(b);
+ };
+ const ph=rt==='ph',bb=ph?['it_food','it_cos','it_clothes']:null;
+ mk(0,0,'delivered',{created:-32,cont:0,paid:'full',kg:24,addrOk:true,drvSL:1,items:bb||undefined});
+ mk(1,1,'delivered',{created:-31,cont:0,paid:'full',kg:30,addrOk:true,mode:'point'});
+ mk(2,2,'out',{created:-32,cont:0,paid:.4,kg:26,addrOk:true,drvSL:1,lastAt:-0.15});
+ mk(3,3,'sl_wh',{created:-31,cont:0,paid:'full',kg:19,items:bb||undefined});
+ mk(4,4,'sl_wh',{created:-30,cont:0,kg:33,items:['it_elec','it_toys']});
+ mk(5,5,'shipped',{created:-12,cont:1,paid:'full',kg:21,eta:9});
+ mk(6,6,'shipped',{created:-13,cont:1,paid:.3,kg:28,eta:9,items:['it_home','it_clothes']});
+ mk(7,7,'shipped',{created:-12,cont:1,paid:'full',kg:17,eta:9,items:bb||undefined});
+ mk(8,0,'il_wh',{created:-5,cont:2,paid:'full',kg:20});
+ mk(9,1,'il_wh',{created:-4,cont:2,kg:27,items:['it_cos','it_clothes']});
+ mk(10,2,'il_wh',{created:-3,paid:'full',kg:23});
+ mk(11,3,'picked',{created:-2,kg:31,lastAt:-0.9});
+ mk(12,4,'booked',{created:-1,pick:0,kg:25});
+ mk(13,5,'booked',{created:-1,pick:0,kg:18,items:['it_food','it_toys']});
+ mk(14,6,'booked',{created:-0.5,pick:1,kg:22});
+ const ids=a=>a.map(i=>X.pre+(X.seq+i));
+ db.containers=[{id:kid(0),status:'arrived',boxes:ids([0,1,2,3,4]),shipDate:day(-26),eta:day(-12),created:TT(-28)},
+  {id:kid(1),status:'shipped',boxes:ids([5,6,7]),shipDate:day(-6),eta:day(9),created:TT(-8)},
+  {id:kid(2),status:'loading',boxes:ids([8,9]),shipDate:null,eta:null,created:TT(-4)}];
+ db.calls=X.calls.map((k,i)=>{const cu=k[0]!==null?db.customers[k[0]]:null;return {id:'k'+(i+1),cust:cu?cu.id:null,name:cu?cu.name:k[1],phone:cu?cu.phone:k[2],note:k[3],out:k[4],at:TT(-k[5]),done:k[6]}});
+ db.boxes.forEach(b=>{const h=b.hist.filter(x=>STG.includes(x.st)).pop();let key='n_'+b.status,p={id:b.id};
+  if(b.status==='booked')p.d=fd(b.pickupDate);if(b.status==='picked'){p.kg=b.weight;p.price=ils(b.price)}if(b.status==='shipped')p.eta=fd(b.eta);
+  if(b.status==='sl_wh')p.point=db.settings.points[0];if(b.status==='out'&&b.mode==='point'){key='n_ready';p.point=b.point}
+  db.msgs.push({id:'m'+b.id,cust:b.cust,box:b.id,key,p,at:h.at})});
+ db.msgs.sort((a,z)=>z.at-a.at);
+ return db;
+}
+
+/* ---------------- core actions ---------------- */
+function setStatus(b,st,silent){
+ b.status=st;b.hist.push({st,at:Date.now(),by:myName()});
+ if(st==='delivered')b.deliveredAt=Date.now();
+ if(st!=='booked')b.onWay=false;
+ let key='n_'+st,p={id:b.id};
+ if(st==='booked')p.d=fd(b.pickupDate);
+ if(st==='picked'){p.kg=b.weight;p.price=ils(b.price)}
+ if(st==='shipped')p.eta=fd(b.eta);
+ if(st==='sl_wh')p.point=DB.settings.points[0]||'';
+ if(st==='out'&&b.mode==='point'){key='n_ready';p.point=b.point}
+ notify(b,key,p,silent);
+}
+function notify(b,key,p,silent){
+ DB.msgs.unshift({id:'m'+Date.now()+Math.random().toString(36).slice(2,6),cust:b.cust,box:b.id,key,p,at:Date.now()});
+ if(!silent)toast(tf('waSent',{n:C(b.cust).name.split(' ')[0]}),'msg');
+}
+function toast(text,icn='check'){
+ const el=document.createElement('div');el.className='toast';el.innerHTML=ic(icn,20)+'<span>'+esc(text)+'</span>';
+ $('toast').appendChild(el);setTimeout(()=>el.remove(),3200);
+}
+function gateNeed(b,target){
+ const r=DB.settings.payRule;if(!b.price)return 0;const paid=paidOf(b);
+ if(r==='split'){if(target==='il_wh'&&paid<b.price/2-0.5)return Math.ceil(b.price/2-paid);if(target==='delivered')return bal(b);return 0}
+ const at={before:'picked',at:'il_wh',delivery:'delivered'}[r];
+ if(!at)return 0;return sIdx(target)>=sIdx(at)?bal(b):0;
+}
+function guard(b,target,cb){const n=gateNeed(b,target);if(n>0){S.after=cb;openPay(b.id,n)}else cb()}
+function done(){save();render()}
+
+/* ---------------- navigation ---------------- */
+const DETAIL=['box','customer','container'];
+let HD=0;
+function hPush(){try{history.pushState({p:S.page,param:S.param},'')}catch(e){}}
+function hReset(){HD=0;try{history.replaceState({p:S.page,param:S.param},'')}catch(e){}}
+function go(p,param,fromPop){
+ stopCam();if(S.drawer)closeDrawer();
+ S.page=p;S.param=param;if(!fromPop){hPush();HD++}
+ render();window.scrollTo(0,0);
+}
+function goBack(){if(HD>0){try{history.back();return}catch(e){}}go('home')}
+window.addEventListener('popstate',e=>{
+ if($('modal').innerHTML){S.after=null;closeM();hPush();return}
+ if(S.drawer){closeDrawer();hPush();return}
+ if(!S.user)return;
+ HD=Math.max(0,HD-1);const st=e.state||{p:'home'};go(st.p||'home',st.param,true);
+});
+function menuItems(){if(S.user.t!=='admin')return navItems();
+ return [{k:'home',ic:'home',l:'overview'},{k:'calls',ic:'phone',l:'calls'},{k:'boxes',ic:'box',l:'boxes'},{k:'containers',ic:'container',l:'containers'},{k:'customers',ic:'users',l:'customers'},{k:'payments',ic:'wallet',l:'payments'},{k:'staff',ic:'user',l:'staffNav'},{k:'msgs',ic:'msg',l:'messages'},{k:'scan',ic:'scan',l:'scan'},{k:'settings',ic:'gear',l:'settings'}]}
+function renderDrawer(){
+ const u=S.user,sub=u.t==='admin'?T('owner'):u.t==='staff'?roleName(R((ST(u.id)||{}).role)):T('customer');
+ $('drawer').innerHTML=`<div class="dr-ov" onclick="closeDrawer()"></div><aside class="drawer" role="dialog" aria-modal="true" aria-label="${T('menu')}">
+ <div class="dr-h"><span class="av">${initials(myName())}</span><div><b>${esc(myName())}</b><small>${esc(sub)}</small></div><button class="iconbtn" onclick="closeDrawer()" aria-label="${T('close')}">${ic('x')}</button></div>
+ <nav class="dr-nav">${menuItems().map(n=>`<a href="#" class="${navOn(n.k)?'on':''}" onclick="go('${n.k}');return false">${ic(n.ic,22)}<span>${T(n.l)}</span>${ic('right',18)}</a>`).join('')}</nav>
+ <button class="dr-row" onclick="switchRoute()">${ic('ship',22)}<span>${T('switchRoute')}</span><small class="muted">${RT().short}</small></button>
+ ${RT().si?`<div><p class="flabel" style="margin:0 0 8px">${T('language')}</p><div class="seg"><button class="${S.lang==='en'?'on':''}" onclick="setLang('en')">English</button><button class="${S.lang==='si'?'on':''}" onclick="setLang('si')">සිංහල</button></div></div>`:''}
+ <button class="dr-row" onclick="toggleTheme()">${ic(isDark()?'sun':'moon',22)}<span>${isDark()?T('lightMode'):T('darkMode')}</span></button>
+ <button class="btn bad big" onclick="closeDrawer();logout()">${ic('logout')} ${T('logout')}</button></aside>`;
+ if(S.drawer)$('drawer').classList.add('open');
+}
+function openDrawer(){S.drawer=true;renderDrawer();$('drawer').classList.remove('open');void $('drawer').offsetWidth;$('drawer').classList.add('open');document.body.style.overflow='hidden'}
+function closeDrawer(){S.drawer=false;const d=$('drawer');d.classList.remove('open');document.body.style.overflow='';setTimeout(()=>{if(!S.drawer)d.innerHTML=''},260)}
+function setLang(l){S.lang=l;savePrefs();render()}
+function goBoxes(f){S.filter=f;S.q='';go('boxes')}
+function backBtn(){return `<button class="lnk" onclick="goBack()">${ic('back',20)} ${T('back')}</button>`}
+function toggleLang(){S.lang=S.lang==='en'?'si':'en';savePrefs();render()}
+function isDark(){return S.theme==='dark'||(!S.theme&&window.matchMedia&&matchMedia('(prefers-color-scheme: dark)').matches)}
+function toggleTheme(){S.theme=isDark()?'light':'dark';savePrefs();render()}
+function logout(){stopCam();if(S.drawer)closeDrawer();S.user=null;S.login=null;S.pin='';S.page='home';S.stack=[];savePrefs();hReset();render()}
+
+function navItems(){
+ const u=S.user;
+ if(u.t==='admin')return [{k:'home',ic:'home',l:'overview'},{k:'calls',ic:'phone',l:'calls'},{k:'boxes',ic:'box',l:'boxes'},{k:'containers',ic:'container',l:'containers'},{k:'customers',ic:'users',l:'customers',desk:1},{k:'payments',ic:'wallet',l:'payments',desk:1},{k:'more',ic:'more',l:'more'}];
+ if(u.t==='staff'){const n=[{k:'home',ic:'truck',l:'myJobs'},{k:'scan',ic:'scan',l:'scan'}];
+  if(can('wh_il')||can('wh_sl'))n.push({k:'containers',ic:'container',l:'containers'});
+  if(can('calls')){n.push({k:'calls',ic:'phone',l:'calls'});n.push({k:'boxes',ic:'box',l:'boxes'})}
+  return n}
+ return [{k:'home',ic:'box',l:'myBoxes'},{k:'send',ic:'plus',l:'sendBox'},{k:'msgs',ic:'msg',l:'messages'}];
+}
+function navOn(k){const p=S.page;if(p===k)return true;const hasBoxes=S.user.t==='admin'||can('calls');if(p==='box')return hasBoxes?k==='boxes':k==='home';if(p==='customer')return k==='customers';if(p==='container')return k==='containers';return false}
+
+/* ---------------- render ---------------- */
+function render(){
+ document.documentElement.lang=LANG();
+ if(S.theme)document.documentElement.dataset.theme=S.theme;else delete document.documentElement.dataset.theme;
+ if(!S.user){$('app').innerHTML=loginView();return}
+ if(S.user.t==='staff'&&!(ST(S.user.id)||{}).active){S.user=null;savePrefs();$('app').innerHTML=loginView();return}
+ const nav=navItems();
+ $('app').innerHTML=`<header class="top"><div class="top-in">
+  <a class="logo" href="#" onclick="go('home');return false" aria-label="Janath Cargo">${logoMark()}<span>Janath Cargo</span></a>
+  <span class="rbadge"><span class="rb-l">${T('israel')} → ${T('sriLanka')}</span><span class="rb-s">${RT().short}</span></span>
+  <nav class="nav" aria-label="Main">${nav.map(n=>`<a href="#" class="${navOn(n.k)?'on':''}" onclick="go('${n.k}');return false"><span>${T(n.l)}</span></a>`).join('')}</nav>
+  <div class="tools">
+   ${RT().si?`<button class="langbtn t-hide" onclick="toggleLang()">${S.lang==='en'?'සිංහල':'English'}</button>`:''}
+   <button class="iconbtn t-hide" onclick="toggleTheme()" aria-label="Light or dark">${ic(isDark()?'sun':'moon',20)}</button>
+   <button class="who t-hide" onclick="logout()" aria-label="${T('logout')}" title="${T('logout')}"><span class="av sm">${initials(myName())}</span><span class="who-n">${esc(myName().split(' ')[0])}</span>${ic('logout',18)}</button>
+   <button class="iconbtn menubtn" onclick="openDrawer()" aria-label="${T('menu')}" aria-haspopup="dialog">${ic('more',22)}</button>
+  </div></div></header>
+  <main id="main">${page()}</main>
+  <nav class="bnav" aria-label="Main">${nav.filter(n=>!n.desk).slice(0,5).map(n=>`<a href="#" class="${navOn(n.k)?'on':''}" onclick="go('${n.k}');return false">${ic(n.ic,22)}<span>${T(n.l)}</span></a>`).join('')}</nav>`;
+ renderQRs(document);initSwipe();
+ if(S.drawer)renderDrawer();
+}
+function page(){
+ const t=S.user.t,p=S.page;
+ if(p==='box')return t==='customer'?vCBox(S.param):vBox(S.param);
+ if(t==='admin'){
+  return ({home:vOverview,calls:vCalls,boxes:vBoxes,containers:vContainers,customers:vCustomers,payments:vPayments,more:vMore,staff:vStaff,msgs:vMsgs,settings:vSettings,scan:vScan,customer:()=>vCustomer(S.param),container:()=>vContainer(S.param)}[p]||vOverview)();
+ }
+ if(t==='staff'){
+  return ({home:vJobs,scan:vScan,containers:vContainers,calls:vCalls,boxes:vBoxes,customer:()=>vCustomer(S.param),container:()=>vContainer(S.param)}[p]||vJobs)();
+ }
+ return ({home:vCHome,send:vCSend,msgs:vCMsgs}[p]||vCHome)();
+}
+
+/* ---------------- login ---------------- */
+function loginView(){
+ const st=S.login;let body='',r=S.route?RT():null;
+ if(!S.route){
+  body=`<h1 class="lg-h">${T('pickRoute')}</h1><div class="lg-roles">${Object.keys(ROUTES).map(k=>{const x=ROUTES[k];return `<button class="lg-route" onclick="pickRoute('${k}')"><span class="rt"><span>${T('israel')}</span><i><span>${ic('ship',18)}</span></i><span>${S.lang==='si'&&k==='sl'?T('sriLanka'):x.dest}</span></span><small>${x.sub[S.lang==='si'?1:0]}</small></button>`}).join('')}</div>`;
+ }else if(!st){
+  body=`<button class="lnk" onclick="switchRoute()">${ic('back',20)} ${T('back')}</button>
+  <div class="lg-route-on"><span>${T('israel')} ${ic('ship',18)} ${T('sriLanka')}</span></div>
+  <h1 class="lg-h">${T('whoAreYou')}</h1><div class="lg-roles">${[['admin','owner','key'],['staff','staff','truck'],['customer','customer','box']].map(([t,l,i])=>`<button class="lg-role" onclick="pickType('${t}')"><span class="lg-ic">${ic(i,26)}</span><span>${T(l)}</span>${ic('right',22)}</button>`).join('')}</div>`;
+ }else if(!st.id){
+  const list=st.t==='staff'?DB.staff.filter(s=>s.active).map(s=>({id:s.id,name:s.name,sub:roleName(R(s.role))})):DB.customers.map(c=>({id:c.id,name:c.name,sub:c.phone}));
+  body=`<button class="lnk" onclick="S.login=null;render()">${ic('back',20)} ${T('back')}</button><h1 class="lg-h">${T('tapName')}</h1><div class="lg-list">${list.map(p=>`<button class="lg-person" onclick="pickPerson('${p.id}')"><span class="av">${initials(p.name)}</span><span><b>${esc(p.name)}</b><small>${esc(p.sub)}</small></span></button>`).join('')}</div>`;
+ }else{
+  const who=st.t==='admin'?DB.admin.name:st.t==='staff'?ST(st.id).name:C(st.id).name;
+  const real=st.t==='admin'?DB.admin.pin:st.t==='staff'?ST(st.id).pin:C(st.id).pin;
+  body=`<button class="lnk" onclick="S.login=${st.t==='admin'?'null':`{t:'${st.t}'}`};S.pin='';S.pinErr=false;render()">${ic('back',20)} ${T('back')}</button>
+  <h1 class="lg-h">${esc(who)}</h1><p class="muted" style="margin:-8px 0 8px">${T('enterPin')}</p>
+  <div class="pin-dots ${S.pinErr?'shake':''}">${[0,1,2,3].map(i=>`<i class="${i<S.pin.length?'f':''}"></i>`).join('')}</div>
+  <p class="pin-err">${S.pinErr?T('wrongPin'):''}</p>
+  <div class="pinpad">${[1,2,3,4,5,6,7,8,9].map(n=>`<button onclick="pinPress('${n}')">${n}</button>`).join('')}<button class="ghost" aria-label="clear" onclick="S.pin='';render()">${ic('x',26)}</button><button onclick="pinPress('0')">0</button><button class="ghost" aria-label="back" onclick="S.pin=S.pin.slice(0,-1);render()">${ic('back',26)}</button></div>
+  <p class="hint">${tf('demoPin',{p:real})}</p>`;
+ }
+ const showLang=!S.route||RT().si;
+ return `<div class="login"><div class="lg-card"><div class="lg-brand">${logoMark(38)}<span>Janath Cargo</span>${showLang?`<button class="langbtn" onclick="toggleLang()">${S.lang==='en'?'සිංහල':'English'}</button>`:''}</div><p class="lg-tag">${S.route?T('tagline'):T('tagline0')}</p>${body}</div></div>`;
+}
+function pickRoute(k){S.route=k;S.login=null;savePrefs();load();render()}
+function switchRoute(){stopCam();if(S.drawer)closeDrawer();S.user=null;S.login=null;S.pin='';S.route=null;S.page='home';savePrefs();hReset();render()}
+
+function pickType(t){S.pin='';S.pinErr=false;S.login=t==='admin'?{t,id:'admin'}:{t};render()}
+function pickPerson(id){S.login.id=id;S.pin='';S.pinErr=false;render()}
+function pinPress(d){
+ if(S.pin.length>=4)return;S.pin+=d;S.pinErr=false;
+ if(S.pin.length===4){const st=S.login;const real=st.t==='admin'?DB.admin.pin:st.t==='staff'?ST(st.id).pin:C(st.id).pin;
+  if(S.pin===real){S.user={t:st.t,id:st.id};S.login=null;S.pin='';S.page='home';S.stack=[];S.filter='all';savePrefs();hReset()}else{S.pin='';S.pinErr=true}}
+ render();
+}
+
+/* ---------------- admin: overview ---------------- */
+function allPays(){const out=[];DB.boxes.forEach(b=>(b.pays||[]).forEach(p=>out.push({...p,box:b.id,cust:b.cust})));return out.sort((a,z)=>z.at-a.at)}
+function stat(icn,label,n,f){return `<button class="cell ${f==='booked'||f==='sl'?'hot':''}" onclick="goBoxes('${f}')"><small>${label}</small><b>${n}</b></button>`}
+function vOverview(){
+ const bx=DB.boxes,act=bx.filter(b=>b.status!=='delivered'),cnt=s=>bx.filter(b=>b.status===s).length;
+ const pays=allPays(),inILS=pays.filter(p=>p.cur!=='LKR').reduce((a,p)=>a+p.amt,0),inLKR=pays.filter(p=>p.cur==='LKR').reduce((a,p)=>a+p.amt,0);
+ const due=bx.reduce((a,b)=>a+bal(b),0);
+ const follow=DB.calls.filter(c=>!c.done&&['request','callback','interested'].includes(c.out));
+ const latest=[...bx].sort((a,z)=>z.created-a.created).slice(0,6);
+ const conts=[...DB.containers].sort((a,z)=>z.created-a.created).slice(0,4);
+ let date='';try{date=new Date().toLocaleDateString(loc(),{weekday:'long',day:'numeric',month:'long'})}catch(e){}
+ return `<div class="hello"><div><h1>${greet({n:esc(DB.admin.name)})}</h1><p class="muted">${date}</p></div>
+  <div class="hello-act"><button class="btn" onclick="openCall()">${ic('phone',20)} ${T('newCall')}</button><button class="btn pri" onclick="openBooking()">${ic('plus',20)} ${T('newBooking')}</button></div></div>
+ <section class="card strip">${stat('box',T('activeBoxes'),act.length,'all')}${stat('truck',T('toPickUp'),cnt('booked'),'booked')}${stat('pin',T('waitingSL'),cnt('sl_wh')+cnt('out'),'sl')}${stat('checkc',T('deliveredMonth'),bx.filter(b=>b.status==='delivered'&&b.deliveredAt>Date.now()-30*D).length,'delivered')}</section>
+ <section class="card"><div class="card-h"><h2><span class="chipic">${ic('map',20)}</span>${T('pipeline')}</h2></div>${pipeline()}</section>
+ <div class="grid g3">
+  <section class="card"><div class="card-h"><h2><span class="chipic">${ic('wallet',20)}</span>${T('money')}</h2><button class="lnk" onclick="go('payments')">${T('seeAll')}</button></div>
+   <div class="money"><div><small>${T('receivedILS')}</small><b>${ils(inILS)}</b></div><div><small>${T('receivedLKR')}</small><b>${lkr(inLKR)}</b></div><div class="due"><small>${T('stillDue')}</small><b>${ils(due)}</b></div></div></section>
+  <section class="card"><div class="card-h"><h2><span class="chipic">${ic('container',20)}</span>${T('containers')}</h2><button class="lnk" onclick="go('containers')">${T('seeAll')}</button></div>
+   <div class="rows">${conts.map(contRow).join('')}</div></section>
+  <section class="card"><div class="card-h"><h2><span class="chipic">${ic('phone',20)}</span>${T('followUps')}</h2><button class="lnk" onclick="go('calls')">${T('seeAll')}</button></div>
+   <div class="rows">${follow.length?follow.slice(0,4).map(c=>`<button class="row" style="grid-template-columns:auto minmax(0,1fr) auto" onclick="go('calls')"><span class="av">${initials(c.name)}</span><span class="r-main"><b>${esc(c.name)}</b><small>${esc(c.note)}</small></span>${outPill(c.out)}</button>`).join(''):`<div class="empty">${T('noJobs')}</div>`}</div></section>
+ </div>
+ <div class="grid g21">
+  <section class="card"><div class="card-h"><h2><span class="chipic">${ic('box',20)}</span>${T('latest')}</h2><button class="lnk" onclick="goBoxes('all')">${T('seeAll')}</button></div><div class="rows">${boxHead()+latest.map(boxRow).join('')}</div></section>
+  <section class="card"><div class="card-h"><h2><span class="chipic">${ic('calendar',20)}</span>${T('perMonth')}</h2></div>${chart()}</section>
+ </div>`;
+}
+function pipeline(){
+ const cnt=s=>DB.boxes.filter(b=>b.status===s).length;
+ return `<div class="pipe"><div class="band b-il" style="--c:1/4">${ic('home',16)} ${T('israel')}</div><div class="band b-sea" style="--c:4/5">${T('atSea')}</div><div class="band b-sl" style="--c:5/9">${T('sriLanka')}</div>
+ ${STG.map((s,i)=>{const n=cnt(s);const hot=n>0&&(s==='booked'||s==='sl_wh');return `<button class="pstop ${n?'has':'zero'} ${hot?'hot':''}" style="--c:${i+1}" onclick="goBoxes('${s}')"><span class="pdot">${ic(STG_IC[s],24)}<b>${n}</b></span><span class="pl">${T('s_'+s)}</span></button>`}).join('')}</div>`;
+}
+function chart(){
+ const m=DB.settings.monthly||[];const cur=(DB.settings.monthBase||0)+DB.boxes.filter(b=>{const d=new Date(b.created),n=new Date();return d.getMonth()===n.getMonth()&&d.getFullYear()===n.getFullYear()}).length;
+ const vals=[...m.slice(-5),cur],max=Math.max(...vals,1),now=new Date();
+ return `<div class="bars">${vals.map((v,i)=>{const d=new Date(now.getFullYear(),now.getMonth()-(vals.length-1-i),1);let lbl='';try{lbl=d.toLocaleDateString(loc(),{month:'short'})}catch(e){}
+  return `<div class="bar ${i===vals.length-1?'now':''}"><em>${v}</em><i style="height:${Math.max(8,v/max*140)}px"></i><span>${lbl}</span></div>`}).join('')}</div>`;
+}
+function boxHead(){return `<div class="thead bx"><span></span><span>${T('th_customer')}</span><span>${T('th_to')}</span><span>${T('th_status')}</span><span></span></div>`}
+function boxRow(b){const c=C(b.cust);return `<button class="row bx" onclick="go('box','${b.id}')"><span class="av">${initials(c.name)}</span><span class="r-main"><b>${esc(c.name)}</b><small><span class="tag">${b.id}</span><span class="m-only">${esc(tf('toCity',{c:b.to.city||''}))}</span></small></span><span class="r-city">${esc(b.to.city||'')}</span><span class="r-pills">${stagePill(b)}${payPill(b)}</span>${ic('right',20)}</button>`}
+function kPill(k){const z={loading:1,shipped:2,customs:3,arrived:4}[k.status];return `<span class="pill z${z}">${T('k_'+k.status)}</span>`}
+function contRow(k){return `<button class="row" onclick="go('container','${k.id}')"><span class="av">${ic('container',20)}</span><span class="r-main"><b>${k.id}</b><small>${tf('boxCount',{n:k.boxes.length})}${k.eta&&k.status!=='arrived'?', '+T('eta').toLowerCase()+' '+fd(k.eta):''}</small></span><span class="r-pills">${kPill(k)}</span>${ic('right',20)}</button>`}
+function outPill(o){const z={request:3,callback:2,interested:1,booked:4,notNow:''}[o];return `<span class="pill ${z?'z'+z:'plain'}">${T('out_'+o)}</span>`}
+
+/* ---------------- boxes list ---------------- */
+function boxMatch(b){
+ const f=S.filter;let ok=f==='all'?b.status!=='delivered':f==='sl'?['sl_wh','out'].includes(b.status):f==='unpaid'?bal(b)>0:b.status===f;
+ if(!ok)return false;const q=S.q.trim().toLowerCase();if(!q)return true;
+ const c=C(b.cust);return [b.id,c.name,c.phone,b.to.name,b.to.city,b.to.phone].join(' ').toLowerCase().includes(q);
+}
+function boxListHTML(){const list=DB.boxes.filter(boxMatch).sort((a,z)=>z.created-a.created);return list.length?boxHead()+list.map(boxRow).join(''):`<div class="empty">${ic('box',34)}<p>${T('noBoxesHere')}</p></div>`}
+function vBoxes(){
+ const cnt=f=>DB.boxes.filter(b=>f==='all'?b.status!=='delivered':f==='unpaid'?bal(b)>0:b.status===f).length;
+ const fl=[['all',T('f_active')],...STG.map(s=>[s,T('s_'+s)]),['unpaid',T('f_unpaid')]];
+ if(S.filter==='sl')fl.splice(1,0,['sl',T('waitingSL')]);
+ return `<div class="hello"><h1>${T('boxes')}</h1>${can('calls')?`<button class="btn pri" onclick="openBooking()">${ic('plus',20)} ${T('newBooking')}</button>`:''}</div>
+ <div class="field"><input type="search" placeholder="${T('search')}" value="${esc(S.q)}" oninput="S.q=this.value;$('boxlist').innerHTML=boxListHTML()" aria-label="${T('search')}"></div>
+ <div class="chips scroll">${fl.map(([v,l])=>`<button class="chip ${S.filter===v?'on':''}" onclick="S.filter='${v}';render()">${l}${v!=='sl'?` <span class="n">${cnt(v)}</span>`:''}</button>`).join('')}</div>
+ <section class="card" style="padding:8px"><div class="rows" id="boxlist">${boxListHTML()}</div></section>`;
+}
+
+/* ---------------- one box (admin + staff) ---------------- */
+function track(b,sm){const i=sIdx(b.status);return `<div class="track ${sm?'sm':''}" role="img" aria-label="${esc(stLabel(b))}">${STG.map((s,k)=>{const cls=k<i||b.status==='delivered'?'done':k===i?'cur':'';return `<div class="stop ${cls}"><span class="dot">${ic(cls==='done'?'check':STG_IC[s],sm?15:20)}</span><span class="sl">${s==='out'&&b.mode==='point'?T('ready'):T('s_'+s)}</span></div>`}).join('')}</div>`}
+function etaBlock(b){return (b.status==='shipped'||b.status==='customs')&&b.eta?`<div class="eta">${ic('ship',30)}<div>${T('eta')}<b>${fd(b.eta)}</b></div></div>`:''}
+function actionsFor(b){
+ const a=[],s=b.status,A=(l,i,fn,cls)=>a.push({l,i,fn,cls});
+ if(s==='booked'&&can('pickup')){if(!b.onWay)A(T('actOnWay'),'truck',`actOnWay('${b.id}')`,'');A(T('actPicked'),'check',`openWeigh('${b.id}')`,'pri')}
+ if(s==='picked'&&can('wh_il'))A(T('actWh'),'warehouse',`actCheckIn('${b.id}')`,'pri');
+ if(s==='il_wh'&&can('wh_il')&&!b.cont)A(T('actContainer'),'container',`openLoad('${b.id}')`,'pri');
+ if((s==='shipped'||s==='customs')&&can('wh_sl'))A(T('actArrived'),'pin',`actArrive('${b.id}')`,'pri');
+ if(s==='sl_wh'&&can('wh_sl')){A(b.addrOk?T('changeDelivery'):T('confirmAddress'),'map',`openAddr('${b.id}')`,b.addrOk?'':'pri');if(b.addrOk)A(b.mode==='point'?T('actReady'):T('actOut'),'truck',`openSendOut('${b.id}')`,'pri')}
+ if(s==='out'&&(can('deliver')||can('wh_sl')))A(T('actDelivered'),'checkc',`openDeliver('${b.id}')`,'lime');
+ if(s!=='delivered'&&b.price&&bal(b)>0&&can('cash'))A(T('collect'),'wallet',`openPay('${b.id}')`,'');
+ if(['picked','il_wh'].includes(s)&&can('wh_il'))A(T('printLabel'),'print',`openLabel('${b.id}')`,'ghost');
+ return a;
+}
+function histLabel(h){if(STG.includes(h.st))return T('s_'+h.st);return T('h_'+h.st)}
+function vBox(id){
+ const b=B(id);if(!b)return backBtn()+`<div class="empty">${T('notFound')}</div>`;
+ const c=C(b.cust),acts=actionsFor(b),drv=ST(b.drvIL),drv2=ST(b.drvSL),pays=b.pays||[];
+ return `${backBtn()}
+ <div class="bx-head"><div><div class="bx-id">${b.id}</div><h1>${esc(c.name)}</h1></div><div class="pills">${stagePill(b)}${payPill(b)}</div></div>
+ <section class="card">${track(b)}<p class="say">${esc(sentence(b))}</p>${etaBlock(b)}</section>
+ ${acts.length?`<div class="acts">${acts.map(x=>`<button class="btn big ${x.cls}" onclick="${x.fn}">${ic(x.i)} ${x.l}</button>`).join('')}</div>`:''}
+ <div class="grid g2">
+  <section class="card"><h3><span class="chipic">${ic('home',18)}</span>${T('sender')}</h3>${kv(T('name'),S.user.t==='admin'?`<a href="#" onclick="go('customer','${c.id}');return false">${esc(c.name)}</a>`:esc(c.name))}${kv(T('phone'),telLink(c.phone))}${kv(T('address'),`<a href="${mapHref(b.from)}" target="_blank" rel="noopener">${esc(b.from)}</a>`)}${kv(T('pickupDate'),dayWord(b.pickupDate))}${kv(T('driver'),drv?esc(drv.name):'—')}</section>
+  <section class="card"><h3><span class="chipic">${ic('pin',18)}</span>${T('receiver')}</h3>${kv(T('name'),esc(b.to.name))}${kv(T('phone'),telLink(b.to.phone))}${kv(T('address'),esc(b.to.addr))}${kv(T('delivery'),b.mode==='point'?T('pickupPoint')+(b.point?': '+esc(b.point):''):T('homeDelivery'))}${kv('',b.addrOk?`<span class="pill ok">${ic('check',14)}${T('confirmed')}</span>`:`<span class="pill warn">${T('notConfirmed')}</span>`)}${drv2?kv(T('driver'),esc(drv2.name)):''}</section>
+  <section class="card"><h3><span class="chipic">${ic('box',18)}</span>${T('theBox')}</h3><div class="items" style="margin-bottom:10px">${b.items.map(i=>`<span class="pill plain">${esc(itemName(i))}</span>`).join('')}${b.other?`<span class="pill plain">${esc(b.other)}</span>`:''}</div>${kv(T('weight'),b.weight?b.weight+' kg':'~'+b.est+' kg')}${kv(T('container'),b.cont?`<a href="#" onclick="go('container','${b.cont}');return false">${b.cont}</a>`:T('noCont'))}${b.eta?kv(T('eta'),fd(b.eta)):''}</section>
+  <section class="card"><h3><span class="chipic">${ic('wallet',18)}</span>${T('payment')}</h3>${kv(T('price'),ils(b.price)+(b.weight?'':' (~)'))}${kv(T('paid'),ils(paidOf(b)))}${kv(T('balance'),`<span style="color:${bal(b)?'var(--red)':'inherit'}">${ils(bal(b))}</span>`)}
+   ${pays.map(p=>kv(`${fd(p.at)}, ${T(p.method)}`,p.cur==='LKR'?lkr(p.amt):ils(p.amt))).join('')}</section>
+ </div>
+ <section class="card"><h3><span class="chipic">${ic('clock',18)}</span>${T('history')}</h3><ol class="hist">${[...b.hist].reverse().map(h=>`<li><div><b>${histLabel(h)}${h.note?': '+esc(h.note):''}</b><small>${fdt(h.at)}${h.by?', '+esc(h.by):''}</small></div></li>`).join('')}</ol></section>`;
+}
+
+/* ---------------- box action flows ---------------- */
+function actOnWay(id){const b=B(id);b.onWay=true;b.hist.push({st:'onway',at:Date.now(),by:myName()});notify(b,'n_onway',{id:b.id});done()}
+function openWeigh(id){const b=B(id),r=DB.settings.rate;
+ modal(T('actPicked'),`<div class="field"><label for="wkg">${T('realWeight')}</label><input id="wkg" class="in-big" type="number" inputmode="decimal" min="0" step="0.5" value="${b.weight||b.est}" oninput="$('wprice').textContent=ils((parseFloat(this.value)||0)*${r})"></div>
+ <div class="pricebox"><span>${T('price')}</span><b id="wprice">${ils((b.weight||b.est)*r)}</b></div>`,
+ `<button class="btn" onclick="closeM()">${T('cancel')}</button><button class="btn pri" onclick="saveWeigh('${id}')">${ic('check')} ${T('actPicked')}</button>`)}
+function saveWeigh(id){const b=B(id),kg=parseFloat($('wkg').value);if(!(kg>0)){toast(T('needWeight'),'x');return}
+ b.weight=kg;b.price=Math.round(kg*DB.settings.rate);closeM();save();
+ guard(b,'picked',()=>{setStatus(b,'picked');done()})}
+function actCheckIn(id){const b=B(id);guard(b,'il_wh',()=>{setStatus(b,'il_wh');done();openLabel(id)})}
+function openLoad(id){
+ const ks=DB.containers.filter(k=>k.status==='loading');
+ modal(T('actContainer'),`<div class="rows">${ks.map(k=>`<button class="row" style="grid-template-columns:auto 1fr auto" onclick="loadInto('${id}','${k.id}')"><span class="av">${ic('container',20)}</span><span class="r-main"><b>${k.id}</b><small>${tf('boxCount',{n:k.boxes.length})}</small></span>${ic('right')}</button>`).join('')}</div>
+ <button class="btn big ${ks.length?'':'pri'}" style="margin-top:12px" onclick="loadInto('${id}',newContainer())">${ic('plus')} ${T('startNew')}</button>`)}
+function newContainer(){const id='CN-'+(DB.kseq++);DB.containers.push({id,status:'loading',boxes:[],shipDate:null,eta:null,created:Date.now()});save();return id}
+function loadInto(id,kid){const b=B(id),k=K(kid);if(b.cont)return;b.cont=kid;k.boxes.push(id);b.hist.push({st:'load',at:Date.now(),by:myName(),note:kid});closeM();toast(tf('inContainer',{k:kid}));done()}
+function actArrive(id){const b=B(id);setStatus(b,'sl_wh');done()}
+function openAddr(id){const b=B(id),mode=b.mode||'home';
+ modal(T('confirmAddress'),`<div class="field"><span class="flabel">${T('delivery')}</span>${chipsHTML('mode',[['home',T('homeDelivery')],['point',T('pickupPoint')]],mode)}</div>
+ <div class="field" id="ptWrap" style="display:${mode==='point'?'flex':'none'}"><label for="apt">${T('pickupPoint')}</label><select id="apt">${DB.settings.points.map(p=>`<option ${p===b.point?'selected':''}>${esc(p)}</option>`).join('')}</select></div>
+ <div class="field"><label for="anm">${T('name')}</label><input id="anm" value="${esc(b.to.name)}"></div>
+ <div class="field"><label for="aph">${T('phone')}</label><input id="aph" type="tel" value="${esc(b.to.phone)}"></div>
+ <div class="field"><label for="aad">${T('slAddr')}</label><textarea id="aad">${esc(b.to.addr)}</textarea></div>`,
+ `<button class="btn" onclick="closeM()">${T('cancel')}</button><button class="btn pri" onclick="saveAddr('${id}')">${ic('check')} ${T('confirmAddress')}</button>`);
+ CHIPCB.mode=v=>{$('ptWrap').style.display=v==='point'?'flex':'none'}}
+function saveAddr(id){const b=B(id);b.mode=cv('mode')||'home';b.point=b.mode==='point'?$('apt').value:null;b.to.name=$('anm').value.trim()||b.to.name;b.to.phone=$('aph').value.trim();b.to.addr=$('aad').value.trim();b.addrOk=true;
+ b.hist.push({st:'addr',at:Date.now(),by:myName(),note:b.mode==='point'?b.point:T('homeDelivery')});closeM();toast(T('saved'));done()}
+function openSendOut(id){const b=B(id);
+ if(b.mode==='point'){setStatus(b,'out');done();return}
+ const ds=DB.staff.filter(s=>s.active&&(R(s.role)||{perms:[]}).perms.includes('deliver'));
+ modal(T('actOut'),`<div class="field"><span class="flabel">${T('pickDriver')}</span>${chipsHTML('drv',ds.map(s=>[s.id,esc(s.name)]),b.drvSL||(ds[0]||{}).id)}</div>`,
+ `<button class="btn" onclick="closeM()">${T('cancel')}</button><button class="btn pri" onclick="saveSendOut('${id}')">${ic('truck')} ${T('actOut')}</button>`)}
+function saveSendOut(id){const b=B(id);b.drvSL=cv('drv');closeM();setStatus(b,'out');done()}
+function openDeliver(id){const b=B(id);guard(b,'delivered',()=>{
+ modal(T('actDelivered'),`<div class="field"><label for="dwho">${T('whoReceived')}</label><input id="dwho" value="${esc(b.to.name)}"></div>`,
+ `<button class="btn" onclick="closeM()">${T('cancel')}</button><button class="btn lime" onclick="saveDeliver('${id}')">${ic('checkc')} ${T('handover')}</button>`)})}
+function saveDeliver(id){const b=B(id);const w=$('dwho').value.trim();closeM();setStatus(b,'delivered');b.hist[b.hist.length-1].note=w;done()}
+
+/* ---------------- payments (staff/admin) ---------------- */
+function openPay(id,need){const b=B(id),due=bal(b),gate=!!need;
+ modal(T('collect'),`${gate?`<div class="warnbox">${tf('payFirst',{a:ils(need)})}</div>`:''}
+ <div class="pricebox"><span>${T('balance')}</span><b>${ils(due)}</b></div>
+ <div class="field"><span class="flabel">${T('currency')}</span>${chipsHTML('cur',[['ILS','₪ Shekel'],['LKR',RT().sym+' '+RT().cur]],'ILS')}</div>
+ <div class="field"><label for="pamt">${T('amount')}</label><input id="pamt" class="in-big" type="number" inputmode="decimal" min="0" value="${due}"></div>
+ <div class="field"><span class="flabel">${T('method')}</span>${chipsHTML('pm',[['cash',T('cash')],['card',T('card')],['bank',T('bank')]],'cash')}</div>`,
+ `${gate&&S.user.t==='admin'?`<button class="btn" onclick="skipGate()">${T('skip')}</button>`:`<button class="btn" onclick="S.after=null;closeM()">${T('cancel')}</button>`}<button class="btn pri" onclick="savePay('${id}')">${ic('check')} ${T('save')}</button>`);
+ CHIPCB.cur=v=>{$('pamt').value=v==='LKR'?Math.round(due*DB.settings.lkrRate):due}}
+function savePay(id){const b=B(id),amt=parseFloat($('pamt').value),cur=cv('cur')||'ILS',m=cv('pm')||'cash';if(!(amt>0))return;
+ addPay(b,amt,cur,m);closeM();const cb=S.after;S.after=null;save();
+ if(cb){if(gateNeed(b,cbTarget(b))>0){render()}else cb()}else render()}
+function cbTarget(b){return {booked:'picked',picked:'il_wh',out:'delivered'}[b.status]||b.status}
+function addPay(b,amt,cur,m){b.pays.push({amt,cur,method:m,at:Date.now(),by:myName()});const a=cur==='LKR'?lkr(amt):ils(amt);b.hist.push({st:'pay',at:Date.now(),by:myName(),note:a});notify(b,'n_paid',{id:b.id,amt:a},true);toast(T('h_pay')+': '+a,'wallet')}
+function skipGate(){const cb=S.after;S.after=null;closeM();cb&&cb()}
+
+/* ---------------- labels + QR ---------------- */
+function openLabel(id){const b=B(id);
+ modal(T('label'),`<div id="printArea" class="label"><div class="lb-top">${logoMark(26)}<span>Janath Cargo</span></div><div class="lb-qr" data-qr="${b.id}"></div><div class="lb-id">${b.id}</div><div class="lb-to"><b>${esc(b.to.name)}</b><span>${esc(b.to.city)}</span><span>${esc(b.to.phone)}</span></div><div class="lb-kg">${b.weight||b.est} kg</div></div>`,
+ `<button class="btn" onclick="closeM()">${T('close')}</button><button class="btn pri" onclick="window.print()">${ic('print')} ${T('print')}</button>`)}
+function openKLabel(kid){const k=K(kid);
+ modal(T('label'),`<div id="printArea" class="label"><div class="lb-top">${logoMark(26)}<span>Janath Cargo</span></div><div class="lb-qr" data-qr="${k.id}"></div><div class="lb-id">${k.id}</div><div class="lb-kg">${tf('boxCount',{n:k.boxes.length})}</div></div>`,
+ `<button class="btn" onclick="closeM()">${T('close')}</button><button class="btn pri" onclick="window.print()">${ic('print')} ${T('print')}</button>`)}
+function renderQRs(root){root.querySelectorAll('[data-qr]').forEach(el=>{if(el.dataset.done)return;el.dataset.done=1;
+ if(window.QRCode){try{new QRCode(el,{text:el.dataset.qr,width:180,height:180,colorDark:'#13313A',colorLight:'#ffffff',correctLevel:QRCode.CorrectLevel.M})}catch(e){el.textContent=el.dataset.qr}}else el.innerHTML=`<div style="font-size:15px;color:#5B7279">${ic('qr',90)}</div>`})}
+
+/* ---------------- modal + chips ---------------- */
+const CHIPCB={};
+function modal(title,body,foot){for(const k in CHIPCB)delete CHIPCB[k];
+ $('modal').innerHTML=`<div class="ov" onclick="if(event.target===this){S.after=null;closeM()}"><div class="modal" role="dialog" aria-modal="true" aria-label="${esc(title)}"><div class="m-h"><h2>${title}</h2><button class="iconbtn" onclick="S.after=null;closeM()" aria-label="${T('close')}">${ic('x')}</button></div><div class="m-b">${body}</div>${foot?`<div class="m-f">${foot}</div>`:''}</div></div>`;
+ renderQRs($('modal'));const f=$('modal').querySelector('input:not([type=checkbox]),select,textarea');if(f&&window.innerWidth>700)setTimeout(()=>f.focus(),30)}
+function closeM(){$('modal').innerHTML=''}
+document.addEventListener('keydown',e=>{if(e.key!=='Escape')return;if($('modal').innerHTML){S.after=null;closeM()}else if(S.drawer)closeDrawer()});
+function chipsHTML(g,opts,sel,multi){return `<div class="chips" role="group">${opts.map(([v,l])=>{const on=multi?(sel||[]).includes(v):sel===v;return `<button type="button" class="chip ${on?'on':''}" aria-pressed="${on}" data-g="${g}" data-v="${esc(v)}" onclick="chip(this,${multi?1:0})">${l}</button>`}).join('')}</div>`}
+function chip(el,multi){if(multi)el.classList.toggle('on');else{document.querySelectorAll(`[data-g="${el.dataset.g}"]`).forEach(x=>{x.classList.remove('on');x.setAttribute('aria-pressed','false')});el.classList.add('on')}
+ el.setAttribute('aria-pressed',el.classList.contains('on'));const f=CHIPCB[el.dataset.g];f&&f(el.dataset.v)}
+function cv(g){const e=document.querySelector(`[data-g="${g}"].on`);return e?e.dataset.v:null}
+function cvs(g){return [...document.querySelectorAll(`[data-g="${g}"].on`)].map(e=>e.dataset.v)}
+
+/* ---------------- calls ---------------- */
+function vCalls(){
+ const f=S.cfilter,list=DB.calls.filter(c=>f==='open'?!c.done:f==='all'?true:c.out===f).sort((a,z)=>z.at-a.at);
+ const fl=[['open',T('f_open')],['request',T('out_request')],['callback',T('out_callback')],['interested',T('out_interested')],['booked',T('out_booked')],['notNow',T('out_notNow')],['all',T('all')]];
+ return `<div class="hello"><h1>${T('calls')}</h1><button class="btn pri" onclick="openCall()">${ic('phone',20)} ${T('newCall')}</button></div>
+ <div class="chips scroll">${fl.map(([v,l])=>`<button class="chip ${f===v?'on':''}" onclick="S.cfilter='${v}';render()">${l}</button>`).join('')}</div>
+ <div class="jobs">${list.length?list.map(callCard).join(''):`<div class="empty">${T('noJobs')}</div>`}</div>`;
+}
+function callCard(c){return `<div class="job"><div class="job-top" ${c.cust&&S.user.t==='admin'?`onclick="go('customer','${c.cust}')"`:''}><span class="av">${initials(c.name)}</span><div><b>${esc(c.name)}</b><small>${fdt(c.at)}</small></div>${outPill(c.out)}</div>
+ ${c.note?`<div class="job-addr">${ic('msg',20)}<span>${esc(c.note)}</span></div>`:''}
+ <div class="job-btns"><a class="btn sm" href="${telHref(c.phone)}">${ic('phone',18)} ${T('call')}</a>${!c.done?`<button class="btn sm" onclick="callDone('${c.id}')">${ic('check',18)} ${T('markDone')}</button><button class="btn pri" onclick="bookFromCall('${c.id}')">${ic('plus',20)} ${T('makeBooking')}</button>`:''}</div></div>`}
+function callDone(id){const c=DB.calls.find(x=>x.id===id);c.done=true;done()}
+function bookFromCall(id){const c=DB.calls.find(x=>x.id===id);openBooking({call:id,cust:c.cust,name:c.name,phone:c.phone})}
+function openCall(){
+ modal(T('newCall'),`<div class="field"><label for="cph">${T('phone')}</label><input id="cph" type="tel" placeholder="+972" oninput="callMatch()"></div>
+ <div class="field"><label for="cnm">${T('name')}</label><input id="cnm"></div>
+ <div class="field"><label for="cnt">${T('note')}</label><textarea id="cnt"></textarea></div>
+ <div class="field"><span class="flabel">${T('result')}</span>${chipsHTML('out',['interested','callback','booked','notNow'].map(o=>[o,T('out_'+o)]),'interested')}</div>`,
+ `<button class="btn" onclick="closeM()">${T('cancel')}</button><button class="btn pri" onclick="saveCall()">${ic('check')} ${T('save')}</button>`)}
+function callMatch(){const p=$('cph').value.replace(/\D/g,'');if(p.length<6)return;const c=DB.customers.find(x=>x.phone.replace(/\D/g,'').endsWith(p.slice(-7)));if(c&&!$('cnm').value)$('cnm').value=c.name}
+function saveCall(){const phone=$('cph').value.trim(),name=$('cnm').value.trim();if(!phone&&!name)return;
+ const p=phone.replace(/\D/g,''),cu=p.length>=6?DB.customers.find(x=>x.phone.replace(/\D/g,'').endsWith(p.slice(-7))):null;
+ const out=cv('out')||'interested',c={id:'k'+Date.now(),cust:cu?cu.id:null,name:name||(cu&&cu.name)||phone,phone,note:$('cnt').value.trim(),out,at:Date.now(),done:out==='notNow'};
+ DB.calls.unshift(c);save();closeM();toast(T('saved'));
+ if(out==='booked')openBooking({call:c.id,cust:c.cust,name:c.name,phone:c.phone});else render()}
+
+/* ---------------- booking ---------------- */
+function openBooking(pre={}){
+ const custs=DB.customers,sel=pre.cust||(pre.name?'new':(custs[0]||{}).id)||'new',c=sel!=='new'?C(sel):null,rcv=c?c.rcv:{};
+ const drivers=DB.staff.filter(s=>s.active&&(R(s.role)||{perms:[]}).perms.includes('pickup'));
+ modal(T('newBooking'),`<div class="field"><label for="bcu">${T('customerSel')}</label><select id="bcu" onchange="bkCust()"><option value="new" ${sel==='new'?'selected':''}>${T('newCustomer')}</option>${custs.map(x=>`<option value="${x.id}" ${x.id===sel?'selected':''}>${esc(x.name)}, ${esc(x.phone)}</option>`).join('')}</select></div>
+ <div id="bnew" style="display:${sel==='new'?'block':'none'}"><div class="two"><div class="field"><label for="bnm">${T('name')}</label><input id="bnm" value="${esc(pre.name||'')}"></div><div class="field"><label for="bph">${T('phone')}</label><input id="bph" type="tel" value="${esc(pre.phone||'')}"></div></div></div>
+ <div class="field"><label for="bfr">${T('pickupAddr')}</label><input id="bfr" value="${esc(c?c.addr:'')}"></div>
+ <div class="two"><div class="field"><label for="bdt">${T('pickupDate')}</label><input id="bdt" type="date" value="${dayISO(1)}"></div>
+ <div class="field"><label for="bdr">${T('driver')}</label><select id="bdr">${drivers.map(d=>`<option value="${d.id}">${esc(d.name)}</option>`).join('')}</select></div></div>
+ <h3 style="margin-top:6px">${ic('pin',20)} ${T('receiver')}</h3>
+ <div class="two"><div class="field"><label for="brn">${T('name')}</label><input id="brn" value="${esc(rcv.name||'')}"></div><div class="field"><label for="brp">${T('phone')}</label><input id="brp" type="tel" value="${esc(rcv.phone||RT().pre)}"></div></div>
+ <div class="field"><label for="bra">${T('slAddr')}</label><input id="bra" value="${esc(rcv.addr||'')}"></div>
+ <div class="field"><label for="brc">${T('city')}</label><input id="brc" value="${esc(rcv.city||'')}"></div>
+ <div class="field"><span class="flabel">${T('items')}</span>${chipsHTML('it',ITEMS.map(i=>[i,T(i)]),['it_clothes'],true)}<input id="bot" placeholder="${T('otherItems')}" style="margin-top:8px"></div>
+ <div class="field"><label for="bkg">${T('estWeight')}</label><input id="bkg" class="in-big" type="number" inputmode="decimal" min="0" value="20" oninput="$('bpr').textContent=ils((parseFloat(this.value)||0)*${DB.settings.rate})"></div>
+ <div class="pricebox"><span>${T('price')} (~)</span><b id="bpr">${ils(20*DB.settings.rate)}</b></div>
+ <input type="hidden" id="bcall" value="${esc(pre.call||'')}">`,
+ `<button class="btn" onclick="closeM()">${T('cancel')}</button><button class="btn pri" onclick="saveBooking()">${ic('check')} ${T('newBooking')}</button>`)}
+function bkCust(){const v=$('bcu').value;$('bnew').style.display=v==='new'?'block':'none';if(v!=='new'){const c=C(v);$('bfr').value=c.addr;$('brn').value=c.rcv.name||'';$('brp').value=c.rcv.phone||'';$('bra').value=c.rcv.addr||'';$('brc').value=c.rcv.city||''}}
+function saveBooking(){
+ let cid=$('bcu').value;const from=$('bfr').value.trim();
+ if(cid==='new'){const name=$('bnm').value.trim(),phone=$('bph').value.trim();if(!name||!phone||!from){toast(T('fillAll'),'x');return}
+  cid='c'+Date.now();DB.customers.push({id:cid,name,phone,addr:from,pin:'0000',rcv:{}})}
+ if(!from){toast(T('fillAll'),'x');return}
+ const c=C(cid),to={name:$('brn').value.trim(),phone:$('brp').value.trim(),addr:$('bra').value.trim(),city:$('brc').value.trim()};
+ if(!c.addr)c.addr=from;c.rcv={...to};
+ const est=parseFloat($('bkg').value)||0,id=DB.pre+(++DB.seq);
+ const b={id,cust:cid,from,to,items:cvs('it'),other:$('bot').value.trim(),est,weight:null,price:Math.round(est*DB.settings.rate),pays:[],status:'booked',hist:[],pickupDate:$('bdt').value||dayISO(1),drvIL:$('bdr').value||null,drvSL:null,cont:null,eta:null,mode:'home',point:null,addrOk:false,onWay:false,created:Date.now(),deliveredAt:null};
+ DB.boxes.push(b);const call=$('bcall').value;if(call){const k=DB.calls.find(x=>x.id===call);if(k){k.done=true;k.out='booked';k.cust=cid}}
+ closeM();setStatus(b,'booked');save();go('box',id)}
+
+/* ---------------- containers ---------------- */
+function vContainers(){
+ const order={loading:0,shipped:1,customs:2,arrived:3},ks=[...DB.containers].sort((a,z)=>order[a.status]-order[z.status]||z.created-a.created);
+ return `<div class="hello"><h1>${T('containers')}</h1>${can('wh_il')?`<button class="btn pri" onclick="go('container',newContainer())">${ic('plus',20)} ${T('newContainer')}</button>`:''}</div>
+ <div class="jobs">${ks.map(k=>`<div class="job" style="cursor:pointer" onclick="go('container','${k.id}')"><div class="job-top"><span class="av">${ic('container',22)}</span><div><b>${k.id}</b><small>${tf('boxCount',{n:k.boxes.length})}</small></div>${kPill(k)}</div>
+ ${ktrack(k)}${k.eta&&k.status!=='arrived'?`<div class="job-addr">${ic('ship',20)}<span>${T('eta')} <b>${fd(k.eta)}</b></span></div>`:''}</div>`).join('')}</div>`;
+}
+function ktrack(k){const st=['loading','shipped','customs','arrived'],i=st.indexOf(k.status),ics=['warehouse','ship','shield','pin'];
+ return `<div class="track sm">${st.map((s,j)=>{const cls=j<i||k.status==='arrived'?'done':j===i?'cur':'';return `<div class="stop ${cls}"><span class="dot">${ic(cls==='done'?'check':ics[j],15)}</span></div>`}).join('')}</div>`}
+function vContainer(id){const k=K(id);if(!k)return backBtn()+`<div class="empty">${T('notFound')}</div>`;
+ const bx=k.boxes.map(B).filter(Boolean),a=[];
+ if(k.status==='loading'&&can('wh_il')){a.push(`<button class="btn big" onclick="openAddBoxes('${k.id}')">${ic('plus')} ${T('addBoxes')}</button>`);if(bx.length)a.push(`<button class="btn big pri" onclick="openShip('${k.id}')">${ic('ship')} ${T('shipIt')}</button>`)}
+ if(k.status==='shipped'&&can('wh_sl'))a.push(`<button class="btn big" onclick="kCustoms('${k.id}')">${ic('shield')} ${T('atCustoms')}</button>`);
+ if((k.status==='shipped'||k.status==='customs')&&can('wh_sl'))a.push(`<button class="btn big pri" onclick="kArrive('${k.id}')">${ic('pin')} ${T('kArrive')}</button>`);
+ if((k.status==='shipped'||k.status==='customs')&&(can('wh_il')||can('wh_sl')))a.push(`<button class="btn big" onclick="openShip('${k.id}',1)">${ic('calendar')} ${T('changeEta')}</button>`);
+ if(can('wh_il')||can('wh_sl'))a.push(`<button class="btn big ghost" onclick="openKLabel('${k.id}')">${ic('print')} ${T('printLabel')}</button>`);
+ return `${backBtn()}<div class="bx-head"><div><div class="bx-id">${T('container')}</div><h1>${k.id}</h1></div><div class="pills">${kPill(k)}<span class="pill plain">${tf('boxCount',{n:bx.length})}</span></div></div>
+ <section class="card"><div class="track">${['loading','shipped','customs','arrived'].map((s,j)=>{const i=['loading','shipped','customs','arrived'].indexOf(k.status);const cls=j<i||k.status==='arrived'?'done':j===i?'cur':'';return `<div class="stop ${cls}"><span class="dot">${ic(cls==='done'?'check':['warehouse','ship','shield','pin'][j],20)}</span><span class="sl">${T('k_'+s)}</span></div>`}).join('')}</div>
+ ${k.eta&&k.status!=='arrived'?`<div class="eta">${ic('ship',30)}<div>${T('eta')}<b>${fd(k.eta)}</b></div></div>`:''}</section>
+ ${a.length?`<div class="acts">${a.join('')}</div>`:''}
+ <section class="card" style="padding:8px"><div class="rows">${bx.length?bx.map(boxRow).join(''):`<div class="empty">${ic('box',34)}<p>${T('noBoxesHere')}</p></div>`}</div></section>`}
+function openAddBoxes(kid){const loose=DB.boxes.filter(b=>b.status==='il_wh'&&!b.cont);
+ modal(T('addBoxes'),loose.length?`<div>${loose.map(b=>`<label class="check"><input type="checkbox" value="${b.id}" checked class="lb"><span><b>${b.id}</b> ${esc(C(b.cust).name)}, ${b.weight||b.est} kg</span></label>`).join('')}</div>`:`<p class="note">${T('noLoose')}</p>`,
+ loose.length?`<button class="btn" onclick="closeM()">${T('cancel')}</button><button class="btn pri" onclick="saveAddBoxes('${kid}')">${ic('check')} ${T('addBoxes')}</button>`:`<button class="btn" onclick="closeM()">${T('close')}</button>`)}
+function saveAddBoxes(kid){const k=K(kid);document.querySelectorAll('.lb:checked').forEach(e=>{const b=B(e.value);if(b&&!b.cont){b.cont=kid;k.boxes.push(b.id);b.hist.push({st:'load',at:Date.now(),by:myName(),note:kid})}});closeM();done()}
+function openShip(kid,change){const k=K(kid);
+ modal(change?T('changeEta'):T('shipIt'),`<div class="field"><label for="keta">${T('setEta')}</label><input id="keta" type="date" value="${k.eta||dayISO(18)}"></div><p class="note">${tf('waSentN',{n:k.boxes.length})}</p>`,
+ `<button class="btn" onclick="closeM()">${T('cancel')}</button><button class="btn pri" onclick="saveShip('${kid}',${change?1:0})">${ic(change?'check':'ship')} ${change?T('save'):T('shipIt')}</button>`)}
+function saveShip(kid,change){const k=K(kid),eta=$('keta').value;if(!eta)return;k.eta=eta;const bx=k.boxes.map(B).filter(Boolean);
+ if(change){bx.forEach(b=>{if(b.status==='delivered')return;b.eta=eta;b.hist.push({st:'eta',at:Date.now(),by:myName(),note:fd(eta)});notify(b,'n_eta',{id:b.id,eta:fd(eta)},true)})}
+ else{k.status='shipped';k.shipDate=dayISO(0);bx.forEach(b=>{b.eta=eta;setStatus(b,'shipped',true)})}
+ closeM();toast(tf('waSentN',{n:bx.length}),'msg');done()}
+function kCustoms(kid){const k=K(kid);k.status='customs';const bx=k.boxes.map(B).filter(b=>b&&sIdx(b.status)<sIdx('customs'));bx.forEach(b=>setStatus(b,'customs',true));toast(tf('waSentN',{n:bx.length}),'msg');done()}
+function kArrive(kid){const k=K(kid);k.status='arrived';const bx=k.boxes.map(B).filter(b=>b&&sIdx(b.status)<sIdx('sl_wh'));bx.forEach(b=>setStatus(b,'sl_wh',true));toast(tf('waSentN',{n:bx.length}),'msg');done()}
+
+/* ---------------- customers ---------------- */
+function vCustomers(){
+ const q=S.q.trim().toLowerCase(),list=DB.customers.filter(c=>!q||(c.name+' '+c.phone).toLowerCase().includes(q));
+ return `${backBtn()}<div class="hello"><h1>${T('customers')}</h1><button class="btn pri" onclick="openCustomer()">${ic('plus',20)} ${T('addCustomer')}</button></div>
+ <div class="field"><input type="search" placeholder="${T('search')}" value="${esc(S.q)}" oninput="S.q=this.value;render();const i=document.querySelector('input[type=search]');i.focus();i.setSelectionRange(i.value.length,i.value.length)" aria-label="${T('search')}"></div>
+ <section class="card" style="padding:8px"><div class="rows">${list.map(c=>{const bx=DB.boxes.filter(b=>b.cust===c.id),due=bx.reduce((a,b)=>a+bal(b),0);
+ return `<button class="row" onclick="go('customer','${c.id}')"><span class="av">${initials(c.name)}</span><span class="r-main"><b>${esc(c.name)}</b><small>${esc(c.phone)}</small></span><span class="r-pills"><span class="pill plain">${tf('boxCount',{n:bx.length})}</span>${due?`<span class="pill bad">${ils(due)}</span>`:''}</span>${ic('right',20)}</button>`}).join('')}</div></section>`}
+function vCustomer(id){const c=C(id),bx=DB.boxes.filter(b=>b.cust===id).sort((a,z)=>z.created-a.created),calls=DB.calls.filter(k=>k.cust===id);
+ return `${backBtn()}<div class="bx-head"><div><div class="bx-id">${T('customer')}</div><h1>${esc(c.name)}</h1></div></div>
+ <div class="acts"><a class="btn big" href="${telHref(c.phone)}">${ic('phone')} ${esc(c.phone)}</a><a class="btn big" href="https://wa.me/${c.phone.replace(/\D/g,'')}" target="_blank" rel="noopener">${ic('msg')} WhatsApp</a>${can('calls')?`<button class="btn big pri" onclick="openBooking({cust:'${c.id}'})">${ic('plus')} ${T('newBooking')}</button>`:''}</div>
+ <div class="grid g21"><section class="card" style="padding:8px"><div class="rows">${bx.length?bx.map(boxRow).join(''):`<div class="empty">${T('noBoxesHere')}</div>`}</div></section>
+ <section class="card">${kv(T('address'),esc(c.addr))}${kv(T('receiver'),esc((c.rcv||{}).name||'—'))}${kv(T('slAddr'),esc((c.rcv||{}).addr||'—'))}${S.user.t==='admin'?`<p class="note" style="margin-top:12px">${tf('custPin',{p:c.pin})}</p>`:''}
+ ${calls.length?`<h3 style="margin-top:16px">${ic('phone',18)} ${T('calls')}</h3>${calls.map(k=>kv(fd(k.at),outPill(k.out))).join('')}`:''}</section></div>`}
+function openCustomer(){modal(T('addCustomer'),`<div class="field"><label for="ncn">${T('name')}</label><input id="ncn"></div><div class="field"><label for="ncp">${T('phone')}</label><input id="ncp" type="tel" value="+972 "></div><div class="field"><label for="nca">${T('address')}</label><input id="nca"></div>`,
+ `<button class="btn" onclick="closeM()">${T('cancel')}</button><button class="btn pri" onclick="saveCustomer()">${ic('check')} ${T('save')}</button>`)}
+function saveCustomer(){const n=$('ncn').value.trim(),p=$('ncp').value.trim(),a=$('nca').value.trim();if(!n||p.length<6||!a){toast(T('fillAll'),'x');return}const id='c'+Date.now();DB.customers.push({id,name:n,phone:p,addr:a,pin:'0000',rcv:{}});closeM();save();go('customer',id)}
+
+/* ---------------- payments page ---------------- */
+function vPayments(){
+ const pays=allPays(),inILS=pays.filter(p=>p.cur!=='LKR').reduce((a,p)=>a+p.amt,0),inLKR=pays.filter(p=>p.cur==='LKR').reduce((a,p)=>a+p.amt,0);
+ const due=DB.boxes.filter(b=>bal(b)>0).sort((a,z)=>sIdx(z.status)-sIdx(a.status));
+ return `${backBtn()}<div class="hello"><h1>${T('payments')}</h1></div>
+ <div class="grid g3"><div class="card stat"><span class="st-l"><span class="chipic">₪</span>${T('receivedILS')}</span><span class="st-n">${ils(inILS)}</span></div>
+ <div class="card stat"><span class="st-l"><span class="chipic">${RT().sym}</span>${T('receivedLKR')}</span><span class="st-n">${lkr(inLKR)}</span></div>
+ <div class="card stat" style="background:var(--z2b)"><span class="st-l"><span class="chipic">${ic('wallet',18)}</span>${T('stillDue')}</span><span class="st-n">${ils(due.reduce((a,b)=>a+bal(b),0))}</span></div></div>
+ <div class="grid g2"><section class="card"><h3>${T('toCollect')}</h3><div class="rows">${due.map(b=>`<button class="row" onclick="go('box','${b.id}')"><span class="av">${initials(C(b.cust).name)}</span><span class="r-main"><b>${esc(C(b.cust).name)}</b><small><span class="tag">${b.id}</span>${stLabel(b)}</small></span><span class="r-end" style="color:var(--red)">${ils(bal(b))}</span>${ic('right',20)}</button>`).join('')||`<div class="empty">${T('noJobs')}</div>`}</div></section>
+ <section class="card"><h3>${T('latestPays')}</h3><div class="rows">${pays.slice(0,12).map(p=>`<button class="row" onclick="go('box','${p.box}')"><span class="av">${initials(C(p.cust).name)}</span><span class="r-main"><b>${esc(C(p.cust).name)}</b><small>${fd(p.at)}, ${T(p.method)}</small></span><span class="r-end">${p.cur==='LKR'?lkr(p.amt):ils(p.amt)}</span>${ic('right',20)}</button>`).join('')}</div></section></div>`}
+
+/* ---------------- more / staff / messages / settings ---------------- */
+function vMore(){const t=[['customers','users','customers'],['payments','wallet','payments'],['staff','user','staffNav'],['msgs','msg','messages'],['scan','scan','scan'],['settings','gear','settings']];
+ return `<div class="hello"><h1>${T('more')}</h1></div><div class="tiles">${t.map(([p,i,l])=>`<button class="tile" onclick="go('${p}')"><span class="chipic">${ic(i,24)}</span>${T(l)}</button>`).join('')}</div>`}
+function vStaff(){
+ return `${backBtn()}<div class="hello"><h1>${T('staffNav')}</h1><button class="btn pri" onclick="openStaff()">${ic('plus',20)} ${T('addStaff')}</button></div>
+ <section class="card" style="padding:8px"><div class="rows">${DB.staff.map(s=>`<button class="row" onclick="openStaff('${s.id}')"><span class="av">${initials(s.name)}</span><span class="r-main"><b>${esc(s.name)}</b><small>${esc(s.phone)}, PIN ${esc(s.pin)}</small></span><span class="r-pills"><span class="pill z1">${esc(roleName(R(s.role)))}</span>${s.active?'':`<span class="pill bad">${T('off')}</span>`}</span>${ic('edit',20)}</button>`).join('')}</div></section>
+ <div class="hello" style="margin-top:28px"><h2>${T('roles')}</h2><button class="btn" onclick="openRole()">${ic('plus',20)} ${T('addRole')}</button></div>
+ <div class="jobs">${DB.roles.map(r=>`<div class="job" style="cursor:pointer" onclick="openRole('${r.id}')"><div class="job-top"><span class="chipic">${ic('key',18)}</span><div><b>${esc(roleName(r))}</b><small>${DB.staff.filter(s=>s.role===r.id).length} ${T('staffNav').toLowerCase()}</small></div>${ic('edit',20)}</div><div class="items">${r.perms.map(p=>`<span class="pill plain">${T('p_'+p)}</span>`).join('')}</div></div>`).join('')}</div>`}
+function openStaff(id){const s=id?ST(id):{name:'',phone:'',role:DB.roles[0].id,pin:String(Math.floor(1000+Math.random()*9000)),active:true};
+ modal(id?T('edit'):T('addStaff'),`<div class="field"><label for="sfn">${T('name')}</label><input id="sfn" value="${esc(s.name)}"></div>
+ <div class="field"><label for="sfp">${T('phone')}</label><input id="sfp" type="tel" value="${esc(s.phone)}"></div>
+ <div class="field"><span class="flabel">${T('role')}</span>${chipsHTML('srole',DB.roles.map(r=>[r.id,esc(roleName(r))]),s.role)}</div>
+ <div class="field"><label for="sfpin">${T('pin')}</label><input id="sfpin" inputmode="numeric" maxlength="4" value="${esc(s.pin)}"></div>
+ <label class="switch">${T('active')}<input type="checkbox" id="sfa" ${s.active?'checked':''}></label>`,
+ `<button class="btn" onclick="closeM()">${T('cancel')}</button><button class="btn pri" onclick="saveStaff('${id||''}')">${ic('check')} ${T('save')}</button>`)}
+function saveStaff(id){const n=$('sfn').value.trim(),pin=$('sfpin').value.replace(/\D/g,'');if(!n||pin.length!==4){toast(T('fillAll'),'x');return}
+ const d={name:n,phone:$('sfp').value.trim(),role:cv('srole')||DB.roles[0].id,pin,active:$('sfa').checked};
+ if(id)Object.assign(ST(id),d);else DB.staff.push({id:'s'+Date.now(),...d});closeM();toast(T('saved'));done()}
+function openRole(id){const r=id?R(id):{name:'',perms:[]};
+ modal(id?T('edit'):T('addRole'),`<div class="field"><label for="rnm">${T('name')}</label><input id="rnm" value="${esc(id?roleName(r):'')}"></div>
+ <div>${PERMS.map(p=>`<label class="check"><input type="checkbox" class="rp" value="${p}" ${r.perms.includes(p)?'checked':''}><span>${T('p_'+p)}</span></label>`).join('')}</div>`,
+ `<button class="btn" onclick="closeM()">${T('cancel')}</button><button class="btn pri" onclick="saveRole('${id||''}')">${ic('check')} ${T('save')}</button>`)}
+function saveRole(id){const n=$('rnm').value.trim();if(!n)return;const perms=[...document.querySelectorAll('.rp:checked')].map(e=>e.value);
+ if(id){const r=R(id);if(S.lang==='si')r.si=n;else r.name=n;r.perms=perms}else DB.roles.push({id:'r'+Date.now(),name:n,si:'',perms});closeM();toast(T('saved'));done()}
+function bubble(m,showName){return `<div class="bubble"><div class="wa">${ic('msg',16)} WhatsApp${showName?`, ${esc(C(m.cust).name)}`:''}</div>${esc(tf(m.key,m.p))}<small><span>${m.box}</span><span>${fdt(m.at)}</span></small></div>`}
+function vMsgs(){return `${backBtn()}<div class="hello"><h1>${T('messages')}</h1></div><div class="bubbles">${DB.msgs.slice(0,60).map(m=>bubble(m,1)).join('')}</div>`}
+function vSettings(){const st=DB.settings;
+ return `${backBtn()}<div class="hello"><h1>${T('settings')}</h1></div><div class="grid g2"><section class="card">
+ <div class="two"><div class="field"><label for="srt">${T('rate')}</label><input id="srt" type="number" inputmode="decimal" value="${st.rate}"></div><div class="field"><label for="slr">${T('lkrRate')}</label><input id="slr" type="number" inputmode="decimal" value="${st.lkrRate}"></div></div>
+ <div class="field"><span class="flabel">${T('payRule')}</span>${chipsHTML('prule',['any','before','at','delivery','split'].map(v=>[v,T('pr_'+v)]),st.payRule)}</div>
+ <div class="field"><label for="spt">${T('points')}</label><textarea id="spt">${esc(st.points.join('\n'))}</textarea></div>
+ <button class="btn pri big" onclick="saveSettings()">${ic('check')} ${T('save')}</button></section>
+ <section class="card"><button class="btn bad big" onclick="resetDemo()">${T('reset')}</button></section></div>`}
+function saveSettings(){const st=DB.settings;st.rate=parseFloat($('srt').value)||st.rate;st.lkrRate=parseFloat($('slr').value)||st.lkrRate;st.payRule=cv('prule')||'any';st.points=$('spt').value.split('\n').map(x=>x.trim()).filter(Boolean);if(!st.points.length)st.points=['Main office'];toast(T('saved'));done()}
+function resetDemo(){if(!confirm(T('resetQ')))return;DB=seed(S.route);save();S.page='home';render()}
+
+/* ---------------- staff: jobs ---------------- */
+function jobCard(b,kind){const c=C(b.cust),il=kind==='pickup',addr=il?b.from:b.to.addr,ph=il?c.phone:b.to.phone,nm=il?c.name:b.to.name;
+ let main='';
+ if(kind==='pickup')main=`${!b.onWay?`<button class="btn" onclick="actOnWay('${b.id}')">${ic('truck',20)} ${T('actOnWay')}</button>`:''}<button class="btn pri" onclick="openWeigh('${b.id}')">${ic('check')} ${T('actPicked')}</button>`;
+ if(kind==='checkin')main=`<button class="btn pri" onclick="actCheckIn('${b.id}')">${ic('warehouse')} ${T('actWh')}</button>`;
+ if(kind==='load')main=`<button class="btn pri" onclick="openLoad('${b.id}')">${ic('container')} ${T('actContainer')}</button>`;
+ if(kind==='sl')main=b.addrOk?`<button class="btn pri" onclick="openSendOut('${b.id}')">${ic('truck')} ${b.mode==='point'?T('actReady'):T('actOut')}</button>`:`<button class="btn pri" onclick="openAddr('${b.id}')">${ic('map')} ${T('confirmAddress')}</button>`;
+ if(kind==='deliver')main=`<button class="btn lime" onclick="openDeliver('${b.id}')">${ic('checkc')} ${T('actDelivered')}</button>`;
+ const when=kind==='pickup'?`<span class="pill ${b.pickupDate===dayISO(0)?'z3':'plain'}">${dayWord(b.pickupDate)}</span>`:stagePill(b);
+ return `<div class="job"><div class="job-top" onclick="go('box','${b.id}')"><span class="av">${initials(nm)}</span><div><b>${esc(nm)}</b><small><span class="tag">${b.id}</span>${b.weight||b.est} kg</small></div>${when}</div>
+ <div class="job-addr">${ic('pin',20)}<span>${esc(addr)}</span></div>${bal(b)&&can('cash')?`<div class="job-addr" style="color:var(--red)">${ic('wallet',20)}<span>${T('balance')}: ${ils(bal(b))}</span></div>`:''}
+ <div class="job-btns"><a class="btn sm" href="${telHref(ph)}">${ic('phone',18)} ${T('call')}</a><a class="btn sm" href="${mapHref(addr)}" target="_blank" rel="noopener">${ic('map',18)} ${T('map')}</a>${main}</div></div>`}
+function sec(title,html,n){return `<div class="sec-h"><h2>${title}</h2><span class="count">${n}</span></div>${n?`<div class="jobs">${html}</div>`:`<div class="card empty">${T('noJobs')}</div>`}`}
+function vJobs(){const me=ST(S.user.id);let h='';
+ if(can('pickup')){const l=DB.boxes.filter(b=>b.status==='booked'&&(!b.drvIL||b.drvIL===me.id)).sort((a,z)=>a.pickupDate.localeCompare(z.pickupDate));h+=sec(T('jobsPickup'),l.map(b=>jobCard(b,'pickup')).join(''),l.length)}
+ if(can('wh_il')){const a=DB.boxes.filter(b=>b.status==='picked');h+=sec(T('jobsCheckIn'),a.map(b=>jobCard(b,'checkin')).join(''),a.length);
+  const l=DB.boxes.filter(b=>b.status==='il_wh'&&!b.cont);h+=sec(T('jobsLoad'),l.map(b=>jobCard(b,'load')).join(''),l.length)}
+ if(can('wh_sl')){const ks=DB.containers.filter(k=>k.status==='shipped'||k.status==='customs');h+=`<div class="sec-h"><h2>${T('jobsIncoming')}</h2><span class="count">${ks.length}</span></div>${ks.length?`<section class="card" style="padding:8px"><div class="rows">${ks.map(contRow).join('')}</div></section>`:`<div class="card empty">${T('noJobs')}</div>`}`;
+  const l=DB.boxes.filter(b=>b.status==='sl_wh');h+=sec(T('jobsSL'),l.map(b=>jobCard(b,'sl')).join(''),l.length)}
+ if(can('deliver')||can('wh_sl')){const l=DB.boxes.filter(b=>b.status==='out'&&(can('wh_sl')?true:b.drvSL===me.id));h+=sec(T('jobsDeliver'),l.map(b=>jobCard(b,'deliver')).join(''),l.length)}
+ if(can('calls')){const l=DB.calls.filter(c=>!c.done);h+=sec(T('jobsCalls'),l.map(callCard).join(''),l.length)}
+ return `<div class="hello"><div><h1>${greet({n:esc(me.name.split(' ')[0])})}</h1><p><span class="pill z1">${esc(roleName(R(me.role)))}</span></p></div></div>
+ <button class="btn lime scan-big" onclick="go('scan')">${ic('scan',30)} ${T('scan')}</button>${h}`}
+
+/* ---------------- scan ---------------- */
+let CAM={stream:null,raf:null};
+function vScan(){const demo=[...DB.boxes.filter(b=>b.status!=='delivered').slice(-6).map(b=>b.id),...DB.containers.filter(k=>k.status!=='arrived').map(k=>k.id)];
+ return `${S.user.t==='admin'?backBtn():''}<div class="hello"><h1>${T('scan')}</h1></div><div class="grid g2">
+ <section class="card"><div class="cam"><video id="vid" playsinline muted></video><div class="cam-frame"></div><div id="camMsg" class="cam-msg">${ic('camera',38)}<span>${T('scanHint')}</span></div></div>
+ <button class="btn pri big" id="camBtn" onclick="CAM.stream?stopCam(1):startCam()">${ic('camera')} ${T('startCamera')}</button></section>
+ <section class="card"><div class="field"><label for="scanId">${T('typeId')}</label><div class="row-in"><input id="scanId" placeholder="${DB.pre}${DB.seq-5}" autocapitalize="characters" onkeydown="if(event.key==='Enter')findId()"><button class="btn pri" onclick="findId()">${T('find')}</button></div></div>
+ <p class="flabel" style="margin:6px 0 10px">${T('tryDemo')}</p><div class="chips">${demo.map(i=>`<button class="chip" onclick="handleCode('${i}')">${ic(i.startsWith('CN')?'container':'qr',18)} ${i}</button>`).join('')}</div></section></div>`}
+async function startCam(){const msg=$('camMsg');
+ try{if(!navigator.mediaDevices||!window.jsQR)throw 0;
+  CAM.stream=await navigator.mediaDevices.getUserMedia({video:{facingMode:'environment'}});const v=$('vid');v.srcObject=CAM.stream;await v.play();
+  msg.style.display='none';$('camBtn').innerHTML=ic('x')+' '+T('stopCamera');
+  const cv=document.createElement('canvas'),ctx=cv.getContext('2d',{willReadFrequently:true});
+  const tick=()=>{if(!CAM.stream)return;if(v.readyState===v.HAVE_ENOUGH_DATA){cv.width=v.videoWidth;cv.height=v.videoHeight;ctx.drawImage(v,0,0);const img=ctx.getImageData(0,0,cv.width,cv.height);const code=jsQR(img.data,img.width,img.height,{inversionAttempts:'dontInvert'});if(code&&code.data){const t=code.data.trim().toUpperCase();if(B(t)||K(t)){if(navigator.vibrate)navigator.vibrate(80);handleCode(t);return}if(CAM.last!==t){CAM.last=t;toast(T('notFound'),'x')}}}CAM.raf=requestAnimationFrame(tick)};tick();
+ }catch(e){stopCam();if(msg){msg.style.display='flex';msg.innerHTML=ic('camera',38)+'<span>'+T('camFail')+'</span>'}}}
+function stopCam(re){if(CAM.raf)cancelAnimationFrame(CAM.raf);CAM.raf=null;if(CAM.stream){CAM.stream.getTracks().forEach(t=>t.stop());CAM.stream=null}if(re===1&&S.page==='scan')render()}
+function findId(){let v=$('scanId').value.trim().toUpperCase();if(/^\d+$/.test(v))v=DB.pre+v;handleCode(v)}
+function handleCode(t){t=String(t).trim().toUpperCase();if(B(t)){go('box',t);return}if(K(t)){go('container',t);return}toast(T('notFound'),'x')}
+
+/* ---------------- customer portal ---------------- */
+function cBoxCard(b){return `<section class="card cbox" onclick="go('box','${b.id}')"><div class="cbox-top"><div><span class="tag">${b.id}</span><b style="margin-top:6px">${esc(tf('toWho',{n:b.to.name,c:b.to.city}))}</b></div>${payPill(b)}</div>
+ ${track(b,1)}<p class="say">${esc(sentence(b))}</p>${etaBlock(b)}
+ ${(b.status==='sl_wh'&&!b.addrOk)||bal(b)?`<div class="acts" style="margin:16px 0 0" onclick="event.stopPropagation()">${b.status==='sl_wh'&&!b.addrOk?`<button class="btn lime big" onclick="openAddr('${b.id}')">${ic('map')} ${T('chooseDelivery')}</button>`:''}${bal(b)?`<button class="btn pri big" onclick="openCPay('${b.id}')">${ic('card')} ${T('payNow')} ${ils(bal(b))}</button>`:''}</div>`:''}</section>`}
+function vCHome(){const c=C(S.user.id),mine=DB.boxes.filter(b=>b.cust===c.id).sort((a,z)=>z.created-a.created),act=mine.filter(b=>b.status!=='delivered'),dn=mine.filter(b=>b.status==='delivered');
+ return `<div class="hello"><h1>${greet({n:esc(c.name.split(' ')[0])})}</h1><button class="btn pri" onclick="go('send')">${ic('plus',20)} ${T('sendBox')}</button></div>
+ ${act.length?act.map(cBoxCard).join(''):`<section class="card empty">${ic('box',40)}<p>${T('noMine')}</p><button class="btn pri" onclick="go('send')">${T('sendBox')}</button></section>`}
+ ${dn.length?`<div class="sec-h"><h2>${T('delivered')}</h2><span class="count">${dn.length}</span></div><section class="card" style="padding:8px"><div class="rows">${dn.map(b=>`<button class="row" onclick="go('box','${b.id}')"><span class="av">${ic('checkc',20)}</span><span class="r-main"><b>${esc(tf('toWho',{n:b.to.name,c:b.to.city}))}</b><small><span class="tag">${b.id}</span>${fd(b.deliveredAt)}</small></span><span></span>${ic('right',20)}</button>`).join('')}</div></section>`:''}`}
+function vCBox(id){const b=B(id);if(!b||b.cust!==S.user.id)return backBtn()+`<div class="empty">${T('notFound')}</div>`;
+ return `${backBtn()}<div class="bx-head"><div><div class="bx-id">${b.id}</div><h1>${esc(tf('toWho',{n:b.to.name,c:b.to.city}))}</h1></div><div class="pills">${stagePill(b)}${payPill(b)}</div></div>
+ <section class="card">${track(b)}<p class="say">${esc(sentence(b))}</p>${etaBlock(b)}</section>
+ <div class="acts">${b.status==='sl_wh'?`<button class="btn big ${b.addrOk?'':'lime'}" onclick="openAddr('${b.id}')">${ic('map')} ${b.addrOk?T('changeDelivery'):T('chooseDelivery')}</button>`:''}${bal(b)?`<button class="btn pri big" onclick="openCPay('${b.id}')">${ic('card')} ${T('payNow')} ${ils(bal(b))}</button>`:''}<a class="btn big" href="${telHref('+972 3 555 0199')}">${ic('phone')} ${T('callUs')}</a></div>
+ <div class="grid g2"><section class="card"><h3><span class="chipic">${ic('pin',18)}</span>${T('receiver')}</h3>${kv(T('name'),esc(b.to.name))}${kv(T('phone'),esc(b.to.phone))}${kv(T('address'),esc(b.to.addr))}${kv(T('delivery'),b.mode==='point'?esc(b.point||T('pickupPoint')):T('homeDelivery'))}</section>
+ <section class="card"><h3><span class="chipic">${ic('box',18)}</span>${T('theBox')}</h3>${kv(T('weight'),b.weight?b.weight+' kg':'~'+b.est+' kg')}${kv(T('price'),ils(b.price))}${kv(T('paid'),ils(paidOf(b)))}${kv(T('balance'),ils(bal(b)))}</section></div>
+ <section class="card"><h3><span class="chipic">${ic('clock',18)}</span>${T('history')}</h3><ol class="hist">${[...b.hist].reverse().filter(h=>h.st!=='load').map(h=>`<li><div><b>${histLabel(h)}${h.st==='pay'&&h.note?': '+esc(h.note):''}</b><small>${fdt(h.at)}</small></div></li>`).join('')}</ol></section>`}
+function openCPay(id){const b=B(id),due=bal(b);
+ modal(T('payTitle'),`<div class="pricebox"><span>${b.id}</span><b>${ils(due)}</b></div>
+ <div class="field"><label for="ccn">${T('cardNo')}</label><input id="ccn" inputmode="numeric" value="4242 4242 4242 4242"></div>
+ <div class="two"><div class="field"><label for="cce">${T('expiry')}</label><input id="cce" value="12/28"></div><div class="field"><label for="ccc">${T('cvc')}</label><input id="ccc" inputmode="numeric" value="123"></div></div>
+ <p class="note">${T('payDemo')}</p>`,
+ `<button class="btn" onclick="closeM()">${T('cancel')}</button><button class="btn pri" id="cpb" onclick="doCPay('${id}',${due})">${ic('card')} ${T('payTitle')} ${ils(due)}</button>`)}
+function doCPay(id,due){const btn=$('cpb');btn.disabled=true;btn.textContent=T('paying');
+ setTimeout(()=>{const b=B(id);b.pays.push({amt:due,cur:'ILS',method:'online',at:Date.now(),by:C(b.cust).name});b.hist.push({st:'pay',at:Date.now(),by:C(b.cust).name,note:ils(due)});notify(b,'n_paid',{id:b.id,amt:ils(due)},true);save();
+  modal(T('payTitle'),`<div class="done-ok"><div class="chipic">${ic('check',36)}</div><h2 style="justify-content:center">${T('payDone')}</h2><p class="muted">${ils(due)}</p></div>`,`<button class="btn pri" onclick="closeM();render()">${T('close')}</button>`)},900)}
+function vCSend(){const c=C(S.user.id);
+ return `${backBtn()}<div class="hello"><h1>${T('sendBox')}</h1></div><div class="grid g2"><section class="card">
+ <div class="field"><label for="rqa">${T('pickupAddr')}</label><input id="rqa" value="${esc(c.addr)}"></div>
+ <div class="field"><label for="rqd">${T('whenPickup')}</label><input id="rqd" type="date" value="${dayISO(2)}"></div>
+ <div class="field"><label for="rqk">${T('estWeight')}</label><input id="rqk" class="in-big" type="number" inputmode="decimal" value="20" oninput="$('rqp').textContent=ils((parseFloat(this.value)||0)*${DB.settings.rate})"></div>
+ <div class="pricebox"><span>${T('price')} (~)</span><b id="rqp">${ils(20*DB.settings.rate)}</b></div>
+ <div class="field"><label for="rqn">${T('note')}</label><textarea id="rqn"></textarea></div>
+ <button class="btn pri big" onclick="sendRequest()">${ic('truck')} ${T('requestPickup')}</button></section>
+ <section class="card"><a class="btn big" href="${telHref('+972 3 555 0199')}">${ic('phone')} ${T('callUs')}</a></section></div>`}
+function sendRequest(){const c=C(S.user.id),kg=$('rqk').value,d=$('rqd').value;
+ DB.calls.unshift({id:'k'+Date.now(),cust:c.id,name:c.name,phone:c.phone,note:`${kg} kg, ${fd(d)}. ${$('rqa').value.trim()}. ${$('rqn').value.trim()}`.trim(),out:'request',at:Date.now(),done:false});save();
+ $('main').innerHTML=`<section class="card done-ok" style="margin-top:20px"><div class="chipic">${ic('check',36)}</div><h2 style="justify-content:center">${T('requestSent')}</h2><p><button class="btn pri" style="margin-top:14px" onclick="go('home')">${T('myBoxes')}</button></p></section>`}
+function vCMsgs(){const m=DB.msgs.filter(x=>x.cust===S.user.id);return `<div class="hello"><h1>${T('messages')}</h1></div><div class="bubbles">${m.length?m.map(x=>bubble(x)).join(''):`<div class="empty">${T('noMine')}</div>`}</div>`}
+
+
+/* swipe + drag for horizontal rows (touch swipes natively; mouse can drag or use the wheel) */
+function initSwipe(){document.querySelectorAll('.nav,.chips.scroll').forEach(el=>{if(el.dataset.sw)return;el.dataset.sw=1;
+ let down=false,sx=0,sl=0,moved=false;
+ const edge=()=>{const max=el.scrollWidth-el.clientWidth;el.classList.toggle('at-end',el.scrollLeft>=max-2);el.classList.toggle('mid',el.scrollLeft>2)};
+ el.addEventListener('scroll',edge,{passive:true});edge();
+ el.addEventListener('pointerdown',e=>{if(e.pointerType!=='mouse')return;down=true;moved=false;sx=e.clientX;sl=el.scrollLeft});
+ window.addEventListener('pointermove',e=>{if(!down)return;const dx=e.clientX-sx;if(Math.abs(dx)>5){moved=true;el.classList.add('drag')}el.scrollLeft=sl-dx});
+ window.addEventListener('pointerup',()=>{down=false;el.classList.remove('drag')});
+ el.addEventListener('click',e=>{if(moved){e.preventDefault();e.stopPropagation();moved=false}},true);
+ el.addEventListener('wheel',e=>{if(el.scrollWidth<=el.clientWidth||Math.abs(e.deltaX)>Math.abs(e.deltaY))return;e.preventDefault();el.scrollLeft+=e.deltaY},{passive:false});
+ const on=el.querySelector('.on');if(on&&on.offsetLeft+on.offsetWidth>el.clientWidth)el.scrollLeft=on.offsetLeft-el.clientWidth/2+on.offsetWidth/2;edge();
+});}
+/* ---------------- start ---------------- */
+if(S.route&&ROUTES[S.route])load();else{S.route=null;S.user=null}
+if(S.user&&DB&&((S.user.t==='staff'&&!ST(S.user.id))||(S.user.t==='customer'&&!DB.customers.find(c=>c.id===S.user.id))))S.user=null;
+hReset();
+render();
+</script>
+</body>
+</html>
