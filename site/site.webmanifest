@@ -1,0 +1,13 @@
+{
+  "name": "Janath Cargo",
+  "short_name": "Janath Cargo",
+  "description": "Door-to-door cargo from Israel to Sri Lanka.",
+  "start_url": "/",
+  "display": "browser",
+  "background_color": "#FFFFFF",
+  "theme_color": "#10243E",
+  "icons": [
+    { "src": "icon-192.png", "sizes": "192x192", "type": "image/png" },
+    { "src": "icon-512.png", "sizes": "512x512", "type": "image/png" }
+  ]
+}
