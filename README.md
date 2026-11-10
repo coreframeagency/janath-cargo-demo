@@ -21,6 +21,7 @@ site/
 1. Hero — route switch (Israel → Sri Lanka or Philippines → Sri Lanka), headline, quote form and a "Track a parcel" tab. Both open WhatsApp with the details filled in.
 2. Routes — one card per route: collection areas and usual delivery time.
 3. How it works — four steps beside a route map. On desktop the section pins and the map follows the selected route as you scroll.
+3b. The doorstep — full-screen photo of the delivery reaching the family. The framed photo opens to full screen while the section is pinned, then the line "Every parcel has someone waiting at the other end." appears.
 4. Customer portal — real screens from the Janath Cargo portal with sample data, marked "Launching soon".
 5. About, Reviews, Help (questions and items we can't send), Offices, Instagram, Contact.
 

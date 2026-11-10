@@ -26,14 +26,38 @@
     else { img.addEventListener('load', ok, { once: true }); img.addEventListener('error', missing, { once: true }); }
   });
 
+  /* tall crop for portrait screens: used when assets/photos/<name>-tall.jpg exists */
+  const portraitMQ = window.matchMedia('(max-aspect-ratio: 4/5)');
+  $$('img[data-tall]').forEach((img) => {
+    const wideSrc = img.getAttribute('src');
+    let tallOk = null;
+    const apply = () => {
+      if (!img.isConnected) return;
+      const box = img.closest('.ph');
+      if (portraitMQ.matches) {
+        if (tallOk === null) {
+          const probe = new Image();
+          probe.onload = () => { tallOk = true; apply(); };
+          probe.onerror = () => { tallOk = false; };
+          probe.src = img.dataset.tall;
+          return;
+        }
+        if (tallOk && img.getAttribute('src') !== img.dataset.tall) { img.src = img.dataset.tall; box.classList.add('is-tall'); }
+      } else if (img.getAttribute('src') !== wideSrc) { img.src = wideSrc; box.classList.remove('is-tall'); }
+    };
+    apply();
+    portraitMQ.addEventListener('change', apply);
+  });
+
   /* ---------- text: language x route ---------- */
   let lang = 'en';
   let route = root.dataset.route === 'ph' ? 'ph' : 'il';
   const textNodes = $$('[data-i18n]');
-  const EN = {}, EN_PH_ATTR = {}, EN_ARIA = {};
+  const EN = {}, EN_PH_ATTR = {}, EN_ARIA = {}, EN_ALT = {};
   textNodes.forEach((n) => { if (!(n.dataset.i18n in EN)) EN[n.dataset.i18n] = n.innerHTML; });
   $$('[data-i18n-ph]').forEach((n) => { EN_PH_ATTR[n.dataset.i18nPh] = n.getAttribute('placeholder'); });
   $$('[data-i18n-aria]').forEach((n) => { EN_ARIA[n.dataset.i18nAria] = n.getAttribute('aria-label'); });
+  $$('[data-i18n-alt]').forEach((n) => { EN_ALT[n.dataset.i18nAlt] = n.getAttribute('alt'); });
   const TITLE_EN = document.title;
 
   function text(key, routed) {
@@ -64,6 +88,7 @@
       if (v != null) n.setAttribute('placeholder', v);
     });
     $$('[data-i18n-aria]').forEach((n) => { const v = lang === 'si' ? SI[n.dataset.i18nAria] : EN_ARIA[n.dataset.i18nAria]; if (v != null) n.setAttribute('aria-label', v); });
+    $$('[data-i18n-alt]').forEach((n) => { const v = lang === 'si' ? SI[n.dataset.i18nAlt] : EN_ALT[n.dataset.i18nAlt]; if (v != null) n.setAttribute('alt', v); });
     document.title = lang === 'si' && SI['meta.title'] ? SI['meta.title'] : TITLE_EN;
     $$('[data-lang-toggle] .lang-label').forEach((l) => {
       if (lang === 'si') { l.textContent = 'English'; l.lang = 'en'; } else { l.textContent = 'සිංහල'; l.lang = 'si'; }
@@ -248,6 +273,36 @@
     mio.observe(svg);
   } else staticArc = 1;
 
+  /* ---------- the doorstep: framed photo opens to full screen while pinned ---------- */
+  const moment = document.querySelector('[data-moment]');
+  let momentLive = false;
+  function setMomentMode() {
+    if (!moment) return;
+    momentLive = !reduce.matches;
+    moment.classList.toggle('live', momentLive);
+    if (!momentLive) ['--mi-x', '--mi-y', '--mi-r', '--ms', '--mt-o', '--mt-y'].forEach((v) => moment.style.removeProperty(v));
+  }
+  function drawMoment(vh) {
+    if (!momentLive) return;
+    const r = moment.getBoundingClientRect();
+    if (r.bottom < -100 || r.top > vh + 100) return;
+    const vw = moment.clientWidth;
+    const enter = clamp((vh - r.top) / vh, 0, 1);                    // section rising into view
+    const pin = clamp(-r.top / Math.max(1, r.height - vh), 0, 1);    // pinned progress
+    const open = smooth(clamp(pin / 0.55, 0, 1));                    // 0 framed, 1 full screen
+    const narrow = vw < 761;
+    const maxX = narrow ? 16 : Math.max(24, (vw - 1200) / 2);        // starts at the content width
+    const maxY = vh * (narrow ? 0.07 : 0.1);
+    moment.style.setProperty('--mi-x', `${(maxX * (1 - open)).toFixed(1)}px`);
+    moment.style.setProperty('--mi-y', `${(maxY * (1 - open)).toFixed(1)}px`);
+    moment.style.setProperty('--mi-r', `${(12 * (1 - open)).toFixed(1)}px`);
+    moment.style.setProperty('--ms', (1.16 - 0.06 * enter - 0.1 * open).toFixed(4));
+    const t = smooth(clamp((pin - 0.42) / 0.33, 0, 1));
+    moment.style.setProperty('--mt-o', t.toFixed(3));
+    moment.style.setProperty('--mt-y', `${(32 * (1 - t)).toFixed(1)}px`);
+  }
+  setMomentMode();
+
   /* ---------- scroll loop ---------- */
   const parallax = $$('[data-parallax]');
   const floaty = $$('[data-parallax-y]');
@@ -276,6 +331,7 @@
     } else {
       drawMap(toCam(STATIC_FOCUS[route]), staticArc);
     }
+    drawMoment(vh);
 
     let current = null;
     sections.forEach((sec, i) => { const b = sec.getBoundingClientRect(); if (b.top < vh * 0.4 && b.bottom > vh * 0.4) current = i; });
@@ -310,7 +366,7 @@
   }
   window.addEventListener('scroll', () => requestUpdate(), { passive: true });
   window.addEventListener('resize', () => requestUpdate(true));
-  const onMode = () => { setJourneyMode(); requestUpdate(true); };
+  const onMode = () => { setJourneyMode(); setMomentMode(); requestUpdate(true); };
   wide.addEventListener('change', onMode);
   reduce.addEventListener('change', onMode);
 

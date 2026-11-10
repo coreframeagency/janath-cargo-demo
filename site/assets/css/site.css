@@ -209,6 +209,20 @@ html[lang="si"] .mk{letter-spacing:0;text-transform:none;font-size:15px}
 .journey.static .step{opacity:1}
 .journey.static .steps::before{height:100%}
 
+/* ---------- the doorstep (full-screen moment) ---------- */
+.moment{position:relative;background:var(--ink);color:var(--white)}
+.m-pin{position:relative;height:min(100svh,max(560px,56.25vw));overflow:hidden}
+.m-frame{position:absolute;inset:0;border-radius:0;clip-path:inset(var(--mi-y,0px) var(--mi-x,0px) round var(--mi-r,0px))}
+.m-frame::after{left:calc(var(--mi-x,0px) + 16px);top:calc(var(--mi-y,0px) + 16px);right:auto;bottom:auto;max-width:60ch}
+.m-media{position:absolute;inset:0;z-index:2;transform:scale(var(--ms,1));transform-origin:64% 45%;will-change:transform}
+.m-frame .photo{object-position:62% 45%}
+.m-shade{position:absolute;inset:0;z-index:3;pointer-events:none;background:linear-gradient(0deg,rgba(11,26,46,.85) 0%,rgba(11,26,46,.45) 30%,rgba(11,26,46,0) 56%),linear-gradient(90deg,rgba(11,26,46,.5) 0%,rgba(11,26,46,0) 46%)}
+.m-copy{position:absolute;left:0;right:0;bottom:0;z-index:4;padding-bottom:clamp(40px,8vh,96px);opacity:var(--mt-o,1);transform:translateY(var(--mt-y,0px))}
+.m-line{font:800 clamp(40px,4.6vw,72px)/1.02 var(--head);letter-spacing:-.004em;max-width:12em;text-wrap:balance}
+.moment.live{height:190vh}
+.moment.live .m-pin{position:sticky;top:0;height:100vh;height:100svh}
+html[lang="si"] .m-line{font-size:clamp(30px,3.4vw,52px);line-height:1.3;max-width:16em}
+
 /* ---------- customer portal ---------- */
 .portal{background:var(--ice);overflow:hidden}
 .portal-grid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:clamp(40px,6vw,96px);align-items:center}
@@ -358,6 +372,17 @@ html[lang="si"] .nosend h3,html[lang="si"] .office h3{font-size:24px;line-height
   .office-grid,.review-grid{grid-template-columns:1fr}
   .feat{grid-template-columns:1fr}
   .ft-grid{grid-template-columns:1fr 1fr}
+}
+@media (max-width:760px){
+  .m-pin{height:min(100svh,150vw)}
+  .m-line{font-size:clamp(32px,9vw,44px);max-width:none}
+  html[lang="si"] .m-line{font-size:clamp(24px,6.6vw,32px)}
+  .m-copy{padding-bottom:40px}
+}
+@media (max-aspect-ratio:4/5){
+  .m-frame .photo{object-position:66% 40%}
+  .m-frame.is-tall .photo{object-position:50% 40%}
+  .m-shade{background:linear-gradient(0deg,rgba(11,26,46,.9) 0%,rgba(11,26,46,.5) 28%,rgba(11,26,46,0) 52%)}
 }
 @media (max-width:560px){
   body{font-size:16px}
