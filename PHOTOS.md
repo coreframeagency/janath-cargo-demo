@@ -2,6 +2,8 @@
 
 Each slot shows a grey placeholder with its number and a short brief until a photo is added.
 
+**In place (11 Nov 2026):** 01 hero, 02 Israel route, 03 Philippines route, 05 doorstep (wide and tall). The share preview image (`site/assets/img/og.png`) is a crop of the doorstep photo. **Still to come:** 04 About (real photo of Janath or his van) and the six Instagram posts.
+
 **To add a photo:** save a JPG into `site/assets/photos/` with the exact file name below and push. The page picks it up automatically; no code changes.
 
 | Slot | File name | Where on the page | Shape · minimum size | What to show |
