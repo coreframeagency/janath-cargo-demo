@@ -48,7 +48,8 @@
 <div class="util" role="region" aria-label="Contact and language" data-i18n-aria="u.region">
   <div class="wrap util-in">
     <div class="util-r">
-      <a class="util-link" href="#instagram"><svg class="i" aria-hidden="true"><use href="#i-ig"/></svg><span>Instagram</span></a>
+      <!-- Instagram goes here once Janath confirms the handle:
+           <a class="util-link" href="https://www.instagram.com/HANDLE/" target="_blank" rel="noopener"><svg class="i" aria-hidden="true"><use href="#i-ig"/></svg><span>Instagram</span></a> -->
       <a class="util-link" href="https://wa.me/972547415262" target="_blank" rel="noopener"><svg class="i" aria-hidden="true"><use href="#i-chat"/></svg><span>+972 54-741-5262</span></a>
       <button class="util-lang" type="button" data-lang-toggle><svg class="i" aria-hidden="true"><use href="#i-lang"/></svg><span class="lang-label" lang="si">සිංහල</span></button>
     </div>
@@ -58,7 +59,7 @@
 <header class="hd" data-head>
   <div class="hd-in wrap">
     <a class="brand" href="#top">
-      <picture><source srcset="assets/img/logo-symbol.webp" type="image/webp"><img src="assets/img/logo-symbol.png" width="98" height="160" alt=""></picture>
+      <picture><source srcset="assets/img/logo-symbol.webp" type="image/webp"><img decoding="async" src="assets/img/logo-symbol.png" width="98" height="160" alt=""></picture>
       <span class="brand-name">Janath Cargo</span>
     </a>
     <nav class="nav" aria-label="Main">
@@ -96,7 +97,7 @@
   <!-- HERO -->
   <section class="hero" id="top" aria-labelledby="hero-title">
     <figure class="ph ph-dark hero-media" data-slot="01" data-ph="Hero · wide 16:9 · container ship, port or loaded van at dusk">
-      <div class="par" data-parallax="0.12"><img class="photo" src="assets/photos/01-hero.jpg" alt="" fetchpriority="high"></div>
+      <div class="par" data-parallax="0.12"><img decoding="async" class="photo" src="assets/photos/01-hero.jpg" alt="" fetchpriority="high"></div>
     </figure>
     <div class="hero-shade" aria-hidden="true"></div>
     <div class="wrap hero-in">
@@ -149,7 +150,7 @@
       </div>
       <div class="route-cards">
         <article class="route-card rv" data-route-card="il">
-          <figure class="ph" data-slot="02" data-ph="Israel route · 4:3 · parcel being collected outside a home in Israel"><div class="par" data-parallax="0.08"><img class="photo" src="assets/photos/02-route-israel.jpg" alt="" loading="lazy"></div></figure>
+          <figure class="ph" data-slot="02" data-ph="Israel route · 4:3 · parcel being collected outside a home in Israel"><div class="par" data-parallax="0.08"><img decoding="async" class="photo" src="assets/photos/02-route-israel.jpg" alt="" loading="lazy"></div></figure>
           <div class="route-card-in">
             <p class="route-name"><span data-i18n="r.il">Israel</span><svg class="i" aria-hidden="true"><use href="#i-arrow"/></svg><span data-i18n="r.lk">Sri Lanka</span></p>
             <dl class="facts">
@@ -160,7 +161,7 @@
           </div>
         </article>
         <article class="route-card rv" data-route-card="ph">
-          <figure class="ph" data-slot="03" data-ph="Philippines route · 4:3 · parcel being collected outside a home in the Philippines"><div class="par" data-parallax="0.08"><img class="photo" src="assets/photos/03-route-philippines.jpg" alt="" loading="lazy"></div></figure>
+          <figure class="ph" data-slot="03" data-ph="Philippines route · 4:3 · parcel being collected outside a home in the Philippines"><div class="par" data-parallax="0.08"><img decoding="async" class="photo" src="assets/photos/03-route-philippines.jpg" alt="" loading="lazy"></div></figure>
           <div class="route-card-in">
             <p class="route-name"><span data-i18n="r.il">Israel</span><svg class="i" aria-hidden="true"><use href="#i-arrow"/></svg><span data-i18n="r.ph">Philippines</span></p>
             <dl class="facts">
@@ -204,7 +205,7 @@
   <section class="moment" id="doorstep" aria-labelledby="m-title" data-moment>
     <div class="m-pin">
       <figure class="ph ph-dark m-frame" data-slot="05" data-ph="The doorstep · wide 16:9 + tall 9:16 · Janath Cargo delivery reaching a Sri Lankan family at their door">
-        <div class="m-media"><img class="photo" src="assets/photos/05-doorstep.jpg" data-tall="assets/photos/05-doorstep-tall.jpg" alt="A Janath Cargo courier hands a parcel to a family at their front door in Sri Lanka." data-i18n-alt="m.alt" data-ph-src="assets/photos/05-doorstep-ph.jpg" data-ph-tall="assets/photos/05-doorstep-ph-tall.jpg" loading="lazy"></div>
+        <div class="m-media"><img decoding="async" class="photo" src="assets/photos/05-doorstep.jpg" data-tall="assets/photos/05-doorstep-tall.jpg" alt="A Janath Cargo courier hands a parcel to a family at their front door in Sri Lanka." data-i18n-alt="m.alt" data-ph-src="assets/photos/05-doorstep-ph.jpg" data-ph-tall="assets/photos/05-doorstep-ph-tall.jpg" loading="lazy"></div>
       </figure>
       <div class="m-shade" aria-hidden="true"></div>
       <div class="wrap m-copy">
@@ -232,8 +233,8 @@
         </div>
       </div>
       <div class="portal-art" aria-hidden="true">
-        <div class="phone phone-back" data-parallax-y="-0.06"><div class="phone-bar"><span>9:41</span><i></i></div><img src="assets/img/portal-en-msgs.webp" data-src-en="assets/img/portal-en-msgs.webp" data-src-si="assets/img/portal-si-msgs.webp" alt="" loading="lazy" width="780" height="1554"></div>
-        <div class="phone phone-front" data-parallax-y="0.06"><div class="phone-bar"><span>9:41</span><i></i></div><img src="assets/img/portal-en-boxes.webp" data-src-en="assets/img/portal-en-boxes.webp" data-src-si="assets/img/portal-si-boxes.webp" alt="" loading="lazy" width="780" height="1554"></div>
+        <div class="phone phone-back" data-parallax-y="-0.06"><div class="phone-bar"><span>9:41</span><i></i></div><img decoding="async" src="assets/img/portal-en-msgs.webp" data-src-en="assets/img/portal-en-msgs.webp" data-src-si="assets/img/portal-si-msgs.webp" alt="" loading="lazy" width="780" height="1554"></div>
+        <div class="phone phone-front" data-parallax-y="0.06"><div class="phone-bar"><span>9:41</span><i></i></div><img decoding="async" src="assets/img/portal-en-boxes.webp" data-src-en="assets/img/portal-en-boxes.webp" data-src-si="assets/img/portal-si-boxes.webp" alt="" loading="lazy" width="780" height="1554"></div>
         <p class="portal-note" data-i18n="p.note">Portal preview with sample data</p>
       </div>
     </div>
@@ -242,7 +243,7 @@
   <!-- ABOUT -->
   <section class="section about" id="about" aria-labelledby="a-title">
     <div class="wrap about-grid">
-      <figure class="ph about-media rv" data-slot="04" data-ph="About · portrait 4:5 · Janath and the team, or the van at the warehouse"><div class="par" data-parallax="0.1"><img class="photo" src="assets/photos/04-about.jpg" alt="" loading="lazy"></div></figure>
+      <figure class="ph about-media rv" data-slot="04" data-ph="About · portrait 4:5 · Janath and the team, or the van at the warehouse"><div class="par" data-parallax="0.1"><img decoding="async" class="photo" src="assets/photos/04-about.jpg" alt="" loading="lazy"></div></figure>
       <div class="about-copy">
         <p class="label rv" data-i18n="a.label">About Janath Cargo</p>
         <h2 class="h2 rv" id="a-title" data-i18n="a.title">More than a box<span class="amb">.</span></h2>
@@ -334,30 +335,6 @@
     </div>
   </section>
 
-  <!-- INSTAGRAM -->
-  <section class="section insta" id="instagram" aria-labelledby="ig-title">
-    <div class="wrap">
-      <div class="sec-head rv">
-        <div>
-          <p class="label" data-i18n="ig.label">Instagram</p>
-          <h2 class="h2" id="ig-title" data-i18n="ig.title">Follow Janath Cargo<span class="amb">.</span></h2>
-        </div>
-        <div class="sec-head-r">
-          <span class="tbc" data-i18n="ig.handle">Instagram handle to confirm</span>
-          <a class="btn btn-navy" href="#instagram" data-ig aria-disabled="true"><svg class="i" aria-hidden="true"><use href="#i-ig"/></svg><span data-i18n="ig.cta">Open Instagram</span></a>
-        </div>
-      </div>
-      <div class="ig-grid">
-        <figure class="ph ph-sq rv" data-slot="IG1" data-ph="Post 1 · square"><img class="photo" src="assets/photos/ig-1.jpg" alt="" loading="lazy"></figure>
-        <figure class="ph ph-sq rv" data-slot="IG2" data-ph="Post 2 · square"><img class="photo" src="assets/photos/ig-2.jpg" alt="" loading="lazy"></figure>
-        <figure class="ph ph-sq rv" data-slot="IG3" data-ph="Post 3 · square"><img class="photo" src="assets/photos/ig-3.jpg" alt="" loading="lazy"></figure>
-        <figure class="ph ph-sq rv" data-slot="IG4" data-ph="Post 4 · square"><img class="photo" src="assets/photos/ig-4.jpg" alt="" loading="lazy"></figure>
-        <figure class="ph ph-sq rv" data-slot="IG5" data-ph="Post 5 · square"><img class="photo" src="assets/photos/ig-5.jpg" alt="" loading="lazy"></figure>
-        <figure class="ph ph-sq rv" data-slot="IG6" data-ph="Post 6 · square"><img class="photo" src="assets/photos/ig-6.jpg" alt="" loading="lazy"></figure>
-      </div>
-    </div>
-  </section>
-
   <!-- CONTACT -->
   <section class="contact" id="contact" aria-labelledby="c-title">
     <h2 class="sr-only" id="c-title" data-i18n="c.big">From your doorstep. To theirs.</h2>
@@ -378,7 +355,7 @@
 <footer class="ft">
   <div class="wrap ft-grid">
     <div class="ft-brand">
-      <a class="ft-logo" href="#top" aria-label="Janath Cargo"><picture><source srcset="assets/img/logo-primary.webp" type="image/webp"><img src="assets/img/logo-primary.png" width="134" height="160" alt="Janath Cargo" loading="lazy"></picture></a>
+      <a class="ft-logo" href="#top" aria-label="Janath Cargo"><picture><source srcset="assets/img/logo-primary.webp" type="image/webp"><img decoding="async" src="assets/img/logo-primary.png" width="134" height="160" alt="Janath Cargo" loading="lazy"></picture></a>
     </div>
     <nav class="ft-col" aria-label="Ship">
       <p class="ft-h" data-i18n="f.ship">Ship</p>
@@ -400,8 +377,8 @@
     </nav>
     <div class="ft-col">
       <p class="ft-h" data-i18n="f.follow">Follow</p>
-      <a href="#instagram"><svg class="i" aria-hidden="true"><use href="#i-ig"/></svg>Instagram</a>
-      <span class="ft-tbc"><svg class="i" aria-hidden="true"><use href="#i-fb"/></svg>Facebook <span class="tbc tbc-dark" data-i18n="f.link">link to confirm</span></span>
+      <span class="ft-tbc"><span class="ft-nm"><svg class="i" aria-hidden="true"><use href="#i-ig"/></svg>Instagram</span> <span class="tbc tbc-dark" data-i18n="f.link">link to confirm</span></span>
+      <span class="ft-tbc"><span class="ft-nm"><svg class="i" aria-hidden="true"><use href="#i-fb"/></svg>Facebook</span> <span class="tbc tbc-dark" data-i18n="f.link">link to confirm</span></span>
       <a href="https://wa.me/972547415262" target="_blank" rel="noopener"><svg class="i" aria-hidden="true"><use href="#i-chat"/></svg>WhatsApp</a>
     </div>
   </div>

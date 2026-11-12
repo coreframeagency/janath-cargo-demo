@@ -23,11 +23,15 @@ site/
 3. How it works — four steps beside a route map. For Israel → Sri Lanka the section pins on desktop and the map animates as you scroll; for Israel → Philippines it shows a still map of that route.
 3b. The doorstep — full-screen photo of the delivery reaching the family. The framed photo opens to full screen while the section is pinned, then the line "Every parcel has someone waiting at the other end." appears.
 4. Customer portal — real screens from the Janath Cargo portal with sample data, marked "Launching soon".
-5. About, Reviews, Help (questions and items we can't send), Offices, Instagram, Contact.
+5. About, Reviews, Help (questions and items we can't send), Offices, Contact.
+
+Scrolling: on a mouse or trackpad, wheel scrolling glides (eased in `site.js`) and every scroll effect is drawn in the same frame. Touch, keyboard, scrollbar and in-page links keep the browser's own scrolling. Parallax and the sliding contact headline run as CSS scroll-driven animations where the browser supports them (`html.sda`), otherwise `site.js` draws the same motion. Layout is measured on load, resize and content changes, never during scroll. With reduced motion turned on, nothing moves or pins.
 
 The route switch changes the hero line, form, steps, map and WhatsApp messages, and is remembered. `?to=ph` opens the Israel → Philippines route; `?lang=si` opens Sinhala. A Philippines version of the doorstep photo (`05-doorstep-ph.jpg`, `05-doorstep-ph-tall.jpg`) is used on that route if the files are added.
 
 Details still to come from Janath Cargo are shown on the page as amber dashed "To confirm" chips.
+
+Instagram and Facebook show "link to confirm" in the footer. When the Instagram handle is confirmed, replace that footer chip with a link and un-comment the Instagram link in the top bar of `index.html`.
 
 ## Map
 

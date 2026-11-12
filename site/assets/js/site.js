@@ -1,6 +1,7 @@
 /* Janath Cargo — site behaviour v3
-   Route switch (Israel or Philippines to Sri Lanka), language switch, WhatsApp messages, quote form,
-   header, menu, photo slots and scroll effects (pinned route map, parallax, scrubbed type, reveals). */
+   Route switch (Israel → Sri Lanka or Israel → Philippines), language switch, WhatsApp messages, quote form,
+   header, menu, photo slots and scroll effects (pinned route map, doorstep, parallax, scrubbed type, reveals,
+   smooth wheel scrolling). */
 (() => {
   const WA = '972547415262';
   const root = document.documentElement;
@@ -102,6 +103,7 @@
     applyVariants();
     setJourneyMode();
     setArc();
+    measure();
     requestUpdate(true);
   }
   function setLang(next, remember) { lang = next === 'si' && Object.keys(SI).length ? 'si' : 'en'; if (remember) store.set('jc-lang', lang); render(); }
@@ -181,7 +183,6 @@
     });
   });
   $$('[data-lang-toggle]').forEach((b) => b.addEventListener('click', () => setLang(lang === 'si' ? 'en' : 'si', true)));
-  $$('[data-ig][aria-disabled="true"]').forEach((a) => a.addEventListener('click', (e) => e.preventDefault()));
 
   /* ---------- reveals ---------- */
   const reveals = $$('.rv');
@@ -215,11 +216,15 @@
   const STATIC_FOCUS = { il: [225, 270, 1205, 860], ph: [180, 180, 2060, 800] };
   const DEST = { il: M.pts.srilanka, ph: M.pts.philippines };
   const KEYS = [0.1, 0.38, 0.64, 0.9];
-  let arc, arcBase, arcLen = 1;
+  // Layout is measured on load, resize and content changes, never inside the scroll loop.
+  const G = { vh: window.innerHeight, svgW: 0, svgH: 0, j: { top: 0, h: 0 }, m: null, secs: [], par: [], fl: [], band: null };
+  const docTop = (el) => { let t = 0; for (let n = el; n; n = n.offsetParent) t += n.offsetTop; return t; };
+  let arc, arcBase, arcLen = 1, lastMap = '', stepIdx = -1;
   function setArc() {
     arc = svg.querySelector(`[data-arc="${route}"]`);
     arcBase = svg.querySelector(`[data-arc-base="${route}"]`);
     arcLen = arc.getTotalLength();
+    lastMap = '';
   }
   let pinned = false;
   let staticArc = reduce.matches ? 1 : 0;
@@ -239,13 +244,16 @@
   const fmtC = (x, y) => { const lat = latOf(y), lon = x / M.k + M.lon0; return `${Math.abs(lat).toFixed(1)}°${lat >= 0 ? 'N' : 'S'}  ${lon.toFixed(1)}°E`; };
 
   function drawMap(cam, arcP) {
-    const r = svg.getBoundingClientRect();
-    const cw = r.width, ch = r.height;
+    const cw = G.svgW, ch = G.svgH;
     if (!cw || !ch || !arc) return;
     const st = pinned ? { x: cw * 0.46, y: ch * 0.14, w: cw * 0.5, h: ch * 0.74 } : { x: cw * 0.06, y: ch * 0.1, w: cw * 0.88, h: ch * 0.62 };
     const s = Math.min(st.w / cam.w, st.h / cam.h);
     const vx = cam.x - (st.x + st.w / 2) / s, vy = cam.y - (st.y + st.h / 2) / s;
-    svg.setAttribute('viewBox', `${vx.toFixed(2)} ${vy.toFixed(2)} ${(cw / s).toFixed(2)} ${(ch / s).toFixed(2)}`);
+    const vb = `${vx.toFixed(2)} ${vy.toFixed(2)} ${(cw / s).toFixed(2)} ${(ch / s).toFixed(2)}`;
+    const key = `${vb} ${arcP.toFixed(4)}`;
+    if (key === lastMap) return;                                     // nothing moved: skip the repaint
+    lastMap = key;
+    svg.setAttribute('viewBox', vb);
     arc.style.strokeWidth = (2.5 / s).toFixed(3);
     arc.style.strokeDasharray = `${(arcLen * arcP).toFixed(2)} ${arcLen.toFixed(2)}`;
     arcBase.style.strokeWidth = (1.5 / s).toFixed(3);
@@ -255,13 +263,15 @@
     const pt = arc.getPointAtLength(arcLen * arcP);
     place(run, [pt.x, pt.y]);
     run.style.opacity = arcP > 0.001 && arcP < 0.999 ? '1' : '0';
-    coords.textContent = fmtC(cam.x, cam.y);
+    const c = fmtC(cam.x, cam.y);
+    if (coords.textContent !== c) coords.textContent = c;
   }
   // The scroll animation runs for Israel → Sri Lanka only; Israel → Philippines shows a still map.
   function setJourneyMode() {
     pinned = wide.matches && !reduce.matches && route === 'il';
     journeyEl.classList.toggle('static', !pinned);
     if (!pinned) steps.forEach((s) => s.classList.add('on'));
+    lastMap = ''; stepIdx = -1;
   }
   setJourneyMode();
   setArc();
@@ -279,30 +289,32 @@
   /* ---------- the doorstep: framed photo opens to full screen while pinned ---------- */
   const moment = document.querySelector('[data-moment]');
   let momentLive = false;
+  const mVals = {};
+  const setVar = (k, v) => { if (mVals[k] !== v) { mVals[k] = v; moment.style.setProperty(k, v); } };
   function setMomentMode() {
     if (!moment) return;
     momentLive = !reduce.matches;
     moment.classList.toggle('live', momentLive);
-    if (!momentLive) ['--mi-x', '--mi-y', '--mi-r', '--ms', '--mt-o', '--mt-y'].forEach((v) => moment.style.removeProperty(v));
+    if (!momentLive) ['--mi-x', '--mi-y', '--mi-r', '--ms', '--mt-o', '--mt-y'].forEach((v) => { moment.style.removeProperty(v); delete mVals[v]; });
   }
-  function drawMoment(vh) {
-    if (!momentLive) return;
-    const r = moment.getBoundingClientRect();
-    if (r.bottom < -100 || r.top > vh + 100) return;
-    const vw = moment.clientWidth;
-    const enter = clamp((vh - r.top) / vh, 0, 1);                    // section rising into view
-    const pin = clamp(-r.top / Math.max(1, r.height - vh), 0, 1);    // pinned progress
+  function drawMoment(y) {
+    if (!momentLive || !G.m) return;
+    const vh = G.vh, top = G.m.top - y, h = G.m.h;
+    if (top + h < -100 || top > vh + 100) return;
+    const vw = G.m.w;
+    const enter = clamp((vh - top) / vh, 0, 1);                      // section rising into view
+    const pin = clamp(-top / Math.max(1, h - vh), 0, 1);             // pinned progress
     const open = smooth(clamp(pin / 0.55, 0, 1));                    // 0 framed, 1 full screen
     const narrow = vw < 761;
     const maxX = narrow ? 16 : Math.max(24, (vw - 1200) / 2);        // starts at the content width
     const maxY = vh * (narrow ? 0.07 : 0.1);
-    moment.style.setProperty('--mi-x', `${(maxX * (1 - open)).toFixed(1)}px`);
-    moment.style.setProperty('--mi-y', `${(maxY * (1 - open)).toFixed(1)}px`);
-    moment.style.setProperty('--mi-r', `${(12 * (1 - open)).toFixed(1)}px`);
-    moment.style.setProperty('--ms', (1.16 - 0.06 * enter - 0.1 * open).toFixed(4));
+    setVar('--mi-x', `${(maxX * (1 - open)).toFixed(1)}px`);
+    setVar('--mi-y', `${(maxY * (1 - open)).toFixed(1)}px`);
+    setVar('--mi-r', `${(12 * (1 - open)).toFixed(1)}px`);
+    setVar('--ms', (1.16 - 0.06 * enter - 0.1 * open).toFixed(4));
     const t = smooth(clamp((pin - 0.42) / 0.33, 0, 1));
-    moment.style.setProperty('--mt-o', t.toFixed(3));
-    moment.style.setProperty('--mt-y', `${(32 * (1 - t)).toFixed(1)}px`);
+    setVar('--mt-o', t.toFixed(3));
+    setVar('--mt-y', `${(32 * (1 - t)).toFixed(1)}px`);
   }
   setMomentMode();
 
@@ -312,11 +324,46 @@
   const scrub = document.querySelector('[data-scrub]');
   const navLinks = $$('.nav a');
   const sections = navLinks.map((a) => document.querySelector(a.getAttribute('href'))).filter(Boolean);
-  let lastY = window.scrollY, ticking = false;
+  parallax.forEach((el) => el.style.setProperty('--pf', el.dataset.parallax));
+  floaty.forEach((el) => el.style.setProperty('--pfy', el.dataset.parallaxY));
 
+  // Where the browser supports scroll-driven animations, parallax and the sliding headline run in CSS on the
+  // compositor (html.sda in site.css), so they stay locked to the page however it is scrolled.
+  const sdaOK = !!(window.CSS && CSS.supports && CSS.supports('animation-timeline', '--t') && CSS.supports('view-timeline-name', '--t') && CSS.supports('width', '1cqw'));
+  let sda = false;
+  function setSda() {
+    sda = sdaOK && !reduce.matches;
+    root.classList.toggle('sda', sda);
+    if (sda || reduce.matches) parallax.concat(floaty, scrub ? [scrub] : []).forEach((el) => el.style.removeProperty('transform'));
+  }
+
+  function measure() {
+    G.vh = window.innerHeight;
+    const sr = svg.getBoundingClientRect();
+    G.svgW = sr.width; G.svgH = sr.height;
+    G.j = { top: docTop(journeyEl), h: journeyEl.offsetHeight };
+    G.m = moment ? { top: docTop(moment), h: moment.offsetHeight, w: moment.clientWidth } : null;
+    G.secs = sections.map((s) => { const t = docTop(s); return [t, t + s.offsetHeight]; });
+    const box = (el, f) => { const p = el.parentElement; return { el, f: parseFloat(f) || 0, top: docTop(p), h: p.offsetHeight, last: '' }; };
+    G.par = parallax.map((el) => box(el, el.dataset.parallax));
+    G.fl = floaty.map((el) => box(el, el.dataset.parallaxY));
+    if (scrub) { const b = scrub.parentElement; G.band = { el: scrub, top: docTop(b), h: b.offsetHeight, dist: Math.max(0, scrub.scrollWidth - b.clientWidth), last: '' }; }
+    lastMap = '';
+    needDraw = true;
+  }
+
+  let lastY = window.scrollY, drawnY = NaN, needDraw = true, ticking = false, navOn = -2;
+  const put = (it, v) => { if (it.last !== v) { it.last = v; it.el.style.transform = v; } };
+  const near = (top, h, vh, m) => top + h > -m && top < vh + m;
+
+  // Reads only scrollY and the cached layout, then writes; nothing here forces the browser to lay out the page.
   function update() {
     ticking = false;
-    const y = window.scrollY, vh = window.innerHeight;
+    const y = window.scrollY, vh = G.vh;
+    if (y === drawnY && !needDraw) return;
+    const full = needDraw;
+    needDraw = false; drawnY = y;
+
     if (!menuOpen()) {
       if (y > lastY + 4 && y > 320) head.classList.add('hide');
       else if (y < lastY - 4 || y < 320) head.classList.remove('hide');
@@ -324,60 +371,131 @@
     head.classList.toggle('raised', y > 48);
     lastY = y;
 
+    const jt = G.j.top - y;
     if (pinned) {
-      const r = journeyEl.getBoundingClientRect();
-      const p = clamp(-r.top / (r.height - vh), 0, 1);
-      drawMap(camAt(p), clamp((p - KEYS[0]) / (KEYS[2] - KEYS[0]), 0, 1));
+      const p = clamp(-jt / Math.max(1, G.j.h - vh), 0, 1);
+      if (near(jt, G.j.h, vh, 200)) drawMap(camAt(p), clamp((p - KEYS[0]) / (KEYS[2] - KEYS[0]), 0, 1));
       const idx = p < 0.25 ? 0 : p < 0.5 ? 1 : p < 0.75 ? 2 : 3;
-      steps.forEach((s, i) => s.classList.toggle('on', i === idx));
-      stepsBox.style.setProperty('--p', ((idx + 1) / 4).toFixed(3));
-    } else {
+      if (idx !== stepIdx) {
+        stepIdx = idx;
+        steps.forEach((s, i) => s.classList.toggle('on', i === idx));
+        stepsBox.style.setProperty('--p', ((idx + 1) / 4).toFixed(3));
+      }
+    } else if (full) {
       drawMap(toCam(STATIC_FOCUS[route]), route === 'ph' ? 1 : staticArc);
     }
-    drawMoment(vh);
+    drawMoment(y);
 
-    let current = null;
-    sections.forEach((sec, i) => { const b = sec.getBoundingClientRect(); if (b.top < vh * 0.4 && b.bottom > vh * 0.4) current = i; });
-    navLinks.forEach((a, i) => a.classList.toggle('on', i === current));
+    const mid = y + vh * 0.4;
+    let cur = -1;
+    G.secs.forEach(([t, b], i) => { if (t < mid && b > mid) cur = i; });
+    if (cur !== navOn) { navOn = cur; navLinks.forEach((a, i) => a.classList.toggle('on', i === cur)); }
 
-    if (!reduce.matches) {
-      parallax.forEach((el) => {
-        const box = el.parentElement.getBoundingClientRect();
-        if (box.bottom < -50 || box.top > vh + 50) return;
-        const prog = clamp((vh - box.top) / (vh + box.height), 0, 1);
-        el.style.transform = `translate3d(0, ${((prog - 0.5) * parseFloat(el.dataset.parallax) * box.height).toFixed(1)}px, 0)`;
+    if (!reduce.matches && !sda) {
+      G.par.forEach((it) => {
+        const top = it.top - y;
+        if (!near(top, it.h, vh, 50)) return;
+        const prog = clamp((vh - top) / (vh + it.h), 0, 1);
+        put(it, `translate3d(0, ${((prog - 0.5) * it.f * it.h).toFixed(1)}px, 0)`);
       });
-      floaty.forEach((el) => {
-        const box = el.parentElement.getBoundingClientRect();
-        if (box.bottom < -50 || box.top > vh + 50) return;
-        const prog = clamp((vh - box.top) / (vh + box.height), 0, 1);
-        el.style.transform = `translate3d(0, ${((prog - 0.5) * parseFloat(el.dataset.parallaxY) * vh).toFixed(1)}px, 0)`;
+      G.fl.forEach((it) => {
+        const top = it.top - y;
+        if (!near(top, it.h, vh, 50)) return;
+        const prog = clamp((vh - top) / (vh + it.h), 0, 1);
+        put(it, `translate3d(0, ${((prog - 0.5) * it.f * vh).toFixed(1)}px, 0)`);
       });
-      if (scrub) {
-        const band = scrub.parentElement.getBoundingClientRect();
-        if (band.bottom > -50 && band.top < vh + 50) {
-          const prog = smooth(clamp((vh * 0.9 - band.top) / (vh * 0.75), 0, 1));
-          const dist = Math.max(0, scrub.scrollWidth - band.width);
-          scrub.style.transform = `translate3d(${(-dist * prog).toFixed(1)}px, 0, 0)`;
-        }
+      const b = G.band;
+      if (b && near(b.top - y, b.h, vh, 50)) {
+        const prog = smooth(clamp((vh * 0.9 - (b.top - y)) / (vh * 0.75), 0, 1));
+        put(b, `translate3d(${(-b.dist * prog).toFixed(1)}px, 0, 0)`);
       }
     }
   }
-  function requestUpdate(force) {
-    if (force) { update(); return; }
+  function requestUpdate(now) {
+    if (now === true) { needDraw = true; update(); return; }
     if (!ticking) { ticking = true; requestAnimationFrame(update); }
   }
+  const remeasure = () => { measure(); requestUpdate(); };
   window.addEventListener('scroll', () => requestUpdate(), { passive: true });
-  window.addEventListener('resize', () => requestUpdate(true));
-  const onMode = () => { setJourneyMode(); setMomentMode(); requestUpdate(true); };
+  window.addEventListener('resize', () => { measure(); requestUpdate(true); });
+  window.addEventListener('load', remeasure);
+  if ('ResizeObserver' in window) new ResizeObserver(remeasure).observe(document.body);
+
+  /* ---------- smooth wheel scrolling ---------- */
+  // Mouse-wheel and trackpad input eases toward its target, and every scroll effect is drawn in the same frame,
+  // so pinned scenes and parallax glide instead of stepping. Touch, keyboard, scrollbar, links and
+  // find-in-page keep the browser's own scrolling; reduced motion turns this off.
+  const finePointer = window.matchMedia('(hover: hover) and (pointer: fine)');
+  const LERP = 0.13, LINE = 33;
+  const ease = { on: false, active: false, cur: 0, target: 0, t: 0, raf: 0 };
+  function nestedScroll(node, dy) {
+    for (let n = node; n && n.nodeType === 1 && n !== document.body && n !== root; n = n.parentElement) {
+      if (n.scrollHeight <= n.clientHeight + 1) continue;
+      const oy = getComputedStyle(n).overflowY;
+      if (oy !== 'auto' && oy !== 'scroll') continue;
+      if (dy < 0 ? n.scrollTop > 0 : n.scrollTop + n.clientHeight < n.scrollHeight - 1) return true;
+    }
+    return false;
+  }
+  function easeStop() {
+    if (!ease.active) return;
+    ease.active = false;
+    cancelAnimationFrame(ease.raf);
+    root.style.removeProperty('scroll-behavior');
+  }
+  function easeStep(t) {
+    const dt = ease.t ? clamp(t - ease.t, 1, 50) : 16.67;
+    ease.t = t;
+    ease.cur += (ease.target - ease.cur) * (1 - Math.pow(1 - LERP, dt / 16.67));
+    const done = Math.abs(ease.target - ease.cur) < 0.5;
+    if (done) ease.cur = ease.target;
+    window.scrollTo(0, ease.cur);
+    update();                                                        // draw in the same frame as the scroll
+    if (done) easeStop(); else ease.raf = requestAnimationFrame(easeStep);
+  }
+  function onWheel(e) {
+    if (e.defaultPrevented || e.ctrlKey || e.metaKey || e.shiftKey) return;   // zoom and sideways scrolling stay native
+    let dy = e.deltaY;
+    if (!dy || Math.abs(e.deltaX) > Math.abs(dy)) return;
+    if (e.deltaMode === 1) dy *= LINE; else if (e.deltaMode === 2) dy *= G.vh;
+    if (nestedScroll(e.target, dy)) return;                          // e.g. the open mobile menu
+    e.preventDefault();
+    if (!ease.active) { ease.cur = window.scrollY; ease.target = ease.cur; }
+    ease.target = clamp(ease.target + dy, 0, Math.max(0, root.scrollHeight - G.vh));
+    if (!ease.active) {
+      ease.active = true; ease.t = 0;
+      root.style.scrollBehavior = 'auto';
+      ease.raf = requestAnimationFrame(easeStep);
+    }
+  }
+  // any other kind of scrolling takes over at once
+  const onNativeScroll = () => { if (ease.active && Math.abs(window.scrollY - ease.cur) > 3) easeStop(); };
+  const SCROLL_KEYS = ['ArrowUp', 'ArrowDown', 'PageUp', 'PageDown', 'Home', 'End', ' ', 'Tab'];
+  const onKey = (e) => { if (SCROLL_KEYS.includes(e.key)) easeStop(); };
+  function setSmooth() {
+    const want = finePointer.matches && !reduce.matches;
+    if (want === ease.on) return;
+    ease.on = want;
+    const m = want ? 'addEventListener' : 'removeEventListener';
+    window[m]('wheel', onWheel, { passive: false });
+    window[m]('scroll', onNativeScroll, { passive: true });
+    window[m]('keydown', onKey);
+    window[m]('touchstart', easeStop, { passive: true });
+    if (!want) easeStop();
+  }
+
+  const onMode = () => { setJourneyMode(); setMomentMode(); setSda(); setSmooth(); measure(); requestUpdate(true); };
   wide.addEventListener('change', onMode);
   reduce.addEventListener('change', onMode);
+  finePointer.addEventListener('change', setSmooth);
 
   const urlLang = params.get('lang'), urlRoute = params.get('to') || params.get('from');
   lang = (urlLang || store.get('jc-lang')) === 'si' && Object.keys(SI).length ? 'si' : 'en';
   route = (urlRoute || store.get('jc-route')) === 'ph' ? 'ph' : 'il';
   if (urlLang) store.set('jc-lang', lang);
   if (urlRoute) store.set('jc-route', route);
+  setSda();
+  setSmooth();
   render();
-  if (document.fonts && document.fonts.ready) document.fonts.ready.then(() => requestUpdate(true));
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(() => { measure(); requestUpdate(true); });
 })();
