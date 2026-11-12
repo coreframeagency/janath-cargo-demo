@@ -26,28 +26,28 @@
     else { img.addEventListener('load', ok, { once: true }); img.addEventListener('error', missing, { once: true }); }
   });
 
-  /* tall crop for portrait screens: used when assets/photos/<name>-tall.jpg exists */
+  /* photo variants: a tall crop for portrait screens and a Philippines version, each used only when its file exists */
   const portraitMQ = window.matchMedia('(max-aspect-ratio: 4/5)');
-  $$('img[data-tall]').forEach((img) => {
-    const wideSrc = img.getAttribute('src');
-    let tallOk = null;
-    const apply = () => {
-      if (!img.isConnected) return;
-      const box = img.closest('.ph');
-      if (portraitMQ.matches) {
-        if (tallOk === null) {
-          const probe = new Image();
-          probe.onload = () => { tallOk = true; apply(); };
-          probe.onerror = () => { tallOk = false; };
-          probe.src = img.dataset.tall;
-          return;
+  const probes = {};
+  const exists = (src) => probes[src] || (probes[src] = new Promise((res) => { const t = new Image(); t.onload = () => res(true); t.onerror = () => res(false); t.src = src; }));
+  const variantImgs = $$('img[data-tall], img[data-ph-src]');
+  variantImgs.forEach((img) => { img.dataset.wide = img.getAttribute('src'); });
+  async function applyVariants() {
+    for (const img of variantImgs) {
+      if (!img.isConnected) continue;
+      const portrait = portraitMQ.matches, d = img.dataset, list = [];
+      if (route === 'ph') { if (portrait && d.phTall) list.push([d.phTall, true]); if (d.phSrc) list.push([d.phSrc, false]); }
+      if (portrait && d.tall) list.push([d.tall, true]);
+      for (const [src, tall] of list.concat([[d.wide, false]])) {
+        if (src === d.wide || await exists(src)) {
+          if (img.getAttribute('src') !== src) img.src = src;
+          img.closest('.ph').classList.toggle('is-tall', tall);
+          break;
         }
-        if (tallOk && img.getAttribute('src') !== img.dataset.tall) { img.src = img.dataset.tall; box.classList.add('is-tall'); }
-      } else if (img.getAttribute('src') !== wideSrc) { img.src = wideSrc; box.classList.remove('is-tall'); }
-    };
-    apply();
-    portraitMQ.addEventListener('change', apply);
-  });
+      }
+    }
+  }
+  portraitMQ.addEventListener('change', () => applyVariants());
 
   /* ---------- text: language x route ---------- */
   let lang = 'en';
@@ -70,7 +70,7 @@
   function msg(k) {
     const M = MSG[lang] || MSG.en;
     const t = M[k] || MSG.en[k] || '';
-    return t.replace('{from}', M[route === 'ph' ? 'fromPh' : 'fromIl'] || '');
+    return t.replace('{to}', M[route === 'ph' ? 'toPh' : 'toIl'] || '');
   }
 
   function render() {
@@ -98,7 +98,9 @@
     $$('[data-form] input[name="text"]').forEach((h) => { h.value = msg(h.closest('form').dataset.form); });
     $$('[data-src-en]').forEach((img) => { const s = lang === 'si' ? img.dataset.srcSi : img.dataset.srcEn; if (img.getAttribute('src') !== s) img.setAttribute('src', s); });
     const ml = journeyEl.querySelector('[data-mk-label]');
-    if (ml) ml.innerHTML = text(route === 'ph' ? 'r.ph' : 'r.il', false) || ml.innerHTML;
+    if (ml) ml.innerHTML = text(route === 'ph' ? 'r.ph' : 'r.lk', false) || ml.innerHTML;
+    applyVariants();
+    setJourneyMode();
     setArc();
     requestUpdate(true);
   }
@@ -204,14 +206,14 @@
   const steps = $$('.step', journeyEl);
   const stepsBox = journeyEl.querySelector('[data-steps]');
   const mkFrom = journeyEl.querySelector('[data-mk="origin"]');
-  const mkLk = journeyEl.querySelector('[data-mk="srilanka"]');
+  const mkTo = journeyEl.querySelector('[data-mk="dest"]');
   // focus areas in map units [x0, y0, x1, y1], fitted into the free part of the screen
   const FOCUS = {
     il: [[150, 250, 390, 400], [225, 270, 1205, 860], [840, 560, 1230, 880], [1120, 770, 1230, 875]],
-    ph: [[1860, 580, 2120, 890], [1130, 560, 2040, 880], [1110, 690, 1400, 880], [1120, 770, 1230, 875]],
+    ph: [[150, 250, 390, 400], [180, 180, 2060, 800], [1640, 520, 2100, 840], [1880, 590, 2080, 780]],
   };
-  const STATIC_FOCUS = { il: [225, 270, 1205, 860], ph: [1130, 560, 2040, 880] };
-  const ORIGIN = { il: M.pts.israel, ph: M.pts.philippines };
+  const STATIC_FOCUS = { il: [225, 270, 1205, 860], ph: [180, 180, 2060, 800] };
+  const DEST = { il: M.pts.srilanka, ph: M.pts.philippines };
   const KEYS = [0.1, 0.38, 0.64, 0.9];
   let arc, arcBase, arcLen = 1;
   function setArc() {
@@ -249,14 +251,15 @@
     arcBase.style.strokeWidth = (1.5 / s).toFixed(3);
     arcBase.style.strokeDasharray = `${(2 / s).toFixed(2)} ${(9 / s).toFixed(2)}`;
     const place = (el, p) => { el.style.transform = `translate(${((p[0] - vx) * s).toFixed(1)}px, ${((p[1] - vy) * s).toFixed(1)}px)`; };
-    place(mkFrom, ORIGIN[route]); place(mkLk, M.pts.srilanka);
+    place(mkFrom, M.pts.israel); place(mkTo, DEST[route]);
     const pt = arc.getPointAtLength(arcLen * arcP);
     place(run, [pt.x, pt.y]);
     run.style.opacity = arcP > 0.001 && arcP < 0.999 ? '1' : '0';
     coords.textContent = fmtC(cam.x, cam.y);
   }
+  // The scroll animation runs for Israel → Sri Lanka only; Israel → Philippines shows a still map.
   function setJourneyMode() {
-    pinned = wide.matches && !reduce.matches;
+    pinned = wide.matches && !reduce.matches && route === 'il';
     journeyEl.classList.toggle('static', !pinned);
     if (!pinned) steps.forEach((s) => s.classList.add('on'));
   }
@@ -267,7 +270,7 @@
       if (!en[0].isIntersecting) return;
       mio.disconnect();
       const t0 = performance.now();
-      const tick = (t) => { staticArc = smooth(clamp((t - t0) / 1800, 0, 1)); if (!pinned) drawMap(toCam(STATIC_FOCUS[route]), staticArc); if (staticArc < 1) requestAnimationFrame(tick); };
+      const tick = (t) => { staticArc = smooth(clamp((t - t0) / 1800, 0, 1)); if (!pinned) drawMap(toCam(STATIC_FOCUS[route]), route === 'ph' ? 1 : staticArc); if (staticArc < 1) requestAnimationFrame(tick); };
       requestAnimationFrame(tick);
     }, { threshold: 0.35 });
     mio.observe(svg);
@@ -329,7 +332,7 @@
       steps.forEach((s, i) => s.classList.toggle('on', i === idx));
       stepsBox.style.setProperty('--p', ((idx + 1) / 4).toFixed(3));
     } else {
-      drawMap(toCam(STATIC_FOCUS[route]), staticArc);
+      drawMap(toCam(STATIC_FOCUS[route]), route === 'ph' ? 1 : staticArc);
     }
     drawMoment(vh);
 
@@ -370,7 +373,7 @@
   wide.addEventListener('change', onMode);
   reduce.addEventListener('change', onMode);
 
-  const urlLang = params.get('lang'), urlRoute = params.get('from');
+  const urlLang = params.get('lang'), urlRoute = params.get('to') || params.get('from');
   lang = (urlLang || store.get('jc-lang')) === 'si' && Object.keys(SI).length ? 'si' : 'en';
   route = (urlRoute || store.get('jc-route')) === 'ph' ? 'ph' : 'il';
   if (urlLang) store.set('jc-lang', lang);

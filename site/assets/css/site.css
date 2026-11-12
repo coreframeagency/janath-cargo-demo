@@ -183,9 +183,8 @@ html[data-route="ph"] .map [data-arc="il"],html[data-route="ph"] .map [data-arc-
 .mk{position:absolute;left:0;top:0;z-index:2;width:16px;height:16px;margin:-8px 0 0 -8px;font:600 14px/1 var(--body);letter-spacing:.06em;text-transform:uppercase;color:var(--white);will-change:transform}
 .mk i{position:absolute;inset:0;border-radius:50%;background:var(--amber);box-shadow:0 0 0 6px rgba(216,162,76,.22)}
 .mk span{position:absolute;left:30px;top:50%;transform:translateY(-50%);white-space:nowrap;text-shadow:0 1px 8px rgba(11,26,46,.8)}
-.mk-lk span{left:auto;right:30px}
-html[data-route="ph"] .mk-lk span{right:auto;left:30px}
-html[data-route="ph"] .mk-from span{left:auto;right:30px}
+.mk-to span{left:auto;right:30px}
+html[data-route="ph"] .mk-to span{left:50%;right:auto;top:auto;bottom:28px;transform:translateX(-50%)}
 html[lang="si"] .mk{letter-spacing:0;text-transform:none;font-size:15px}
 .mk-run{position:absolute;left:0;top:0;z-index:3;width:14px;height:14px;margin:-7px 0 0 -7px;opacity:0;will-change:transform;transition:opacity .3s}
 .mk-run i{display:block;width:100%;height:100%;background:var(--white);border-radius:2px;box-shadow:0 0 0 5px rgba(255,255,255,.16)}
