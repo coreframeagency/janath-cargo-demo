@@ -125,6 +125,8 @@
     setTimeout(() => { const f = document.querySelector(`[data-desk="${route}"] [data-wa]`); if (f) f.focus({ preventScroll: true }); }, 500);
   };
   $$('[data-quote-link]').forEach((a) => a.addEventListener('click', focusQuote));
+  // "Sign up" links land on the form with the name field ready
+  $$('[data-signup-link]').forEach((a) => a.addEventListener('click', () => setTimeout(() => { const f = document.querySelector('[data-signup] [name="name"]'); if (f && f.offsetParent) f.focus({ preventScroll: true }); }, 600)));
   $$('[data-route-go]').forEach((a) => a.addEventListener('click', () => { setRoute(a.dataset.routeGo, true); focusQuote(); }));
   $$('[data-route-set]').forEach((b) => {
     b.addEventListener('click', () => setRoute(b.dataset.routeSet, true));
