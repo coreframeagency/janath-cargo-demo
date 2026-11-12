@@ -282,6 +282,25 @@ html[lang="si"] .m-line{font-size:clamp(28px,2.8vw,42px);line-height:1.32;max-wi
 .nosend .tbc{border-color:rgba(231,244,250,.4);background:rgba(231,244,250,.08);color:var(--on-dark)}
 .nosend .link{color:var(--white)}
 
+/* ---------- updates sign-up ---------- */
+.updates{background:var(--white)}
+.up-grid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,560px);gap:64px;align-items:center}
+.up-copy .h2{margin-bottom:20px}
+.up-copy .lede{max-width:480px}
+.up-list{margin-top:32px;display:flex;flex-direction:column;gap:16px}
+.up-list li{display:flex;align-items:flex-start;gap:12px;font-weight:500}
+.up-list .i{color:var(--blue);margin-top:3px}
+.up-card{border:1px solid var(--line);box-shadow:0 24px 48px -32px rgba(16,36,62,.35);padding:32px}
+.hp{position:absolute!important;left:-9999px;width:1px;height:1px;overflow:hidden}
+.up-err{padding:10px 12px;border-radius:4px;background:rgba(194,65,45,.07);border:1px solid rgba(194,65,45,.32);font-size:15px;line-height:1.45}
+.field input[aria-invalid="true"],.field select[aria-invalid="true"]{border-color:#C2412D}
+.btn[aria-busy="true"]{opacity:.75;cursor:progress}
+.up-done{display:flex;flex-direction:column;align-items:flex-start;gap:12px;padding:8px 0;outline:none}
+.up-tick{display:grid;place-items:center;width:48px;height:48px;border-radius:50%;background:var(--amber);color:var(--navy);margin-bottom:8px}
+.up-tick .i{width:24px;height:24px;stroke-width:2.25}
+.up-done-t{font:800 clamp(28px,2.6vw,36px)/1.05 var(--head);text-wrap:balance}
+html[lang="si"] .up-done-t{font-size:clamp(22px,2vw,28px);line-height:1.3}
+
 /* ---------- offices ---------- */
 .offices{background:var(--ice)}
 .office-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:24px}
@@ -363,6 +382,8 @@ html[lang="si"] .nosend h3,html[lang="si"] .office h3{font-size:24px;line-height
 
 /* ---------- responsive ---------- */
 @media (max-width:1100px){
+  .up-grid{grid-template-columns:1fr;gap:40px}
+  .up-card{max-width:640px}
   .nav{display:none}
   .menu-btn{display:block}
   .hd-in{gap:16px}
@@ -396,6 +417,7 @@ html[lang="si"] .nosend h3,html[lang="si"] .office h3{font-size:24px;line-height
   .m-shade{background:linear-gradient(0deg,rgba(11,26,46,.9) 0%,rgba(11,26,46,.5) 28%,rgba(11,26,46,0) 52%)}
 }
 @media (max-width:560px){
+  .up-card .row{grid-template-columns:1fr}
   body{font-size:16px}
   :root{--hd:64px}
   .hd-cta{display:none}
@@ -422,6 +444,7 @@ html[lang="si"] .nosend h3,html[lang="si"] .office h3{font-size:24px;line-height
 @media (max-width:360px){
   .brand-name{display:none}
   .row{grid-template-columns:1fr}
+  .up-card{padding:24px}
 }
 @media (prefers-reduced-motion:reduce){
   .mega{white-space:normal;width:auto;font-size:clamp(44px,7vw,104px)}

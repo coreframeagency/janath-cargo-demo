@@ -1,0 +1,17 @@
+{
+  "name": "janath-cargo-api",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Janath Cargo: update sign-ups, welcome email and the first dashboard.",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "dependencies": {
+    "nodemailer": "^6.9.16",
+    "pg": "^8.13.1"
+  }
+}

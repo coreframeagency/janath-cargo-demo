@@ -198,6 +198,69 @@
     reveals.forEach((el) => io.observe(el));
   } else reveals.forEach((el) => el.classList.add('in'));
 
+  /* ---------- updates sign-up ---------- */
+  // Posts to the Janath Cargo API (server/), which saves the sign-up and sends the welcome email.
+  const upForm = document.querySelector('[data-signup]');
+  if (upForm) {
+    const upDone = document.querySelector('[data-up-done]');
+    const upErr = upForm.querySelector('[data-up-err]');
+    const upBtn = upForm.querySelector('button[type="submit"]');
+    const upBtnText = upBtn.querySelector('span');
+    const msg = (k, vars = {}) => {
+      const el = document.querySelector(`[data-up-msg="${k}"]`);
+      return (el ? el.textContent : '').replace(/\{(\w+)\}/g, (_, v) => vars[v] || '');
+    };
+    const PH = { IL: '+972 50 123 4567', LK: '+94 77 123 4567', PH: '+63 917 123 4567' };
+    const DIAL = { IL: '+972 ', LK: '+94 ', PH: '+63 ' };
+    const f = (n) => upForm.elements[n];
+    f('country').addEventListener('change', () => {
+      const c = f('country').value, ph = f('phone');
+      ph.placeholder = PH[c] || PH.IL;
+      if (!ph.value.trim() || Object.values(DIAL).includes(ph.value)) ph.value = DIAL[c] || '';
+    });
+    const EMAIL_RE = /^[^\s@<>()[\],;:"]+@[^\s@<>()[\],;:"]+\.[a-z]{2,}$/i;
+    function check() {
+      const bad = [];
+      if (f('name').value.trim().length < 2) bad.push('name');
+      if (!EMAIL_RE.test(f('email').value.trim())) bad.push('email');
+      if (!f('country').value) bad.push('country');
+      if (f('phone').value.replace(/\D/g, '').length < 7) bad.push('phone');
+      return bad;
+    }
+    function showErrors(bad) {
+      ['name', 'email', 'country', 'phone'].forEach((n) => f(n).setAttribute('aria-invalid', bad.includes(n) ? 'true' : 'false'));
+      upErr.hidden = !bad.length;
+      upErr.textContent = bad.length ? msg(bad[0]) : '';
+      if (bad.length) f(bad[0]).focus();
+    }
+    ['name', 'email', 'country', 'phone'].forEach((n) => f(n).addEventListener('input', () => { if (f(n).getAttribute('aria-invalid') === 'true') f(n).setAttribute('aria-invalid', 'false'); }));
+    upForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const bad = check();
+      if (bad.length) return showErrors(bad);
+      showErrors([]);
+      const label = upBtnText.textContent;
+      upBtn.disabled = true; upBtn.setAttribute('aria-busy', 'true'); upBtnText.textContent = msg('sending');
+      const body = { name: f('name').value.trim(), email: f('email').value.trim(), country: f('country').value, phone: f('phone').value.trim(), company: f('company').value, lang, route };
+      try {
+        const ctl = new AbortController(); const tm = setTimeout(() => ctl.abort(), 60000); // the API may take a moment to wake up
+        const r = await fetch(`${upForm.dataset.api}/api/subscribe`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body), signal: ctl.signal });
+        clearTimeout(tm);
+        const d = await r.json().catch(() => ({}));
+        if (r.status === 422 && d.fields) { showErrors(Object.keys(d.fields)); return; }
+        if (!r.ok || !d.ok) throw new Error('failed');
+        const vars = { name: d.name || body.name.split(' ')[0], email: body.email };
+        upDone.querySelector('[data-up-title]').textContent = msg(d.already ? 'already' : 'thanks', vars);
+        upDone.querySelector('[data-up-text]').textContent = msg(d.already ? 'alreadyP' : 'thanksP', vars);
+        upForm.hidden = true; upDone.hidden = false; upDone.focus();
+      } catch (err) {
+        upErr.hidden = false; upErr.textContent = msg('fail');
+      } finally {
+        upBtn.disabled = false; upBtn.removeAttribute('aria-busy'); upBtnText.textContent = label;
+      }
+    });
+  }
+
   /* ---------- route map ---------- */
   const journeyEl = document.querySelector('[data-journey]');
   const svg = journeyEl.querySelector('[data-map]');

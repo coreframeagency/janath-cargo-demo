@@ -48,3 +48,7 @@ Every WhatsApp button uses `972547415262` (+972 54-741-5262). It is set in `site
 ## Content rules
 
 No invented prices, transit times, partners, reviews or statistics. The customer portal is shown as launching soon until it is open to customers.
+
+## Sign-ups backend
+
+`server/` is the Janath Cargo API (update sign-ups, welcome email, the `/admin` dashboard). See `server/README.md`. The website form posts to it; its address is written into `index.html` (`data-api`) at build time.

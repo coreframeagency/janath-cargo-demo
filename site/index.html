@@ -40,6 +40,8 @@
   <symbol id="i-phone" viewBox="0 0 24 24"><path d="M6.5 3.5h3l1.5 4-2 1.5a11 11 0 0 0 6 6l1.5-2 4 1.5v3a2 2 0 0 1-2 2A16 16 0 0 1 4.5 5.5a2 2 0 0 1 2-2Z"/></symbol>
   <symbol id="i-photo" viewBox="0 0 24 24"><rect x="3" y="5.5" width="18" height="14" rx="2"/><path d="M8.5 5.5 10 3.5h4l1.5 2"/><circle cx="12" cy="12.5" r="3.5"/></symbol>
   <symbol id="i-quote" viewBox="0 0 24 24"><path d="M9.5 7C6.5 7.8 5 10 5 13v4h5v-5H7.5c0-1.6.8-2.7 2.5-3.2ZM18.5 7c-3 .8-4.5 3-4.5 6v4h5v-5h-2.5c0-1.6.8-2.7 2.5-3.2Z"/></symbol>
+  <symbol id="i-check" viewBox="0 0 24 24"><path d="m5 12.5 4.5 4.5L19 7.5"/></symbol>
+  <symbol id="i-mail" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m4 7 8 6 8-6"/></symbol>
   <symbol id="i-ban" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.5"/><path d="m6 6 12 12"/></symbol>
 </svg>
 
@@ -335,6 +337,63 @@
     </div>
   </section>
 
+  <!-- UPDATES SIGN-UP -->
+  <section class="section updates" id="updates" aria-labelledby="up-title">
+    <div class="wrap up-grid">
+      <div class="up-copy rv">
+        <p class="label" data-i18n="up.label">Updates</p>
+        <h2 class="h2" id="up-title" data-i18n="up.title">Hear from us first<span class="amb">.</span></h2>
+        <p class="lede" data-i18n="up.lede">Collection dates, delivery times and route news, by email. Leave whenever you like.</p>
+        <ul class="up-list">
+          <li><svg class="i" aria-hidden="true"><use href="#i-cal"/></svg><span data-i18n="up.l1">When we next collect in your area</span></li>
+          <li><svg class="i" aria-hidden="true"><use href="#i-box"/></svg><span data-i18n="up.l2">Delivery times to Sri Lanka and the Philippines</span></li>
+          <li><svg class="i" aria-hidden="true"><use href="#i-steps"/></svg><span data-i18n="up.l3">First word when the customer portal opens</span></li>
+        </ul>
+      </div>
+      <div class="card-action up-card rv">
+        <form class="qform" data-signup data-api="https://janath-cargo-api.onrender.com" novalidate>
+          <div class="row">
+            <label class="field"><span class="flabel" data-i18n="up.name">Name</span><input type="text" name="name" autocomplete="name" maxlength="120" required></label>
+            <label class="field"><span class="flabel" data-i18n="up.email">Email</span><input type="email" name="email" autocomplete="email" inputmode="email" maxlength="254" required></label>
+          </div>
+          <div class="row">
+            <label class="field"><span class="flabel" data-i18n="up.country">Where you live</span>
+              <select name="country" required>
+                <option value="" data-i18n="up.choose">Choose</option>
+                <option value="IL" data-i18n="r.il">Israel</option>
+                <option value="LK" data-i18n="r.lk">Sri Lanka</option>
+                <option value="PH" data-i18n="r.ph">Philippines</option>
+              </select>
+            </label>
+            <label class="field"><span class="flabel" data-i18n="up.phone">Phone number</span><input type="tel" name="phone" autocomplete="tel" inputmode="tel" maxlength="24" placeholder="+972 50 123 4567" required></label>
+          </div>
+          <label class="hp" aria-hidden="true">Company<input type="text" name="company" tabindex="-1" autocomplete="off"></label>
+          <p class="up-err" data-up-err role="alert" hidden></p>
+          <button class="btn btn-amber" type="submit"><span data-i18n="up.btn">Sign up for updates</span><svg class="i" aria-hidden="true"><use href="#i-arrow"/></svg></button>
+          <p class="qnote" data-i18n="up.note">We only use your details to send Janath Cargo updates.</p>
+        </form>
+        <div class="up-done" data-up-done hidden tabindex="-1">
+          <span class="up-tick" aria-hidden="true"><svg class="i"><use href="#i-check"/></svg></span>
+          <p class="up-done-t" data-up-title></p>
+          <p class="qnote" data-up-text></p>
+        </div>
+        <!-- messages the form shows, translated with the rest of the page -->
+        <div hidden>
+          <span data-i18n="up.thanks" data-up-msg="thanks">Thanks, {name}. You're on the list.</span>
+          <span data-i18n="up.thanksP" data-up-msg="thanksP">We'll be in touch at {email}.</span>
+          <span data-i18n="up.already" data-up-msg="already">You're already on the list.</span>
+          <span data-i18n="up.alreadyP" data-up-msg="alreadyP">We'll keep sending updates to {email}.</span>
+          <span data-i18n="up.sending" data-up-msg="sending">Signing you up…</span>
+          <span data-i18n="up.eName" data-up-msg="name">Please enter your name.</span>
+          <span data-i18n="up.eEmail" data-up-msg="email">Please enter a valid email address.</span>
+          <span data-i18n="up.eCountry" data-up-msg="country">Please choose where you live.</span>
+          <span data-i18n="up.ePhone" data-up-msg="phone">Please enter a phone number we can reach you on.</span>
+          <span data-i18n="up.eFail" data-up-msg="fail">Something went wrong. Please try again, or message us on WhatsApp.</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
   <!-- CONTACT -->
   <section class="contact" id="contact" aria-labelledby="c-title">
     <h2 class="sr-only" id="c-title" data-i18n="c.big">From your doorstep. To theirs.</h2>
@@ -377,6 +436,7 @@
     </nav>
     <div class="ft-col">
       <p class="ft-h" data-i18n="f.follow">Follow</p>
+      <a href="#updates"><svg class="i" aria-hidden="true"><use href="#i-mail"/></svg><span data-i18n="up.foot">Email updates</span></a>
       <span class="ft-tbc"><span class="ft-nm"><svg class="i" aria-hidden="true"><use href="#i-ig"/></svg>Instagram</span> <span class="tbc tbc-dark" data-i18n="f.link">link to confirm</span></span>
       <span class="ft-tbc"><span class="ft-nm"><svg class="i" aria-hidden="true"><use href="#i-fb"/></svg>Facebook</span> <span class="tbc tbc-dark" data-i18n="f.link">link to confirm</span></span>
       <a href="https://wa.me/972547415262" target="_blank" rel="noopener"><svg class="i" aria-hidden="true"><use href="#i-chat"/></svg>WhatsApp</a>
