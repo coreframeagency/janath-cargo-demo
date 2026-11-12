@@ -65,6 +65,36 @@ p{text-wrap:pretty}
 .btn-navy[aria-disabled="true"]{background:rgba(16,36,62,.35);cursor:not-allowed}
 .btn-ghost-light{background:transparent;color:var(--white);border:1px solid rgba(255,255,255,.5)}
 .btn-ghost-light:hover{border-color:var(--white);background:rgba(255,255,255,.08)}
+.btn-line{background:var(--white);color:var(--navy);border:1px solid var(--line-2)}
+.btn-line:hover{border-color:var(--navy)}
+.btn-s{min-height:40px;padding:0 14px;font-size:15px;gap:8px}
+.btn-s .i{width:18px;height:18px}
+
+/* the route picks which desk's numbers show (Israel → Sri Lanka or Israel → Philippines) */
+html[data-route="ph"] [data-desk="il"],html:not([data-route="ph"]) [data-desk="ph"]{display:none!important}
+
+/* hero contact card: call or WhatsApp the desk for the chosen route */
+.call-card{display:flex;flex-direction:column;gap:8px}
+.call-t{font:800 36px/1 var(--head);letter-spacing:-.004em}
+html[lang="si"] .call-t{font-size:28px;line-height:1.3}
+.desk{margin-top:16px}
+.desk-h{font:600 13px/1.2 var(--body);letter-spacing:.08em;text-transform:uppercase;color:var(--faint);margin-bottom:4px}
+html[lang="si"] .desk-h{letter-spacing:0;font-size:14px}
+.desk-row{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;padding:14px 0;border-top:1px solid var(--line)}
+.desk-row:last-child{border-bottom:1px solid var(--line)}
+.desk-num{font:700 24px/1.1 var(--head);letter-spacing:.02em;text-decoration:none;white-space:nowrap}
+.desk-num:hover{color:var(--blue)}
+.desk-act{display:flex;gap:8px}
+.call-foot{display:flex;align-items:flex-start;gap:10px;margin-top:16px;font-size:14px;line-height:1.5;color:var(--muted)}
+.call-foot .i{width:18px;height:18px;margin-top:1px;color:var(--blue)}
+
+/* hero trust row */
+.trust{display:flex;flex-wrap:wrap;gap:8px 20px;margin-top:-4px}
+.trust li{display:flex;align-items:center;gap:8px;font-size:15px;font-weight:500;color:var(--on-dark)}
+.trust .i{width:18px;height:18px;color:var(--amber);stroke-width:2.25}
+
+.ft-addr{margin-top:20px;font-size:14px;line-height:1.6;color:var(--on-dark-2)}
+.o-nums{display:flex;flex-direction:column;gap:4px}
 .btn-s{min-height:40px;padding:0 16px;font-size:15px}
 .btn-l{min-height:56px;padding:0 28px;font-size:17px}
 .btn-block{width:100%}

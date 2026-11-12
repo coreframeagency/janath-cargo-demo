@@ -1,9 +1,11 @@
 /* Janath Cargo — site behaviour v3
-   Route switch (Israel → Sri Lanka or Israel → Philippines), language switch, WhatsApp messages, quote form,
+   Route switch (Israel → Sri Lanka or Israel → Philippines), language switch, WhatsApp and call desks,
    header, menu, photo slots and scroll effects (pinned route map, doorstep, parallax, scrubbed type, reveals,
    smooth wheel scrolling). */
 (() => {
   const WA = '972547415262';
+  // WhatsApp and phone desks: Israel → Sri Lanka and Israel → Philippines each have their own numbers
+  const DESK = { il: '972547415262', ph: '972545825163' };
   const root = document.documentElement;
   const SI = window.JC_SI || {};
   const EN_PH = window.JC_EN_PH || {};
@@ -67,7 +69,7 @@
     if (routed && route === 'ph' && EN_PH[key] != null) return EN_PH[key];
     return k === key ? EN[key] : EN[key];
   }
-  const waUrl = (t) => `https://wa.me/${WA}?text=${encodeURIComponent(t)}`;
+  const waUrl = (t, num) => `https://wa.me/${num || DESK[route] || WA}?text=${encodeURIComponent(t)}`;
   function msg(k) {
     const M = MSG[lang] || MSG.en;
     const t = M[k] || MSG.en[k] || '';
@@ -95,8 +97,7 @@
       if (lang === 'si') { l.textContent = 'English'; l.lang = 'en'; } else { l.textContent = 'සිංහල'; l.lang = 'si'; }
     });
     $$('[data-route-set]').forEach((b) => b.setAttribute('aria-checked', String(b.dataset.routeSet === route)));
-    $$('[data-wa]').forEach((a) => { const t = msg(a.dataset.wa); if (t) a.href = waUrl(t); });
-    $$('[data-form] input[name="text"]').forEach((h) => { h.value = msg(h.closest('form').dataset.form); });
+    $$('[data-wa]').forEach((a) => { const t = msg(a.dataset.wa); if (t) a.href = waUrl(t, a.dataset.waNum); });
     $$('[data-src-en]').forEach((img) => { const s = lang === 'si' ? img.dataset.srcSi : img.dataset.srcEn; if (img.getAttribute('src') !== s) img.setAttribute('src', s); });
     const ml = journeyEl.querySelector('[data-mk-label]');
     if (ml) ml.innerHTML = text(route === 'ph' ? 'r.ph' : 'r.lk', false) || ml.innerHTML;
@@ -109,53 +110,6 @@
   function setLang(next, remember) { lang = next === 'si' && Object.keys(SI).length ? 'si' : 'en'; if (remember) store.set('jc-lang', lang); render(); }
   function setRoute(next, remember) { route = next === 'ph' ? 'ph' : 'il'; if (remember) store.set('jc-route', route); render(); }
 
-  /* ---------- quote form ---------- */
-  const tabs = $$('[role="tab"]');
-  function selectTab(tab, focus) {
-    tabs.forEach((t) => {
-      const on = t === tab;
-      t.setAttribute('aria-selected', String(on));
-      t.tabIndex = on ? 0 : -1;
-      document.getElementById(t.getAttribute('aria-controls')).hidden = !on;
-    });
-    if (focus) tab.focus();
-  }
-  tabs.forEach((t, i) => {
-    t.addEventListener('click', () => selectTab(t));
-    t.addEventListener('keydown', (e) => {
-      const map = { ArrowRight: i + 1, ArrowLeft: i - 1, Home: 0, End: tabs.length - 1 };
-      if (!(e.key in map)) return;
-      e.preventDefault();
-      selectTab(tabs[(map[e.key] + tabs.length) % tabs.length], true);
-    });
-  });
-  const now = new Date();
-  const iso = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}-${String(now.getDate()).padStart(2, '0')}`;
-  $$('input[type="date"]').forEach((d) => { d.min = iso; });
-  const fmtDate = (v) => {
-    if (lang === 'si') return v;
-    try { return new Date(`${v}T00:00:00`).toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' }); } catch (e) { return v; }
-  };
-  const openLink = (url) => { const a = document.createElement('a'); a.href = url; a.target = '_blank'; a.rel = 'noopener'; document.body.appendChild(a); a.click(); a.remove(); };
-  $$('[data-form]').forEach((form) => {
-    form.addEventListener('submit', (e) => {
-      e.preventDefault();
-      const val = (k) => ((form.querySelector(`[data-f="${k}"]`) || {}).value || '').trim();
-      const lines = [];
-      if (form.dataset.form === 'quote') {
-        lines.push(msg('quote'));
-        if (val('from')) lines.push(`${msg('lFrom')}: ${val('from')}`);
-        if (val('to')) lines.push(`${msg('lTo')}: ${val('to')}`);
-        if (val('boxes')) lines.push(`${msg('lBoxes')}: ${val('boxes') === '4+' ? msg('boxes4') : val('boxes')}`);
-        if (val('date')) lines.push(`${msg('lDate')}: ${fmtDate(val('date'))}`);
-      } else {
-        lines.push(msg('update'));
-        if (val('ref')) lines.push(`${msg('lRef')}: ${val('ref')}`);
-      }
-      openLink(waUrl(lines.join('\n')));
-    });
-  });
-
   /* ---------- header, menu, route buttons ---------- */
   const head = document.querySelector('[data-head]');
   const menuBtn = head.querySelector('.menu-btn');
@@ -166,9 +120,9 @@
   mnav.addEventListener('click', (e) => { if (e.target.closest('a')) setMenu(false); });
   document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && menuOpen()) { setMenu(false); menuBtn.focus(); } });
   head.addEventListener('focusin', () => head.classList.remove('hide'));
+  // "Call or WhatsApp" links scroll to the contact card and put focus on the current desk's first WhatsApp button
   const focusQuote = () => {
-    selectTab(tabs[0]);
-    setTimeout(() => { const f = document.querySelector('[data-f="from"]'); if (f) f.focus({ preventScroll: true }); }, 500);
+    setTimeout(() => { const f = document.querySelector(`[data-desk="${route}"] [data-wa]`); if (f) f.focus({ preventScroll: true }); }, 500);
   };
   $$('[data-quote-link]').forEach((a) => a.addEventListener('click', focusQuote));
   $$('[data-route-go]').forEach((a) => a.addEventListener('click', () => { setRoute(a.dataset.routeGo, true); focusQuote(); }));

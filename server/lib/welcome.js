@@ -5,8 +5,11 @@
 const zwj = (s) => s.replace(/්‍/g, '්').replace(/්(?=[රය])/g, '්‍');
 const esc = (s) => String(s == null ? '' : s).replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[c]);
 
-const WA_NUMBER = '972547415262';
-const WA_SHOW = '+972 54-741-5262';
+// Each route has its own desk: Philippines sign-ups get the Philippines desk, everyone else the Sri Lanka desk.
+const DESKS = {
+  il: [['972547415262', '+972 54-741-5262'], ['972549505979', '+972 54-950-5979']],
+  ph: [['972545825163', '+972 54-582-5163'], ['972542136595', '+972 54-213-6595']],
+};
 const COUNTRY = {
   en: { IL: 'Israel', LK: 'Sri Lanka', PH: 'Philippines' },
   si: { IL: 'ඊශ්රායලය', LK: 'ශ්රී ලංකාව', PH: 'පිලිපීනය' },
@@ -19,10 +22,12 @@ const T = {
     hello: (n) => `Welcome to Janath Cargo, ${n}.`,
     intro: "Thanks for joining. We'll write when there's something worth knowing: collection dates in Israel, delivery times, and news about our routes to Sri Lanka and the Philippines.",
     block: {
-      IL: ['Ready to send a parcel?', 'Tell us your city and how many boxes. We collect from your door in Israel and deliver to your family’s door.', 'Get a quote on WhatsApp', "Hello Janath Cargo, I'd like a quote for a parcel from Israel."],
+      IL: ['Ready to send a parcel?', 'Tell us your city and how many boxes. We collect from your door in Israel and deliver to your family’s door.', 'Message us on WhatsApp', "Hello Janath Cargo, I'd like to send a parcel from Israel."],
       LK: ['Family sending you a parcel?', 'Share our number with them in Israel. We collect from their home and deliver to your door in Sri Lanka.', 'Message us on WhatsApp', 'Hello Janath Cargo, I signed up for updates from Sri Lanka.'],
       PH: ['Family sending you a parcel?', 'Share our number with them in Israel. We collect from their home and deliver to your door in the Philippines.', 'Message us on WhatsApp', 'Hello Janath Cargo, I signed up for updates from the Philippines.'],
     },
+    callOr: 'Call or WhatsApp',
+    company: 'Ramla, Israel · Since 2008 · Registered with the Israel Tax Authority',
     details: 'Your details', name: 'Name', country: 'Country', phone: 'Phone',
     wrong: 'Something not right? Message us on WhatsApp and we’ll fix it.',
     sign: 'The Janath Cargo team',
@@ -36,10 +41,12 @@ const T = {
     hello: (n) => `${n}, Janath Cargo වෙත සාදරයෙන් පිළිගනිමු.`,
     intro: 'අප හා එක්වීම ගැන ස්තූතියි. ඊශ්රායලයේ භාණ්ඩ ලබාගන්නා දින, භාරදෙන කාලය, සහ ශ්රී ලංකාවට සහ පිලිපීනයට අපගේ මාර්ග ගැන පුවත් වැනි වැදගත් දේ ඇති විට අපි ඔබට ලියන්නෙමු.',
     block: {
-      IL: ['පාර්සලයක් යැවීමට සූදානම්ද?', 'ඔබේ නගරය සහ පෙට්ටි ගණන අපට කියන්න. අපි ඊශ්රායලයේ ඔබේ නිවසින් ලබාගෙන ඔබේ පවුලේ අයගේ නිවසටම භාරදෙන්නෙමු.', 'WhatsApp හරහා මිල දැනගන්න', 'ආයුබෝවන් Janath Cargo, ඊශ්රායලයේ සිට පාර්සලයක් සඳහා මිල ගණනක් දැනගන්න ඕනේ.'],
+      IL: ['පාර්සලයක් යැවීමට සූදානම්ද?', 'ඔබේ නගරය සහ පෙට්ටි ගණන අපට කියන්න. අපි ඊශ්රායලයේ ඔබේ නිවසින් ලබාගෙන ඔබේ පවුලේ අයගේ නිවසටම භාරදෙන්නෙමු.', 'WhatsApp පණිවිඩයක් එවන්න', 'ආයුබෝවන් Janath Cargo, මට ඊශ්රායලයේ සිට පාර්සලයක් යවන්න ඕනේ.'],
       LK: ['පවුලේ අය ඔබට පාර්සලයක් එවනවාද?', 'ඊශ්රායලයේ සිටින ඔවුන් සමඟ අපගේ අංකය බෙදාගන්න. අපි ඔවුන්ගේ නිවසින් ලබාගෙන ශ්රී ලංකාවේ ඔබේ නිවසටම භාරදෙන්නෙමු.', 'WhatsApp පණිවිඩයක් එවන්න', 'ආයුබෝවන් Janath Cargo, මම ශ්රී ලංකාවේ සිට යාවත්කාලීන සඳහා ලියාපදිංචි වුණා.'],
       PH: ['පවුලේ අය ඔබට පාර්සලයක් එවනවාද?', 'ඊශ්රායලයේ සිටින ඔවුන් සමඟ අපගේ අංකය බෙදාගන්න. අපි ඔවුන්ගේ නිවසින් ලබාගෙන පිලිපීනයේ ඔබේ නිවසටම භාරදෙන්නෙමු.', 'WhatsApp පණිවිඩයක් එවන්න', 'ආයුබෝවන් Janath Cargo, මම පිලිපීනයේ සිට යාවත්කාලීන සඳහා ලියාපදිංචි වුණා.'],
     },
+    callOr: 'අමතන්න හෝ WhatsApp',
+    company: 'රම්ලා, ඊශ්රායලය · 2008 සිට · ඊශ්රායල බදු අධිකාරියේ ලියාපදිංචි',
     details: 'ඔබේ විස්තර', name: 'නම', country: 'රට', phone: 'දුරකථන අංකය',
     wrong: 'යමක් වැරදිද? WhatsApp හරහා අපට පණිවිඩයක් එවන්න, අපි නිවැරදි කරන්නෙමු.',
     sign: 'Janath Cargo කණ්ඩායම',
@@ -61,7 +68,10 @@ function welcome(s, cfg) {
   const t = T[L], z = L === 'si' ? zwj : (x) => x;
   const country = ['IL', 'LK', 'PH'].includes(s.country) ? s.country : 'IL';
   const [bTitle, bText, bCta, bMsg] = t.block[country];
-  const wa = `https://wa.me/${WA_NUMBER}?text=${encodeURIComponent(z(bMsg))}`;
+  const desk = DESKS[country === 'PH' || (country === 'IL' && s.route === 'ph') ? 'ph' : 'il'];   // Israel senders on the Philippines route get that desk too
+  const wa = `https://wa.me/${desk[0][0]}?text=${encodeURIComponent(z(bMsg))}`;
+  const nums = desk.map(([n, show]) => `<a href="tel:+${n}" style="color:#10243E;font-weight:600;text-decoration:none;white-space:nowrap;">${show}</a>`).join(' &nbsp;·&nbsp; ');
+  const numsText = desk.map((d) => d[1]).join(' · ');
   const unsubUrl = `${cfg.apiUrl}/unsubscribe?t=${encodeURIComponent(s.unsub_token)}`;
   const site = cfg.siteUrl.replace(/\/$/, '');
   const logo = `${site}/assets/img/logo-primary.png`;
@@ -104,7 +114,7 @@ a{color:#2071C9}
         <table role="presentation" cellspacing="0" cellpadding="0" border="0" class="btn"><tr><td style="background:#D8A24C;border-radius:4px;">
           <a href="${esc(wa)}" style="display:inline-block;padding:14px 22px;font-family:${font};font-weight:600;font-size:16px;line-height:1.2;color:#10243E;text-decoration:none;">${esc(z(bCta))} &rarr;</a>
         </td></tr></table>
-        <p style="margin:12px 0 0;font-family:${font};font-size:14px;color:rgba(16,36,62,.6);">WhatsApp <a href="https://wa.me/${WA_NUMBER}" style="color:#10243E;font-weight:600;text-decoration:none;">${WA_SHOW}</a></p>
+        <p style="margin:12px 0 0;font-family:${font};font-size:14px;line-height:1.6;color:rgba(16,36,62,.6);">${esc(z(t.callOr))}: ${nums}</p>
       </td></tr>
     </table>
   </td></tr>
@@ -121,7 +131,7 @@ a{color:#2071C9}
     <p style="margin:0;font-family:${font};font-size:16px;line-height:1.5;color:#10243E;font-weight:600;">${esc(z(t.sign))}</p>
   </td></tr>
   <tr><td style="background:#10243E;padding:24px 40px;" class="px">
-    <p style="margin:0 0 8px;font-family:${font};font-size:13px;line-height:1.55;color:rgba(231,244,250,.72);">Janath Cargo · <a href="${site}/" style="color:rgba(231,244,250,.9);">${esc(site.replace(/^https?:\/\//, ''))}</a> · WhatsApp ${WA_SHOW}</p>
+    <p style="margin:0 0 8px;font-family:${font};font-size:13px;line-height:1.55;color:rgba(231,244,250,.72);">Janath Cargo · ${esc(z(t.company))}<br><a href="${site}/" style="color:rgba(231,244,250,.9);">${esc(site.replace(/^https?:\/\//, ''))}</a> · ${esc(z(t.callOr))} ${desk[0][1]}</p>
     <p style="margin:0;font-family:${font};font-size:13px;line-height:1.55;color:rgba(231,244,250,.58);">${esc(z(t.why))} <a href="${esc(unsubUrl)}" style="color:#D8A24C;">${esc(z(t.unsub))}</a></p>
   </td></tr>
 </table>
@@ -130,9 +140,9 @@ a{color:#2071C9}
 
   const text = [
     z(t.hello(fn)), '', z(t.intro), '',
-    z(bTitle), z(bText), `${z(bCta)}: ${wa}`, `WhatsApp ${WA_SHOW}`, '',
+    z(bTitle), z(bText), `${z(bCta)}: ${wa}`, `${z(t.callOr)}: ${numsText}`, '',
     `${z(t.details)}`, `${z(t.name)}: ${s.name}`, `${z(t.country)}: ${z(COUNTRY[L][country])}`, `${z(t.phone)}: ${fmtPhone(s.phone)}`, z(t.wrong), '',
-    z(t.sign), '', '—', `Janath Cargo · ${site}`, z(t.why), `${z(t.unsub)}: ${unsubUrl}`,
+    z(t.sign), '', '—', `Janath Cargo · ${z(t.company)}`, site, z(t.why), `${z(t.unsub)}: ${unsubUrl}`,
   ].join('\n');
 
   return { subject, html, text, unsubUrl };
